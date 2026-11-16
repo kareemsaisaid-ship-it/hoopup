@@ -1,0 +1,10 @@
+﻿{
+  "passed": 30,
+  "failed": 0,
+  "skipped": 6,
+  "projects": [
+    "Mobile Small Android (360x800)",
+    "Mobile iPhone (390x844)",
+    "Desktop Chromium"
+  ]
+}

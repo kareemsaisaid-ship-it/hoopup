@@ -1,0 +1,189 @@
+{
+  "violations": [
+    {
+      "screen": "Courts List (/courts?view=list)",
+      "selector": "a",
+      "tag": "a",
+      "text": "OpenStreetMap",
+      "width": 89.5,
+      "height": 17
+    },
+    {
+      "screen": "Courts Map (/courts?view=map)",
+      "selector": "a",
+      "tag": "a",
+      "text": "OpenStreetMap",
+      "width": 89.5,
+      "height": 17
+    },
+    {
+      "screen": "Courts Map (/courts?view=map)",
+      "selector": "div.leaflet-marker-icon.hoopup-court-pin-wrapper.leaflet-zoom-animated.leaflet-interactive",
+      "tag": "div",
+      "text": "🏀",
+      "width": 32,
+      "height": 32
+    },
+    {
+      "screen": "Courts Map (/courts?view=map)",
+      "selector": "div.leaflet-marker-icon.marker-cluster.marker-cluster-small.leaflet-zoom-animated.leaflet-interactive",
+      "tag": "div",
+      "text": "4",
+      "width": 40,
+      "height": 40
+    },
+    {
+      "screen": "Courts Map (/courts?view=map)",
+      "selector": "div.leaflet-marker-icon.marker-cluster.marker-cluster-small.leaflet-zoom-animated.leaflet-interactive",
+      "tag": "div",
+      "text": "7",
+      "width": 40,
+      "height": 40
+    },
+    {
+      "screen": "Courts Map (/courts?view=map)",
+      "selector": "div.leaflet-marker-icon.marker-cluster.marker-cluster-medium.leaflet-zoom-animated.leaflet-interactive",
+      "tag": "div",
+      "text": "26",
+      "width": 40,
+      "height": 40
+    },
+    {
+      "screen": "Courts Map (/courts?view=map)",
+      "selector": "div.leaflet-marker-icon.marker-cluster.marker-cluster-medium.leaflet-zoom-animated.leaflet-interactive",
+      "tag": "div",
+      "text": "10",
+      "width": 40,
+      "height": 40
+    },
+    {
+      "screen": "Courts Map (/courts?view=map)",
+      "selector": "div.leaflet-marker-icon.marker-cluster.marker-cluster-medium.leaflet-zoom-animated.leaflet-interactive",
+      "tag": "div",
+      "text": "12",
+      "width": 40,
+      "height": 40
+    },
+    {
+      "screen": "Courts Map (/courts?view=map)",
+      "selector": "div.leaflet-marker-icon.marker-cluster.marker-cluster-medium.leaflet-zoom-animated.leaflet-interactive",
+      "tag": "div",
+      "text": "15",
+      "width": 40,
+      "height": 40
+    },
+    {
+      "screen": "Courts Map (/courts?view=map)",
+      "selector": "div.leaflet-marker-icon.marker-cluster.marker-cluster-medium.leaflet-zoom-animated.leaflet-interactive",
+      "tag": "div",
+      "text": "71",
+      "width": 40,
+      "height": 40
+    },
+    {
+      "screen": "Courts Map (/courts?view=map)",
+      "selector": "a",
+      "tag": "a",
+      "text": "Leaflet",
+      "width": 51.4,
+      "height": 14
+    },
+    {
+      "screen": "Courts Map (/courts?view=map)",
+      "selector": "a",
+      "tag": "a",
+      "text": "OpenStreetMap contributors",
+      "width": 150.8,
+      "height": 14
+    },
+    {
+      "screen": "Courts Map Popup (/courts?view=map)",
+      "selector": "a",
+      "tag": "a",
+      "text": "OpenStreetMap",
+      "width": 89.5,
+      "height": 17
+    },
+    {
+      "screen": "Courts Map Popup (/courts?view=map)",
+      "selector": "div.leaflet-marker-icon.hoopup-court-pin-wrapper.leaflet-zoom-animated.leaflet-interactive",
+      "tag": "div",
+      "text": "🏀",
+      "width": 32,
+      "height": 32
+    },
+    {
+      "screen": "Courts Map Popup (/courts?view=map)",
+      "selector": "div.leaflet-marker-icon.marker-cluster.marker-cluster-small.leaflet-zoom-animated.leaflet-interactive",
+      "tag": "div",
+      "text": "7",
+      "width": 40,
+      "height": 40
+    },
+    {
+      "screen": "Courts Map Popup (/courts?view=map)",
+      "selector": "div.leaflet-marker-icon.marker-cluster.marker-cluster-medium.leaflet-zoom-animated.leaflet-interactive",
+      "tag": "div",
+      "text": "12",
+      "width": 40,
+      "height": 40
+    },
+    {
+      "screen": "Courts Map Popup (/courts?view=map)",
+      "selector": "div.leaflet-marker-icon.marker-cluster.marker-cluster-medium.leaflet-zoom-animated.leaflet-interactive",
+      "tag": "div",
+      "text": "15",
+      "width": 40,
+      "height": 40
+    },
+    {
+      "screen": "Courts Map Popup (/courts?view=map)",
+      "selector": "div.leaflet-marker-icon.marker-cluster.marker-cluster-medium.leaflet-zoom-animated.leaflet-interactive",
+      "tag": "div",
+      "text": "71",
+      "width": 40,
+      "height": 40
+    },
+    {
+      "screen": "Courts Map Popup (/courts?view=map)",
+      "selector": "div.leaflet-marker-icon.marker-cluster.marker-cluster-small.leaflet-zoom-animated.leaflet-interactive",
+      "tag": "div",
+      "text": "3",
+      "width": 40,
+      "height": 40
+    },
+    {
+      "screen": "Courts Map Popup (/courts?view=map)",
+      "selector": "div.leaflet-marker-icon.marker-cluster.marker-cluster-medium.leaflet-zoom-animated.leaflet-interactive",
+      "tag": "div",
+      "text": "10",
+      "width": 40,
+      "height": 40
+    },
+    {
+      "screen": "Courts Map Popup (/courts?view=map)",
+      "selector": "a",
+      "tag": "a",
+      "text": "Leaflet",
+      "width": 51.4,
+      "height": 14
+    },
+    {
+      "screen": "Courts Map Popup (/courts?view=map)",
+      "selector": "a",
+      "tag": "a",
+      "text": "OpenStreetMap contributors",
+      "width": 150.8,
+      "height": 14
+    },
+    {
+      "screen": "Profile (/profile)",
+      "selector": "[data-testid=\"profile-plays-any\"]",
+      "tag": "input",
+      "text": "",
+      "width": 16.5,
+      "height": 18
+    }
+  ],
+  "inlineLinks": []
+}

@@ -1,0 +1,474 @@
+{
+  "timeUtc": "2026-10-26T10:25:36.636977+00:00",
+  "status": "passed",
+  "failure": "",
+  "testCluster": "C:\\D_Drive\\terminter01\\garage\\project_ideas\\basketball\\backend\\.local-test\\run-ce136aa1f6c0",
+  "checks": [
+    {
+      "name": "all core migrations apply on PostgreSQL",
+      "passed": true,
+      "observed": null
+    },
+    {
+      "name": "expected SQL denial: permission denied",
+      "passed": true,
+      "observed": {
+        "exit_code": 3,
+        "stderr": "ERROR:  permission denied for table sessions"
+      }
+    },
+    {
+      "name": "expected SQL denial: permission denied",
+      "passed": true,
+      "observed": {
+        "exit_code": 3,
+        "stderr": "ERROR:  permission denied for function hoopup_list_sessions"
+      }
+    },
+    {
+      "name": "expected SQL denial: authentication_required",
+      "passed": true,
+      "observed": {
+        "exit_code": 3,
+        "stderr": "ERROR:  authentication_required\nCONTEXT:  PL/pgSQL function hoopup_private.require_user() line 5 at RAISE\nPL/pgSQL function hoopup_private.list_sessions(jsonb) line 3 during statement block local variable initialization\nSQL function \"hoopup_list_sessions\" statement 1"
+      }
+    },
+    {
+      "name": "profile saved for authenticated user 0",
+      "passed": true,
+      "observed": null
+    },
+    {
+      "name": "profile saved for authenticated user 1",
+      "passed": true,
+      "observed": null
+    },
+    {
+      "name": "profile saved for authenticated user 2",
+      "passed": true,
+      "observed": null
+    },
+    {
+      "name": "profile saved for authenticated user 3",
+      "passed": true,
+      "observed": null
+    },
+    {
+      "name": "profile saved for authenticated user 4",
+      "passed": true,
+      "observed": null
+    },
+    {
+      "name": "profile saved for authenticated user 5",
+      "passed": true,
+      "observed": null
+    },
+    {
+      "name": "profile saved for authenticated user 6",
+      "passed": true,
+      "observed": null
+    },
+    {
+      "name": "profile saved for authenticated user 7",
+      "passed": true,
+      "observed": null
+    },
+    {
+      "name": "profile saved for authenticated user 8",
+      "passed": true,
+      "observed": null
+    },
+    {
+      "name": "profile saved for authenticated user 9",
+      "passed": true,
+      "observed": null
+    },
+    {
+      "name": "profile saved for authenticated user 10",
+      "passed": true,
+      "observed": null
+    },
+    {
+      "name": "profile saved for authenticated user 11",
+      "passed": true,
+      "observed": null
+    },
+    {
+      "name": "profile saved for authenticated user 12",
+      "passed": true,
+      "observed": null
+    },
+    {
+      "name": "profile saved for authenticated user 13",
+      "passed": true,
+      "observed": null
+    },
+    {
+      "name": "profile saved for authenticated user 14",
+      "passed": true,
+      "observed": null
+    },
+    {
+      "name": "profile saved for authenticated user 15",
+      "passed": true,
+      "observed": null
+    },
+    {
+      "name": "host counted exactly once with two guests",
+      "passed": true,
+      "observed": {
+        "id": "b1da1817-8e19-4035-8186-1de3325b640b",
+        "court": {
+          "id": "9fb00b02-f570-43a8-8758-304c39fcdc02",
+          "name": "Mock Court A",
+          "latitude": null,
+          "longitude": null
+        },
+        "notes": "",
+        "title": "Mock basketball session",
+        "hostId": "7e6e3ef4-ece8-59b9-965b-ec7cce4970a9",
+        "actions": {
+          "canJoin": false,
+          "canManage": true,
+          "canReadChat": true,
+          "canWithdraw": false,
+          "canSendMessage": true
+        },
+        "endedAt": null,
+        "hostName": "Mock Player 0",
+        "startsAt": "2026-10-26T17:25:33.874092+07:00",
+        "teamSize": 5,
+        "lifecycle": "active",
+        "updatedAt": "2026-10-26T17:25:33.868003+07:00",
+        "guestCount": 2,
+        "joinPolicy": "instant",
+        "skillLevel": "casual",
+        "meetingPoint": "",
+        "displayStatus": "open",
+        "occupiedCount": 3,
+        "confirmedCount": 1,
+        "seatsRemaining": 2,
+        "recruitmentOpen": true,
+        "wantedPositions": [],
+        "welcomesBeginners": true,
+        "myMembershipStatus": "confirmed"
+      }
+    },
+    {
+      "name": "create retry returns same session",
+      "passed": true,
+      "observed": null
+    },
+    {
+      "name": "outsider action flags are booleans",
+      "passed": true,
+      "observed": null
+    },
+    {
+      "name": "past chosen start rejected",
+      "passed": true,
+      "observed": null
+    },
+    {
+      "name": "instant join occupies one seat",
+      "passed": true,
+      "observed": null
+    },
+    {
+      "name": "join retry is idempotent",
+      "passed": true,
+      "observed": null
+    },
+    {
+      "name": "last seat reaches full",
+      "passed": true,
+      "observed": null
+    },
+    {
+      "name": "additional join refused",
+      "passed": true,
+      "observed": null
+    },
+    {
+      "name": "guest increase cannot overfill",
+      "passed": true,
+      "observed": null
+    },
+    {
+      "name": "expected SQL denial: session_capacity_exceeded",
+      "passed": true,
+      "observed": {
+        "exit_code": 3,
+        "stderr": "ERROR:  session_capacity_exceeded\nCONTEXT:  PL/pgSQL function hoopup_private.check_session_invariant() line 23 at RAISE"
+      }
+    },
+    {
+      "name": "expected SQL denial: session_requires_confirmed_host",
+      "passed": true,
+      "observed": {
+        "exit_code": 3,
+        "stderr": "ERROR:  session_requires_confirmed_host\nCONTEXT:  PL/pgSQL function hoopup_private.check_session_invariant() line 18 at RAISE"
+      }
+    },
+    {
+      "name": "full excluded from feed",
+      "passed": true,
+      "observed": null
+    },
+    {
+      "name": "full included in my sessions",
+      "passed": true,
+      "observed": null
+    },
+    {
+      "name": "request waits for approval",
+      "passed": true,
+      "observed": null
+    },
+    {
+      "name": "pending requests do not occupy seats",
+      "passed": true,
+      "observed": null
+    },
+    {
+      "name": "non-host cannot approve",
+      "passed": true,
+      "observed": null
+    },
+    {
+      "name": "pending cannot read chat",
+      "passed": true,
+      "observed": null
+    },
+    {
+      "name": "pending cannot send",
+      "passed": true,
+      "observed": null
+    },
+    {
+      "name": "approval fills available seat",
+      "passed": true,
+      "observed": null
+    },
+    {
+      "name": "second approval checks current capacity",
+      "passed": true,
+      "observed": null
+    },
+    {
+      "name": "pending cannot see others membership",
+      "passed": true,
+      "observed": null
+    },
+    {
+      "name": "withdrawal reopens full session",
+      "passed": true,
+      "observed": null
+    },
+    {
+      "name": "closed remains closed with free seat",
+      "passed": true,
+      "observed": null
+    },
+    {
+      "name": "closed refuses new join",
+      "passed": true,
+      "observed": null
+    },
+    {
+      "name": "host cannot withdraw",
+      "passed": true,
+      "observed": null
+    },
+    {
+      "name": "message retry preserves original",
+      "passed": true,
+      "observed": null
+    },
+    {
+      "name": "member sees chat",
+      "passed": true,
+      "observed": null
+    },
+    {
+      "name": "outsider sees no chat",
+      "passed": true,
+      "observed": null
+    },
+    {
+      "name": "withdrawn member loses chat access",
+      "passed": true,
+      "observed": null
+    },
+    {
+      "name": "expected SQL denial: permission denied",
+      "passed": true,
+      "observed": {
+        "exit_code": 3,
+        "stderr": "ERROR:  permission denied for table sessions"
+      }
+    },
+    {
+      "name": "expected SQL denial: permission denied",
+      "passed": true,
+      "observed": {
+        "exit_code": 3,
+        "stderr": "ERROR:  permission denied for table session_members"
+      }
+    },
+    {
+      "name": "expected SQL denial: permission denied",
+      "passed": true,
+      "observed": {
+        "exit_code": 3,
+        "stderr": "ERROR:  permission denied for table messages"
+      }
+    },
+    {
+      "name": "expected SQL denial: permission denied",
+      "passed": true,
+      "observed": {
+        "exit_code": 3,
+        "stderr": "ERROR:  permission denied for table profiles"
+      }
+    },
+    {
+      "name": "non-host cannot edit",
+      "passed": true,
+      "observed": null
+    },
+    {
+      "name": "patch cannot change host",
+      "passed": true,
+      "observed": null
+    }
+  ],
+  "concurrentScenarios": [],
+  "commands": [
+    {
+      "command": [
+        "C:\\D_Drive\\terminter01\\dsl-auto-master\\tools\\pgsql\\bin\\initdb.exe",
+        "-D",
+        "C:\\D_Drive\\terminter01\\garage\\project_ideas\\basketball\\backend\\.local-test\\run-ce136aa1f6c0\\data",
+        "-U",
+        "postgres",
+        "-A",
+        "trust",
+        "--encoding=UTF8",
+        "--no-locale"
+      ],
+      "exit_code": 0,
+      "stdout": "The files belonging to this database system will be owned by user \"ThinkPad\".\nThis user must also own the server process.\n\nThe database cluster will be initialized with locale \"C\".\nThe default text search configuration will be set to \"english\".\n\nData page checksums are disabled.\n\ncreating directory C:/D_Drive/terminter01/garage/project_ideas/basketball/backend/.local-test/run-ce136aa1f6c0/data ... ok\ncreating subdirectories ... ok\nselecting dynamic shared memory implementation ... windows\nselecting default max_connections ... 100\nselecting default shared_buffers ... 128MB\nselecting default time zone ... Asia/Bangkok\ncreating configuration files ... ok\nrunning bootstrap script ... ok\nperforming post-bootstrap initialization ... ok\nsyncing data to disk ... ok\n\nSuccess. You can now start the database server using:\n\n    ^\"C^:^\\D^_Drive^\\terminter01^\\dsl^-auto^-master^\\tools^\\pgsql^\\bin^\\pg^_ctl^\" -D ^\"C^:^\\D^_Drive^\\terminter01^\\garage^\\project^_ideas^\\basketball^\\backend^\\^.local^-test^\\run^-ce136aa1f6c0^\\data^\" -l logfile start\n\n"
+    },
+    {
+      "command": [
+        "C:\\D_Drive\\terminter01\\dsl-auto-master\\tools\\pgsql\\bin\\pg_ctl.exe",
+        "-D",
+        "C:\\D_Drive\\terminter01\\garage\\project_ideas\\basketball\\backend\\.local-test\\run-ce136aa1f6c0\\data",
+        "-l",
+        "C:\\D_Drive\\terminter01\\garage\\project_ideas\\basketball\\backend\\.local-test\\run-ce136aa1f6c0\\postgres.log",
+        "-o",
+        "-h 127.0.0.1 -p 49677 -c fsync=off",
+        "-w",
+        "start"
+      ],
+      "exit_code": 0,
+      "stdout": "waiting for server to start.... done\nserver started\n"
+    },
+    {
+      "command": [
+        "C:\\D_Drive\\terminter01\\dsl-auto-master\\tools\\pgsql\\bin\\psql.exe",
+        "-X",
+        "-q",
+        "-A",
+        "-t",
+        "-v",
+        "ON_ERROR_STOP=1",
+        "-P",
+        "pager=off",
+        "-h",
+        "127.0.0.1",
+        "-p",
+        "49677",
+        "-U",
+        "postgres",
+        "-d",
+        "postgres",
+        "-f",
+        "C:\\D_Drive\\terminter01\\garage\\project_ideas\\basketball\\backend\\migrations\\001_schema.sql"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "C:\\D_Drive\\terminter01\\dsl-auto-master\\tools\\pgsql\\bin\\psql.exe",
+        "-X",
+        "-q",
+        "-A",
+        "-t",
+        "-v",
+        "ON_ERROR_STOP=1",
+        "-P",
+        "pager=off",
+        "-h",
+        "127.0.0.1",
+        "-p",
+        "49677",
+        "-U",
+        "postgres",
+        "-d",
+        "postgres",
+        "-f",
+        "C:\\D_Drive\\terminter01\\garage\\project_ideas\\basketball\\backend\\migrations\\002_commands.sql"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "C:\\D_Drive\\terminter01\\dsl-auto-master\\tools\\pgsql\\bin\\psql.exe",
+        "-X",
+        "-q",
+        "-A",
+        "-t",
+        "-v",
+        "ON_ERROR_STOP=1",
+        "-P",
+        "pager=off",
+        "-h",
+        "127.0.0.1",
+        "-p",
+        "49677",
+        "-U",
+        "postgres",
+        "-d",
+        "postgres",
+        "-f",
+        "C:\\D_Drive\\terminter01\\garage\\project_ideas\\basketball\\backend\\migrations\\003_api_and_permissions.sql"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "C:\\D_Drive\\terminter01\\dsl-auto-master\\tools\\pgsql\\bin\\pg_ctl.exe",
+        "-D",
+        "C:\\D_Drive\\terminter01\\garage\\project_ideas\\basketball\\backend\\.local-test\\run-ce136aa1f6c0\\data",
+        "-m",
+        "fast",
+        "-w",
+        "stop"
+      ],
+      "exit_code": 0,
+      "stdout": "waiting for server to shut down.... done\nserver stopped\n",
+      "stderr": ""
+    }
+  ],
+  "limits": [
+    "Local mock auth; no JWT verification, Supabase Data API, PostGIS, Realtime, push, or cloud deployment tested."
+  ]
+}

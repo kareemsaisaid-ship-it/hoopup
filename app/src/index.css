@@ -1,0 +1,644 @@
+:root {
+  /* --- Colors: Brand & Accent --- */
+  --color-primary: #FF6B00;          /* HoopUp Basketball Orange */
+  --color-primary-hover: #E05E00;
+  --color-primary-light: rgba(255, 107, 0, 0.15);
+  --color-primary-glow: rgba(255, 107, 0, 0.35);
+
+  /* --- Colors: Dark Theme Backgrounds & Surfaces --- */
+  --color-bg: #0B0F19;               /* Deep slate dark body */
+  --color-surface: #151D2A;          /* Card & elevated surface */
+  --color-surface-hover: #1C2738;
+  --color-surface-alt: #0F1622;      /* Deep inner surface */
+  --color-surface-tint: rgba(255, 107, 0, 0.05);
+  --color-header-bg: #0F172A;        /* Dark top header bar matching hoopup-v1.png */
+
+  /* --- Colors: Borders --- */
+  --color-border: #233044;
+  --color-border-subtle: #192333;
+  --color-border-focus: #FF6B00;
+
+  /* --- Colors: Typography --- */
+  --color-text-primary: #F8FAFC;     /* Bright high contrast */
+  --color-text-secondary: #94A3B8;   /* Muted labels & hints */
+  --color-text-muted: #64748B;       /* Secondary hints */
+  --color-text-dim: #475569;
+  --color-text-inverted: #0F172A;
+  --color-text-on-accent: #0F172A;
+
+  /* --- Colors: Secondary --- */
+  --color-secondary: #233044;
+  --color-secondary-light: rgba(35, 48, 68, 0.15);
+
+  /* --- Colors: Semantic Statuses --- */
+  --color-status-open: #10B981;      /* Emerald Green */
+  --color-status-open-bg: rgba(16, 185, 129, 0.15);
+  --color-status-pending: #F59E0B;   /* Amber */
+  --color-status-pending-bg: rgba(245, 158, 11, 0.15);
+  --color-status-error: #EF4444;     /* Red */
+  --color-status-error-bg: rgba(239, 68, 68, 0.15);
+  --color-status-completed: #3B82F6; /* Blue */
+  --color-status-completed-bg: rgba(59, 130, 246, 0.15);
+  --color-status-full: #64748B;
+  --color-status-full-bg: rgba(100, 116, 139, 0.15);
+
+  /* --- Typography Scale --- */
+  --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans Thai", Helvetica, Arial, sans-serif;
+  --font-xs: 0.75rem;     /* 12px */
+  --font-sm: 0.875rem;    /* 14px */
+  --font-base: 1rem;      /* 16px */
+  --font-lg: 1.125rem;    /* 18px */
+  --font-xl: 1.25rem;     /* 20px */
+  --font-2xl: 1.5rem;     /* 24px */
+
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  /* --- Spacing Scale --- */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+
+  /* --- Border Radii --- */
+  --radius-xs: 4px;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+  --radius-full: 9999px;
+
+  /* --- Elevation Shadows --- */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 10px 20px rgba(0, 0, 0, 0.5);
+  --shadow-glow: 0 4px 14px rgba(255, 107, 0, 0.4);
+
+  /* --- Layout Target --- */
+  --mobile-width: 360px;
+  --mobile-height: 800px;
+
+  font-family: var(--font-family);
+  line-height: 1.5;
+  font-weight: 400;
+  color-scheme: dark;
+  color: var(--color-text-primary);
+  background-color: var(--color-bg);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  background-color: #05070B;
+  color: var(--color-text-primary);
+  font-family: var(--font-family);
+}
+
+a {
+  color: var(--color-primary);
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+
+button {
+  font-family: inherit;
+}
+
+input, select, textarea {
+  font-family: inherit;
+}
+
+/* Custom scrollbars */
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: var(--radius-full);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-text-muted);
+}
+
+/* ==========================================================================
+   Loading Skeleton with Smooth Shimmer (ui_lab/style.css)
+   ========================================================================== */
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    #182232 0%,
+    #223046 50%,
+    #182232 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: var(--radius-sm);
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+.skeleton-text {
+  height: 12px;
+  border-radius: var(--radius-xs);
+}
+.skeleton-text-lg {
+  height: 18px;
+  border-radius: var(--radius-sm);
+}
+.skeleton-circle {
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.skeleton-pill {
+  height: 22px;
+  border-radius: var(--radius-full);
+}
+.skeleton-btn {
+  height: 42px;
+  border-radius: var(--radius-md);
+}
+
+/* ==========================================================================
+   State Displays: Empty & Error (ui_lab/style.css)
+   ========================================================================== */
+.state-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 36px 16px;
+  gap: 16px;
+}
+.state-icon-circle {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  margin-bottom: 4px;
+}
+.state-icon-empty {
+  background-color: rgba(255, 107, 0, 0.12);
+  color: var(--color-primary);
+  border: 1px dashed rgba(255, 107, 0, 0.4);
+}
+.state-icon-error {
+  background-color: var(--color-status-error-bg);
+  color: var(--color-status-error);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+.state-title {
+  font-size: var(--font-lg);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
+}
+.state-subtitle {
+  font-size: var(--font-sm);
+  color: var(--color-text-secondary);
+  max-width: 280px;
+  line-height: 1.5;
+}
+
+/* ==========================================================================
+   Buttons & Cards (ui_lab/style.css)
+   ========================================================================== */
+.card {
+  background-color: var(--color-surface);
+  border-radius: var(--radius-lg);
+  padding: 14px;
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.card-title {
+  font-size: var(--font-sm);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 16px;
+  font-family: inherit;
+  font-size: var(--font-sm);
+  font-weight: var(--font-weight-semibold);
+  border-radius: var(--radius-md);
+  border: none;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  text-decoration: none;
+  line-height: 1.2;
+  min-height: 44px;
+}
+
+.btn-primary {
+  background-color: var(--color-primary);
+  color: var(--color-text-on-accent, #0F172A);
+  box-shadow: var(--shadow-glow);
+}
+.btn-primary:hover {
+  background-color: var(--color-primary-hover);
+}
+
+.btn-secondary {
+  background-color: var(--color-surface-hover);
+  color: var(--color-text-primary);
+  border: 1px solid var(--color-border);
+}
+.btn-secondary:hover {
+  background-color: #233146;
+}
+
+.btn-outline {
+  background: transparent;
+  color: var(--color-text-primary);
+  border: 1px solid var(--color-border);
+}
+.btn-outline:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+.btn-block {
+  width: 100%;
+}
+
+.btn-lg {
+  padding: 14px 20px;
+  font-size: var(--font-base);
+  border-radius: var(--radius-lg);
+}
+
+/* ==========================================================================
+   Counter & Live Calc Banner (ui_lab/style.css)
+   ========================================================================== */
+.counter-box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: var(--color-surface-alt);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 4px 6px;
+}
+.counter-btn {
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  min-height: 44px;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  color: var(--color-text-primary);
+  font-size: 1.25rem;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+  box-sizing: border-box;
+}
+.counter-btn:hover {
+  background-color: var(--color-surface-hover);
+  border-color: var(--color-primary);
+}
+.counter-value {
+  font-size: var(--font-base);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
+  padding: 0 4px;
+  background: transparent;
+  border: none;
+  text-align: center;
+  width: 44px;
+  min-height: 44px;
+  box-sizing: border-box;
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+.counter-value::-webkit-inner-spin-button,
+.counter-value::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.live-calc-banner {
+  background: linear-gradient(135deg, rgba(255, 107, 0, 0.15), rgba(255, 107, 0, 0.05));
+  border: 1px solid rgba(255, 107, 0, 0.3);
+  border-radius: var(--radius-md);
+  padding: 10px 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: var(--font-xs);
+  color: var(--color-text-primary);
+}
+.live-calc-icon {
+  font-size: 1.25rem;
+  color: var(--color-primary);
+}
+.live-calc-highlight {
+  font-weight: var(--font-weight-bold);
+  color: var(--color-primary);
+}
+
+.player-visual-dots {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 6px;
+  flex-wrap: wrap;
+}
+.player-dot {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: bold;
+}
+.player-dot.host {
+  background-color: var(--color-primary);
+  color: var(--color-text-on-accent, #0F172A);
+  box-shadow: 0 0 8px var(--color-primary-glow, rgba(255, 107, 0, 0.4));
+}
+.player-dot.friend {
+  background-color: #3B82F6;
+  color: #FFFFFF;
+}
+.player-dot.empty {
+  background-color: transparent;
+  border: 2px dashed var(--color-border);
+  color: var(--color-text-muted);
+}
+
+/* Switch Toggle */
+.toggle-switch {
+  position: relative;
+  display: inline-block;
+  width: 44px;
+  height: 24px;
+}
+.toggle-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+.toggle-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: var(--color-border);
+  border-radius: 24px;
+  transition: 0.2s;
+}
+.toggle-slider:before {
+  position: absolute;
+  content: "";
+  height: 18px;
+  width: 18px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  border-radius: 50%;
+  transition: 0.2s;
+}
+.toggle-switch input:checked + .toggle-slider {
+  background-color: var(--color-primary);
+}
+.toggle-switch input:checked + .toggle-slider:before {
+  transform: translateX(20px);
+}
+
+/* Accessible Switch for Height Visibility (HT2) */
+.height-visible-toggle {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 50px;
+  height: 44px;
+  background: transparent;
+  cursor: pointer;
+  position: relative;
+  outline: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-sizing: border-box;
+}
+
+.height-visible-toggle::before {
+  content: "";
+  display: block;
+  width: 50px;
+  height: 28px;
+  background-color: var(--color-border, #CBD5E1);
+  border-radius: 28px;
+  transition: background-color 0.2s ease;
+}
+
+.height-visible-toggle::after {
+  content: "";
+  position: absolute;
+  top: 10px;
+  left: 3px;
+  width: 24px;
+  height: 24px;
+  background-color: #FFFFFF;
+  border-radius: 50%;
+  transition: transform 0.2s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+}
+
+.height-visible-toggle:checked::before {
+  background-color: var(--color-primary, #FF6B00);
+}
+
+.height-visible-toggle:checked::after {
+  transform: translateX(20px);
+}
+
+.height-visible-toggle:focus-visible::before {
+  outline: 2px solid var(--color-primary, #FF6B00);
+  outline-offset: 2px;
+}
+
+/* --- Leaflet Map & Court Popup Integration --- */
+.leaflet-container {
+  z-index: 10;
+  font-family: var(--font-family);
+  border-radius: 16px;
+  background-color: #0F172A;
+}
+
+.hoopup-court-popup .leaflet-popup-content-wrapper {
+  background-color: #FFFFFF;
+  border-radius: 14px;
+  padding: 4px;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.25);
+  border-top: 3px solid var(--color-primary, #FF6B00);
+}
+
+.hoopup-court-popup .leaflet-popup-content {
+  margin: 10px 12px;
+  line-height: 1.4;
+}
+
+.hoopup-court-popup .leaflet-popup-tip {
+  background-color: #FFFFFF;
+}
+
+.court-popup-card {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.court-popup-title {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #0F172A;
+  line-height: 1.3;
+}
+
+.court-popup-address {
+  font-size: 0.75rem;
+  color: #64748B;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.court-popup-actions {
+  display: flex;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.court-popup-btn {
+  flex: 1;
+  padding: 8px 12px;
+  min-height: 44px;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: center;
+  border: none;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+.court-popup-btn-outline {
+  background-color: #F8FAFC;
+  color: #0F172A;
+  border: 1px solid #CBD5E1;
+}
+
+.court-popup-btn-outline:hover {
+  background-color: #F1F5F9;
+}
+
+.court-popup-btn-primary {
+  background-color: var(--color-primary, #FF6B00);
+  color: var(--color-text-on-accent, #0F172A);
+}
+
+.court-popup-btn-primary:hover {
+  background-color: var(--color-primary-hover, #E05E00);
+}
+
+/* Ensure Leaflet zoom controls and popup close button meet 44px touch target */
+.leaflet-bar a {
+  width: 44px !important;
+  height: 44px !important;
+  line-height: 44px !important;
+  font-size: 1.25rem !important;
+}
+
+.leaflet-popup-close-button {
+  width: 44px !important;
+  height: 44px !important;
+  line-height: 44px !important;
+  font-size: 1.5rem !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  box-sizing: border-box !important;
+}
+
+/* --- Cluster Bubbles & Pin Accent Integration --- */
+.marker-cluster-small,
+.marker-cluster-medium,
+.marker-cluster-large,
+.marker-cluster {
+  background-color: var(--color-primary-light, rgba(255, 107, 0, 0.25)) !important;
+}
+
+.marker-cluster-small div,
+.marker-cluster-medium div,
+.marker-cluster-large div,
+.marker-cluster div {
+  background-color: var(--color-primary, #FF6B00) !important;
+  color: var(--color-text-on-accent, #0F172A) !important;
+  font-weight: 700 !important;
+}
+
+.hoopup-court-pin {
+  background: linear-gradient(135deg, var(--color-primary-hover, #FF8533) 0%, var(--color-primary, #FF6B00) 100%) !important;
+}
+
+
+

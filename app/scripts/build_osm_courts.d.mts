@@ -1,0 +1,16 @@
+export function parseName(tags?: Record<string, any> | null): string | null;
+export function parseCoordinates(element: Record<string, any>): { latitude: number | null; longitude: number | null };
+export function parseSurfaceType(tags?: Record<string, any> | null): string | null;
+export function parseIsIndoor(tags?: Record<string, any> | null): boolean | null;
+export function parseHasLighting(tags?: Record<string, any> | null): boolean | null;
+export function parseHoopCount(tags?: Record<string, any> | null): number | null;
+export function parseOpeningHoursNote(tags?: Record<string, any> | null): string | null;
+export function parseAccess(tags?: Record<string, any> | null): string | null;
+export function parseFee(tags?: Record<string, any> | null): string | null;
+export function parseOperator(tags?: Record<string, any> | null): string | null;
+export function parseOsmQuality(tags?: Record<string, any> | null, name?: string | null): 'excluded' | 'positive' | 'unverified';
+export function computeOsmQuality(tags?: Record<string, any> | null, name?: string | null): 'excluded' | 'positive' | 'unverified';
+export function transformOsmElement(element: Record<string, any>, fetchedAt: string): Record<string, any>;
+export function compareOsmCourts(a: Record<string, any>, b: Record<string, any>): number;
+export function buildOsmCourts(rawPayload: Record<string, any>): Array<Record<string, any>>;
+export function runBuild(rawPath?: string, outPath?: string): Array<Record<string, any>>;

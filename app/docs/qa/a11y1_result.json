@@ -1,0 +1,19 @@
+{
+  "demo": {
+    "passed": 141,
+    "failed": 0,
+    "skipped": 6
+  },
+  "unit": {
+    "passed": 85,
+    "failed": 0
+  },
+  "connected": {
+    "passed": 7,
+    "failed": 0
+  },
+  "violationsBefore": 377,
+  "violationsAfter": 0,
+  "themesChecked": 31,
+  "themesFailingBefore": 31
+}

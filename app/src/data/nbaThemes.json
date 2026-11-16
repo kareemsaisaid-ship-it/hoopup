@@ -1,0 +1,312 @@
+[
+  {
+    "id": "default-hoopup",
+    "displayName": "ค่าเริ่มต้น HoopUp (ส้ม)",
+    "teamName": "HoopUp Default",
+    "city": "Bangkok",
+    "nickname": "HoopUp Orange",
+    "primary": "#FF6B00",
+    "secondary": "#233044",
+    "sourceUrl": "app/src/shared/tokens.ts"
+  },
+  {
+    "id": "atlanta-hawks",
+    "displayName": "แอตแลนตา ฮอว์กส์ (Hawks)",
+    "teamName": "Atlanta Hawks",
+    "city": "Atlanta",
+    "nickname": "Hawks",
+    "primary": "#C8102E",
+    "secondary": "#FDB927",
+    "sourceUrl": "https://teamcolorcodes.com/atlanta-hawks-color-codes/"
+  },
+  {
+    "id": "boston-celtics",
+    "displayName": "บอสตัน เซลติกส์ (Celtics)",
+    "teamName": "Boston Celtics",
+    "city": "Boston",
+    "nickname": "Celtics",
+    "primary": "#007A33",
+    "secondary": "#BA9653",
+    "sourceUrl": "https://teamcolorcodes.com/boston-celtics-color-codes/"
+  },
+  {
+    "id": "brooklyn-nets",
+    "displayName": "บรูกคลิน เน็ตส์ (Nets)",
+    "teamName": "Brooklyn Nets",
+    "city": "Brooklyn",
+    "nickname": "Nets",
+    "primary": "#000000",
+    "secondary": "#FFFFFF",
+    "sourceUrl": "https://teamcolorcodes.com/brooklyn-nets-color-codes/"
+  },
+  {
+    "id": "charlotte-hornets",
+    "displayName": "ชาร์ล็อตต์ ฮอร์เน็ตส์ (Hornets)",
+    "teamName": "Charlotte Hornets",
+    "city": "Charlotte",
+    "nickname": "Hornets",
+    "primary": "#1D1160",
+    "secondary": "#00788C",
+    "sourceUrl": "https://teamcolorcodes.com/charlotte-hornets-color-codes/"
+  },
+  {
+    "id": "chicago-bulls",
+    "displayName": "ชิคาโก บูลส์ (Bulls)",
+    "teamName": "Chicago Bulls",
+    "city": "Chicago",
+    "nickname": "Bulls",
+    "primary": "#CE1141",
+    "secondary": "#000000",
+    "sourceUrl": "https://teamcolorcodes.com/chicago-bulls-color-codes/"
+  },
+  {
+    "id": "cleveland-cavaliers",
+    "displayName": "คลีฟแลนด์ แควาเลียส์ (Cavaliers)",
+    "teamName": "Cleveland Cavaliers",
+    "city": "Cleveland",
+    "nickname": "Cavaliers",
+    "primary": "#860038",
+    "secondary": "#FDBB30",
+    "sourceUrl": "https://teamcolorcodes.com/cleveland-cavaliers-color-codes/"
+  },
+  {
+    "id": "dallas-mavericks",
+    "displayName": "ดัลลัส แมฟเวอริกส์ (Mavericks)",
+    "teamName": "Dallas Mavericks",
+    "city": "Dallas",
+    "nickname": "Mavericks",
+    "primary": "#00538C",
+    "secondary": "#B8C4CA",
+    "sourceUrl": "https://teamcolorcodes.com/dallas-mavericks-color-codes/"
+  },
+  {
+    "id": "denver-nuggets",
+    "displayName": "เดนเวอร์ นักเก็ตส์ (Nuggets)",
+    "teamName": "Denver Nuggets",
+    "city": "Denver",
+    "nickname": "Nuggets",
+    "primary": "#0E2240",
+    "secondary": "#FEC524",
+    "sourceUrl": "https://teamcolorcodes.com/denver-nuggets-color-codes/"
+  },
+  {
+    "id": "detroit-pistons",
+    "displayName": "ดีทรอยต์ พิสตันส์ (Pistons)",
+    "teamName": "Detroit Pistons",
+    "city": "Detroit",
+    "nickname": "Pistons",
+    "primary": "#C8102E",
+    "secondary": "#1D42BA",
+    "sourceUrl": "https://teamcolorcodes.com/detroit-pistons-color-codes/"
+  },
+  {
+    "id": "golden-state-warriors",
+    "displayName": "โกลเดน สเตท วอร์ริเออร์ส (Warriors)",
+    "teamName": "Golden State Warriors",
+    "city": "San Francisco",
+    "nickname": "Warriors",
+    "primary": "#1D428A",
+    "secondary": "#FFC72C",
+    "sourceUrl": "https://teamcolorcodes.com/golden-state-warriors-color-codes/"
+  },
+  {
+    "id": "houston-rockets",
+    "displayName": "ฮิวสตัน ร็อกเก็ตส์ (Rockets)",
+    "teamName": "Houston Rockets",
+    "city": "Houston",
+    "nickname": "Rockets",
+    "primary": "#CE1141",
+    "secondary": "#000000",
+    "sourceUrl": "https://teamcolorcodes.com/houston-rockets-color-codes/"
+  },
+  {
+    "id": "indiana-pacers",
+    "displayName": "อินเดียนา เพเซอร์ส (Pacers)",
+    "teamName": "Indiana Pacers",
+    "city": "Indianapolis",
+    "nickname": "Pacers",
+    "primary": "#002D62",
+    "secondary": "#FDBB30",
+    "sourceUrl": "https://teamcolorcodes.com/indiana-pacers-color-codes/"
+  },
+  {
+    "id": "la-clippers",
+    "displayName": "แอลเอ คลิปเปอร์ส (Clippers)",
+    "teamName": "LA Clippers",
+    "city": "Los Angeles",
+    "nickname": "Clippers",
+    "primary": "#C8102E",
+    "secondary": "#1D428A",
+    "sourceUrl": "https://teamcolorcodes.com/los-angeles-clippers-color-codes/"
+  },
+  {
+    "id": "los-angeles-lakers",
+    "displayName": "ลอสแอนเจลิส เลเกอส์ (Lakers)",
+    "teamName": "Los Angeles Lakers",
+    "city": "Los Angeles",
+    "nickname": "Lakers",
+    "primary": "#552583",
+    "secondary": "#FDB927",
+    "sourceUrl": "https://teamcolorcodes.com/los-angeles-lakers-color-codes/"
+  },
+  {
+    "id": "memphis-grizzlies",
+    "displayName": "เมมฟิส กริซซลีส์ (Grizzlies)",
+    "teamName": "Memphis Grizzlies",
+    "city": "Memphis",
+    "nickname": "Grizzlies",
+    "primary": "#5D76A9",
+    "secondary": "#12173F",
+    "sourceUrl": "https://teamcolorcodes.com/memphis-grizzlies-color-codes/"
+  },
+  {
+    "id": "miami-heat",
+    "displayName": "ไมอามี ฮีต (Heat)",
+    "teamName": "Miami Heat",
+    "city": "Miami",
+    "nickname": "Heat",
+    "primary": "#98002E",
+    "secondary": "#F9A01B",
+    "sourceUrl": "https://teamcolorcodes.com/miami-heat-color-codes/"
+  },
+  {
+    "id": "milwaukee-bucks",
+    "displayName": "มิลวอกี บักส์ (Bucks)",
+    "teamName": "Milwaukee Bucks",
+    "city": "Milwaukee",
+    "nickname": "Bucks",
+    "primary": "#00471B",
+    "secondary": "#EEE1C6",
+    "sourceUrl": "https://teamcolorcodes.com/milwaukee-bucks-color-codes/"
+  },
+  {
+    "id": "minnesota-timberwolves",
+    "displayName": "มินนิโซตา ทิมเบอร์วูล์ฟส์ (Timberwolves)",
+    "teamName": "Minnesota Timberwolves",
+    "city": "Minneapolis",
+    "nickname": "Timberwolves",
+    "primary": "#0C2340",
+    "secondary": "#236192",
+    "sourceUrl": "https://teamcolorcodes.com/minnesota-timberwolves-color-codes/"
+  },
+  {
+    "id": "new-orleans-pelicans",
+    "displayName": "นิวออร์ลีนส์ เพลิแกนส์ (Pelicans)",
+    "teamName": "New Orleans Pelicans",
+    "city": "New Orleans",
+    "nickname": "Pelicans",
+    "primary": "#0C2340",
+    "secondary": "#C8102E",
+    "sourceUrl": "https://teamcolorcodes.com/new-orleans-pelicans-team-color-codes/"
+  },
+  {
+    "id": "new-york-knicks",
+    "displayName": "นิวยอร์ก นิกส์ (Knicks)",
+    "teamName": "New York Knicks",
+    "city": "New York",
+    "nickname": "Knicks",
+    "primary": "#006BB6",
+    "secondary": "#F58426",
+    "sourceUrl": "https://teamcolorcodes.com/new-york-knicks-color-codes/"
+  },
+  {
+    "id": "oklahoma-city-thunder",
+    "displayName": "โอคลาโฮมา ซิตี้ ธันเดอร์ (Thunder)",
+    "teamName": "Oklahoma City Thunder",
+    "city": "Oklahoma City",
+    "nickname": "Thunder",
+    "primary": "#007AC1",
+    "secondary": "#EF3B24",
+    "sourceUrl": "https://teamcolorcodes.com/oklahoma-city-thunder-color-codes/"
+  },
+  {
+    "id": "orlando-magic",
+    "displayName": "ออร์แลนโด แมจิก (Magic)",
+    "teamName": "Orlando Magic",
+    "city": "Orlando",
+    "nickname": "Magic",
+    "primary": "#0077C0",
+    "secondary": "#C4CED4",
+    "sourceUrl": "https://teamcolorcodes.com/orlando-magic-color-codes/"
+  },
+  {
+    "id": "philadelphia-76ers",
+    "displayName": "ฟิลาเดลเฟีย เซเว่นตีซิกเซอร์ส (76ers)",
+    "teamName": "Philadelphia 76ers",
+    "city": "Philadelphia",
+    "nickname": "76ers",
+    "primary": "#006BB6",
+    "secondary": "#ED174C",
+    "sourceUrl": "https://teamcolorcodes.com/philadelphia-76ers-color-codes/"
+  },
+  {
+    "id": "phoenix-suns",
+    "displayName": "ฟีนิกซ์ ซันส์ (Suns)",
+    "teamName": "Phoenix Suns",
+    "city": "Phoenix",
+    "nickname": "Suns",
+    "primary": "#1D1160",
+    "secondary": "#E56020",
+    "sourceUrl": "https://teamcolorcodes.com/phoenix-suns-color-codes/"
+  },
+  {
+    "id": "portland-trail-blazers",
+    "displayName": "พอร์ตแลนด์ เทรลเบลเซอร์ส (Trail Blazers)",
+    "teamName": "Portland Trail Blazers",
+    "city": "Portland",
+    "nickname": "Trail Blazers",
+    "primary": "#E03A3E",
+    "secondary": "#000000",
+    "sourceUrl": "https://teamcolorcodes.com/portland-trailblazers-color-codes/"
+  },
+  {
+    "id": "sacramento-kings",
+    "displayName": "แซคราเมนโต คิงส์ (Kings)",
+    "teamName": "Sacramento Kings",
+    "city": "Sacramento",
+    "nickname": "Kings",
+    "primary": "#5A2D81",
+    "secondary": "#63727A",
+    "sourceUrl": "https://teamcolorcodes.com/sacramento-kings-color-codes/"
+  },
+  {
+    "id": "san-antonio-spurs",
+    "displayName": "ซานอันโตนิโอ สเปอร์ส (Spurs)",
+    "teamName": "San Antonio Spurs",
+    "city": "San Antonio",
+    "nickname": "Spurs",
+    "primary": "#C4CED4",
+    "secondary": "#000000",
+    "sourceUrl": "https://teamcolorcodes.com/san-antonio-spurs-color-codes/"
+  },
+  {
+    "id": "toronto-raptors",
+    "displayName": "โตรอนโต แร็ปเตอร์ส (Raptors)",
+    "teamName": "Toronto Raptors",
+    "city": "Toronto",
+    "nickname": "Raptors",
+    "primary": "#CE1141",
+    "secondary": "#000000",
+    "sourceUrl": "https://teamcolorcodes.com/toronto-raptors-color-codes/"
+  },
+  {
+    "id": "utah-jazz",
+    "displayName": "ยูทาห์ แจ๊ซ (Jazz)",
+    "teamName": "Utah Jazz",
+    "city": "Salt Lake City",
+    "nickname": "Jazz",
+    "primary": "#002B5C",
+    "secondary": "#00471B",
+    "sourceUrl": "https://teamcolorcodes.com/utah-jazz-color-codes/"
+  },
+  {
+    "id": "washington-wizards",
+    "displayName": "วอชิงตัน วิซาร์ดส์ (Wizards)",
+    "teamName": "Washington Wizards",
+    "city": "Washington, D.C.",
+    "nickname": "Wizards",
+    "primary": "#002B5C",
+    "secondary": "#E31837",
+    "sourceUrl": "https://teamcolorcodes.com/washington-wizards-color-codes/"
+  }
+]

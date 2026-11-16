@@ -1,0 +1,13 @@
+﻿{
+  "demo": {
+    "passed": 135,
+    "failed": 0,
+    "skipped": 6
+  },
+  "connected": {
+    "passed": 7,
+    "failed": 0,
+    "skipped": 0
+  },
+  "lintWarnings": 0
+}

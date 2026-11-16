@@ -1,0 +1,11 @@
+node_modules/
+dist/
+test-results/
+playwright-report/
+.local-test/
+backend/server/backend/
+.env
+.env.local
+.env.*.local
+.connected-env.json
+*.log

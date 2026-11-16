@@ -1,0 +1,260 @@
+{
+  "config": {
+    "argv": [
+      "C:\\Program Files\\nodejs\\node.exe",
+      "C:\\D_Drive\\terminter01\\garage\\project_ideas\\basketball\\app\\node_modules\\@playwright\\test\\cli.js",
+      "test",
+      "tests/audit/a11y-targets.spec.ts",
+      "--project=Mobile iPhone (390x844)"
+    ],
+    "configFile": "C:\\D_Drive\\terminter01\\garage\\project_ideas\\basketball\\app\\playwright.config.ts",
+    "rootDir": "C:/D_Drive/terminter01/garage/project_ideas/basketball/app/tests",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "C:/D_Drive/terminter01/garage/project_ideas/basketball/app/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "Mobile Small Android (360x800)",
+        "name": "Mobile Small Android (360x800)",
+        "testDir": "C:/D_Drive/terminter01/garage/project_ideas/basketball/app/tests",
+        "testIgnore": [
+          "**/connected-api/**"
+        ],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "C:/D_Drive/terminter01/garage/project_ideas/basketball/app/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "Mobile iPhone (390x844)",
+        "name": "Mobile iPhone (390x844)",
+        "testDir": "C:/D_Drive/terminter01/garage/project_ideas/basketball/app/tests",
+        "testIgnore": [
+          "**/connected-api/**"
+        ],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "C:/D_Drive/terminter01/garage/project_ideas/basketball/app/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "Desktop Chromium",
+        "name": "Desktop Chromium",
+        "testDir": "C:/D_Drive/terminter01/garage/project_ideas/basketball/app/tests",
+        "testIgnore": [
+          "**/connected-api/**"
+        ],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "filteredProjects": [
+      {
+        "grep": {},
+        "grepInvert": null,
+        "outputDir": "C:\\D_Drive\\terminter01\\garage\\project_ideas\\basketball\\app\\test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "name": "Mobile iPhone (390x844)",
+        "testDir": "C:\\D_Drive\\terminter01\\garage\\project_ideas\\basketball\\app\\tests",
+        "snapshotDir": "C:\\D_Drive\\terminter01\\garage\\project_ideas\\basketball\\app\\tests",
+        "testIgnore": [
+          "**/connected-api/**"
+        ],
+        "testMatch": "**/*.@(spec|test).?(c|m)[jt]s?(x)",
+        "timeout": 30000,
+        "use": {
+          "baseURL": "http://localhost:5173",
+          "trace": "retain-on-failure",
+          "screenshot": "only-on-failure",
+          "video": "off",
+          "viewport": {
+            "width": 390,
+            "height": 844
+          },
+          "isMobile": true,
+          "hasTouch": true,
+          "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 16_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.5 Mobile/15E148 Safari/604.1"
+        },
+        "dependencies": [],
+        "ignoreSnapshots": false,
+        "__projectId": "Mobile iPhone (390x844)"
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "html",
+        {
+          "outputFolder": "docs/qa/playwright-report",
+          "open": "never"
+        }
+      ],
+      [
+        "json",
+        {
+          "outputFile": "docs/qa/test-results.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "default",
+    "updateSourceMethod": "patch",
+    "version": "1.64.1",
+    "workers": 1,
+    "webServer": {
+      "command": "npm run dev",
+      "url": "http://localhost:5173",
+      "reuseExistingServer": true,
+      "timeout": 30000
+    }
+  },
+  "suites": [
+    {
+      "title": "audit\\a11y-targets.spec.ts",
+      "file": "audit/a11y-targets.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "A11Y Touch Targets Compliance & LIVE Strip (360x800)",
+          "file": "audit/a11y-targets.spec.ts",
+          "line": 58,
+          "column": 6,
+          "specs": [
+            {
+              "title": "TC-A11Y1-01: all main screens have touch targets >= 44x44px at 360x800",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile iPhone (390x844)",
+                  "projectName": "Mobile iPhone (390x844)",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 64307,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "[A11Y Targets Audit] Real violations remaining: 0\n"
+                        },
+                        {
+                          "text": "[A11Y Targets Audit] Allowlisted elements: 16\n"
+                        },
+                        {
+                          "text": "[A11Y Targets Audit] Inline text links: 7\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-03T03:07:57.185Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "edda56327881c9dd1352-633b1a6f9041af135966",
+              "file": "audit/a11y-targets.spec.ts",
+              "line": 183,
+              "column": 3
+            },
+            {
+              "title": "TC-A11Y1-02: capture Feed screenshots with LIVE strip at 360x800 in default and lowest contrast themes",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile iPhone (390x844)",
+                  "projectName": "Mobile iPhone (390x844)",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 6225,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-03T03:09:01.749Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "edda56327881c9dd1352-443744d1545bcbfba6a7",
+              "file": "audit/a11y-targets.spec.ts",
+              "line": 262,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-11-03T03:07:53.969Z",
+    "duration": 74982.57900000001,
+    "expected": 2,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

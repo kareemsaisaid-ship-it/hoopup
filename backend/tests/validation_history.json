@@ -1,0 +1,23 @@
+[
+  {
+    "timeUtc": "2026-10-26T17:24:39.711667+07:00",
+    "status": "failed",
+    "failure": "Command '['C:\\\\D_Drive\\\\terminter01\\\\dsl-auto-master\\\\tools\\\\pgsql\\\\bin\\\\pg_ctl.exe', '-D', 'C:\\\\D_Drive\\\\terminter01\\\\garage\\\\project_ideas\\\\basketball\\\\backend\\\\.local-test\\\\run-504acb4335c5\\\\data', '-l', 'C:\\\\D_Drive\\\\terminter01\\\\garage\\\\project_ideas\\\\basketball\\\\backend\\\\.local-test\\\\run-504acb4335c5\\\\postgres.log', '-o', '-h 127.0.0.1 -p 53553 -c fsync=off', '-w', 'start']' timed out after 40 seconds",
+    "passedChecks": 0,
+    "testCluster": "C:\\D_Drive\\terminter01\\garage\\project_ideas\\basketball\\backend\\.local-test\\run-504acb4335c5"
+  },
+  {
+    "timeUtc": "2026-10-26T17:25:36.636977+07:00",
+    "status": "failed",
+    "failure": "Runner stopped after 55 checks without reaching suite completion. Empty exception text was incorrectly treated as success in the raw receipt; runner now checks completion explicitly and handles SQL NULL.",
+    "passedChecks": 55,
+    "testCluster": "C:\\D_Drive\\terminter01\\garage\\project_ideas\\basketball\\backend\\.local-test\\run-ce136aa1f6c0"
+  },
+  {
+    "timeUtc": "2026-10-26T10:26:50.891377+00:00",
+    "status": "passed",
+    "failure": null,
+    "passedChecks": 82,
+    "testCluster": "C:\\D_Drive\\terminter01\\garage\\project_ideas\\basketball\\backend\\.local-test\\run-9a824410c80b"
+  }
+]

@@ -1,0 +1,5 @@
+[out:json][timeout:60];
+(
+  nwr["sport"="basketball"](13.50,100.30,14.00,100.95);
+);
+out center tags;

@@ -1,0 +1,28 @@
+{
+  "timeUtc": "2026-10-26T10:24:39.711667+00:00",
+  "status": "failed",
+  "failure": "Command '['C:\\\\D_Drive\\\\terminter01\\\\dsl-auto-master\\\\tools\\\\pgsql\\\\bin\\\\pg_ctl.exe', '-D', 'C:\\\\D_Drive\\\\terminter01\\\\garage\\\\project_ideas\\\\basketball\\\\backend\\\\.local-test\\\\run-504acb4335c5\\\\data', '-l', 'C:\\\\D_Drive\\\\terminter01\\\\garage\\\\project_ideas\\\\basketball\\\\backend\\\\.local-test\\\\run-504acb4335c5\\\\postgres.log', '-o', '-h 127.0.0.1 -p 53553 -c fsync=off', '-w', 'start']' timed out after 40 seconds",
+  "testCluster": "C:\\D_Drive\\terminter01\\garage\\project_ideas\\basketball\\backend\\.local-test\\run-504acb4335c5",
+  "checks": [],
+  "concurrentScenarios": [],
+  "commands": [
+    {
+      "command": [
+        "C:\\D_Drive\\terminter01\\dsl-auto-master\\tools\\pgsql\\bin\\initdb.exe",
+        "-D",
+        "C:\\D_Drive\\terminter01\\garage\\project_ideas\\basketball\\backend\\.local-test\\run-504acb4335c5\\data",
+        "-U",
+        "postgres",
+        "-A",
+        "trust",
+        "--encoding=UTF8",
+        "--no-locale"
+      ],
+      "exit_code": 0,
+      "stdout": "The files belonging to this database system will be owned by user \"ThinkPad\".\nThis user must also own the server process.\n\nThe database cluster will be initialized with locale \"C\".\nThe default text search configuration will be set to \"english\".\n\nData page checksums are disabled.\n\ncreating directory C:/D_Drive/terminter01/garage/project_ideas/basketball/backend/.local-test/run-504acb4335c5/data ... ok\ncreating subdirectories ... ok\nselecting dynamic shared memory implementation ... windows\nselecting default max_connections ... 100\nselecting default shared_buffers ... 128MB\nselecting default time zone ... Asia/Bangkok\ncreating configuration files ... ok\nrunning bootstrap script ... ok\nperforming post-bootstrap initialization ... ok\nsyncing data to disk ... ok\n\nSuccess. You can now start the database server using:\n\n    ^\"C^:^\\D^_Drive^\\terminter01^\\dsl^-auto^-master^\\tools^\\pgsql^\\bin^\\pg^_ctl^\" -D ^\"C^:^\\D^_Drive^\\terminter01^\\garage^\\project^_ideas^\\basketball^\\backend^\\^.local^-test^\\run^-504acb4335c5^\\data^\" -l logfile start\n\n"
+    }
+  ],
+  "limits": [
+    "Local mock auth; no JWT verification, Supabase Data API, PostGIS, Realtime, push, or cloud deployment tested."
+  ]
+}

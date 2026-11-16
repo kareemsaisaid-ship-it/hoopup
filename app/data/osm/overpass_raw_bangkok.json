@@ -1,0 +1,1940 @@
+{
+  "version": 0.6,
+  "generator": "Overpass API 0.7.62.11 87bfad18",
+  "osm3s": {
+    "timestamp_osm_base": "2026-11-01T13:19:21Z",
+    "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL."
+  },
+  "elements": [
+    {
+      "type": "node",
+      "id": 1597506173,
+      "lat": 13.8466336,
+      "lon": 100.5676961,
+      "tags": {
+        "leisure": "sports_centre",
+        "name": "สนามบาสเก็ตบอล",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "node",
+      "id": 3468602607,
+      "lat": 13.7584744,
+      "lon": 100.6266502,
+      "tags": {
+        "leisure": "pitch",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "node",
+      "id": 5744783233,
+      "lat": 13.7426282,
+      "lon": 100.6968597,
+      "tags": {
+        "access": "yes",
+        "hoops": "2",
+        "leisure": "pitch",
+        "sport": "basketball",
+        "surface": "concrete"
+      }
+    },
+    {
+      "type": "node",
+      "id": 6110949756,
+      "lat": 13.6534789,
+      "lon": 100.494244,
+      "tags": {
+        "leisure": "pitch",
+        "name": "สนามบาส",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "node",
+      "id": 8794092440,
+      "lat": 13.6432396,
+      "lon": 100.6776478,
+      "tags": {
+        "access": "permissive",
+        "hoops": "1",
+        "leisure": "pitch",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "node",
+      "id": 12365585634,
+      "lat": 13.8118387,
+      "lon": 100.5531303,
+      "tags": {
+        "leisure": "pitch",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "node",
+      "id": 12365585635,
+      "lat": 13.8117251,
+      "lon": 100.5531614,
+      "tags": {
+        "leisure": "pitch",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "node",
+      "id": 14206126034,
+      "lat": 13.8200999,
+      "lon": 100.5164514,
+      "tags": {
+        "leisure": "pitch",
+        "name:th": "สนามบาส วทอ",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "node",
+      "id": 14239312953,
+      "lat": 13.7289607,
+      "lon": 100.7806057,
+      "tags": {
+        "leisure": "pitch",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 31988935,
+      "center": {
+        "lat": 13.7402422,
+        "lon": 100.5327014
+      },
+      "tags": {
+        "leisure": "pitch",
+        "name": "สนามบาสเกตบอล",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 31988985,
+      "center": {
+        "lat": 13.7411272,
+        "lon": 100.5324327
+      },
+      "tags": {
+        "covered": "yes",
+        "leisure": "pitch",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 44580199,
+      "center": {
+        "lat": 13.6770136,
+        "lon": 100.6781582
+      },
+      "tags": {
+        "leisure": "pitch",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 93063129,
+      "center": {
+        "lat": 13.764587,
+        "lon": 100.7317168
+      },
+      "tags": {
+        "leisure": "pitch",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 93064626,
+      "center": {
+        "lat": 13.7644371,
+        "lon": 100.7319174
+      },
+      "tags": {
+        "leisure": "pitch",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 152931380,
+      "center": {
+        "lat": 13.8802618,
+        "lon": 100.53197
+      },
+      "tags": {
+        "leisure": "pitch",
+        "source": "Bing",
+        "sport": "basketball",
+        "surface": "grass"
+      }
+    },
+    {
+      "type": "way",
+      "id": 157198904,
+      "center": {
+        "lat": 13.8508247,
+        "lon": 100.5667239
+      },
+      "tags": {
+        "access": "private",
+        "leisure": "pitch",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 157198929,
+      "center": {
+        "lat": 13.8513284,
+        "lon": 100.5689997
+      },
+      "tags": {
+        "access": "private",
+        "leisure": "pitch",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 174150282,
+      "center": {
+        "lat": 13.741188,
+        "lon": 100.5291511
+      },
+      "tags": {
+        "leisure": "pitch",
+        "lit": "yes",
+        "sport": "basketball",
+        "surface": "concrete",
+        "wheelchair": "limited"
+      }
+    },
+    {
+      "type": "way",
+      "id": 194453671,
+      "center": {
+        "lat": 13.8734395,
+        "lon": 100.5549113
+      },
+      "tags": {
+        "leisure": "pitch",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 199146593,
+      "center": {
+        "lat": 13.7369303,
+        "lon": 100.4301356
+      },
+      "tags": {
+        "leisure": "pitch",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 199146595,
+      "center": {
+        "lat": 13.7365369,
+        "lon": 100.4301383
+      },
+      "tags": {
+        "leisure": "pitch",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 199581958,
+      "center": {
+        "lat": 13.6829727,
+        "lon": 100.4079042
+      },
+      "tags": {
+        "leisure": "pitch",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 207659215,
+      "center": {
+        "lat": 13.8787736,
+        "lon": 100.6203098
+      },
+      "tags": {
+        "leisure": "pitch",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 231395462,
+      "center": {
+        "lat": 13.7108533,
+        "lon": 100.568854
+      },
+      "tags": {
+        "leisure": "pitch",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 231395468,
+      "center": {
+        "lat": 13.7109279,
+        "lon": 100.5686444
+      },
+      "tags": {
+        "leisure": "pitch",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 231405257,
+      "center": {
+        "lat": 13.7264348,
+        "lon": 100.5342653
+      },
+      "tags": {
+        "leisure": "pitch",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 234366102,
+      "center": {
+        "lat": 13.7576646,
+        "lon": 100.4908907
+      },
+      "tags": {
+        "addr:district": "พระนคร",
+        "addr:postcode": "10200",
+        "addr:province": "กรุงเทพมหานคร",
+        "addr:subdistrict": "พระบรมมหาราชวัง",
+        "building": "yes",
+        "fee": "no",
+        "leisure": "sports_hall",
+        "name": "อาคารยิมเนเซียม",
+        "name:en": "Gymnasium",
+        "name:th": "อาคารยิมเนเซียม",
+        "operator": "Thammasat University",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 243931125,
+      "center": {
+        "lat": 13.7294016,
+        "lon": 100.5392881
+      },
+      "tags": {
+        "description": "Lumphini Park basketball court",
+        "leisure": "pitch",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 249681395,
+      "center": {
+        "lat": 13.8035232,
+        "lon": 100.7387585
+      },
+      "tags": {
+        "leisure": "pitch",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 293804051,
+      "center": {
+        "lat": 13.8151687,
+        "lon": 100.5571761
+      },
+      "tags": {
+        "leisure": "pitch",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 293804053,
+      "center": {
+        "lat": 13.8151441,
+        "lon": 100.5573565
+      },
+      "tags": {
+        "leisure": "pitch",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 295789566,
+      "center": {
+        "lat": 13.7148281,
+        "lon": 100.5229237
+      },
+      "tags": {
+        "leisure": "pitch",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 337779701,
+      "center": {
+        "lat": 13.7131129,
+        "lon": 100.4058226
+      },
+      "tags": {
+        "leisure": "pitch",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 369334963,
+      "center": {
+        "lat": 13.7862422,
+        "lon": 100.5757729
+      },
+      "tags": {
+        "leisure": "pitch",
+        "sport": "basketball",
+        "surface": "grass"
+      }
+    },
+    {
+      "type": "way",
+      "id": 369892464,
+      "center": {
+        "lat": 13.7766118,
+        "lon": 100.5702657
+      },
+      "tags": {
+        "leisure": "pitch",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 442074802,
+      "center": {
+        "lat": 13.878272,
+        "lon": 100.5268837
+      },
+      "tags": {
+        "leisure": "pitch",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 443070792,
+      "center": {
+        "lat": 13.7676304,
+        "lon": 100.5534267
+      },
+      "tags": {
+        "leisure": "pitch",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 444811854,
+      "center": {
+        "lat": 13.7351456,
+        "lon": 100.5368385
+      },
+      "tags": {
+        "leisure": "pitch",
+        "name": "MDCU basketball court",
+        "sport": "basketball",
+        "surface": "concrete"
+      }
+    },
+    {
+      "type": "way",
+      "id": 473679828,
+      "center": {
+        "lat": 13.9284837,
+        "lon": 100.5179258
+      },
+      "tags": {
+        "leisure": "pitch",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 541638930,
+      "center": {
+        "lat": 13.9788436,
+        "lon": 100.6323507
+      },
+      "tags": {
+        "leisure": "pitch",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 545380986,
+      "center": {
+        "lat": 13.9674061,
+        "lon": 100.5863899
+      },
+      "tags": {
+        "hoops": "2",
+        "leisure": "pitch",
+        "lit": "yes",
+        "name": "สนามบาสเก็ตบอล ตึก 12",
+        "name:en": "Basketball Court Building 12",
+        "name:th": "สนามบาสเก็ตบอล ตึก 12",
+        "sport": "basketball",
+        "surface": "concrete"
+      }
+    },
+    {
+      "type": "way",
+      "id": 546023196,
+      "center": {
+        "lat": 13.720006,
+        "lon": 100.5228576
+      },
+      "tags": {
+        "leisure": "pitch",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 556278628,
+      "center": {
+        "lat": 13.7993258,
+        "lon": 100.6691923
+      },
+      "tags": {
+        "leisure": "pitch",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 556278634,
+      "center": {
+        "lat": 13.7993118,
+        "lon": 100.6689713
+      },
+      "tags": {
+        "leisure": "pitch",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 559673504,
+      "center": {
+        "lat": 13.7487676,
+        "lon": 100.5595099
+      },
+      "tags": {
+        "leisure": "pitch",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 559981065,
+      "center": {
+        "lat": 13.7993311,
+        "lon": 100.5543272
+      },
+      "tags": {
+        "leisure": "pitch",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 565180167,
+      "center": {
+        "lat": 13.6914157,
+        "lon": 100.6631884
+      },
+      "tags": {
+        "leisure": "pitch",
+        "sport": "basketball",
+        "surface": "paved"
+      }
+    },
+    {
+      "type": "way",
+      "id": 583124887,
+      "center": {
+        "lat": 13.9477313,
+        "lon": 100.734203
+      },
+      "tags": {
+        "leisure": "pitch",
+        "source": "DigitalGlobe-Standard",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 612473704,
+      "center": {
+        "lat": 13.7232904,
+        "lon": 100.5972269
+      },
+      "tags": {
+        "leisure": "pitch",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 625500759,
+      "center": {
+        "lat": 13.7800773,
+        "lon": 100.8020248
+      },
+      "tags": {
+        "hoops": "2",
+        "leisure": "pitch",
+        "name": "Tippawas School Football Court",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 658055230,
+      "center": {
+        "lat": 13.8481929,
+        "lon": 100.4859466
+      },
+      "tags": {
+        "leisure": "pitch",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 658344805,
+      "center": {
+        "lat": 13.8219756,
+        "lon": 100.4582875
+      },
+      "tags": {
+        "leisure": "pitch",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 661306612,
+      "center": {
+        "lat": 13.8934187,
+        "lon": 100.527218
+      },
+      "tags": {
+        "leisure": "pitch",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 694069818,
+      "center": {
+        "lat": 13.6091569,
+        "lon": 100.8492356
+      },
+      "tags": {
+        "leisure": "pitch",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 699141613,
+      "center": {
+        "lat": 13.8930948,
+        "lon": 100.4754631
+      },
+      "tags": {
+        "leisure": "pitch",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 706561218,
+      "center": {
+        "lat": 13.8418712,
+        "lon": 100.4937862
+      },
+      "tags": {
+        "leisure": "pitch",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 706561219,
+      "center": {
+        "lat": 13.8419149,
+        "lon": 100.4939338
+      },
+      "tags": {
+        "leisure": "pitch",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 707210091,
+      "center": {
+        "lat": 13.8361861,
+        "lon": 100.4982525
+      },
+      "tags": {
+        "leisure": "pitch",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 708163716,
+      "center": {
+        "lat": 13.8480406,
+        "lon": 100.4619657
+      },
+      "tags": {
+        "leisure": "pitch",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 737051306,
+      "center": {
+        "lat": 13.7431425,
+        "lon": 100.5152192
+      },
+      "tags": {
+        "leisure": "pitch",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 755664767,
+      "center": {
+        "lat": 13.7375049,
+        "lon": 100.5290021
+      },
+      "tags": {
+        "leisure": "pitch",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 792868835,
+      "center": {
+        "lat": 13.7787657,
+        "lon": 100.5832572
+      },
+      "tags": {
+        "leisure": "pitch",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 822116105,
+      "center": {
+        "lat": 13.7955195,
+        "lon": 100.3203305
+      },
+      "tags": {
+        "leisure": "pitch",
+        "name": "สนามบาสเกตบอล",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 863007659,
+      "center": {
+        "lat": 13.7678556,
+        "lon": 100.5257269
+      },
+      "tags": {
+        "leisure": "pitch",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 865234394,
+      "center": {
+        "lat": 13.7298991,
+        "lon": 100.5664256
+      },
+      "tags": {
+        "leisure": "pitch",
+        "sport": "basketball",
+        "surface": "acrylic"
+      }
+    },
+    {
+      "type": "way",
+      "id": 869067989,
+      "center": {
+        "lat": 13.7672691,
+        "lon": 100.5230758
+      },
+      "tags": {
+        "leisure": "pitch",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 883093567,
+      "center": {
+        "lat": 13.7836984,
+        "lon": 100.7284264
+      },
+      "tags": {
+        "leisure": "pitch",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 883093568,
+      "center": {
+        "lat": 13.7832914,
+        "lon": 100.7288322
+      },
+      "tags": {
+        "leisure": "pitch",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 895489640,
+      "center": {
+        "lat": 13.6409255,
+        "lon": 100.7316847
+      },
+      "tags": {
+        "leisure": "pitch",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 895489649,
+      "center": {
+        "lat": 13.6414795,
+        "lon": 100.7323637
+      },
+      "tags": {
+        "leisure": "pitch",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 895894739,
+      "center": {
+        "lat": 13.6308063,
+        "lon": 100.7303073
+      },
+      "tags": {
+        "leisure": "pitch",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 913750746,
+      "center": {
+        "lat": 13.8769423,
+        "lon": 100.7350788
+      },
+      "tags": {
+        "leisure": "pitch",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 930031094,
+      "center": {
+        "lat": 13.7335011,
+        "lon": 100.5306213
+      },
+      "tags": {
+        "leisure": "pitch",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 985968690,
+      "center": {
+        "lat": 13.8697468,
+        "lon": 100.7350291
+      },
+      "tags": {
+        "leisure": "pitch",
+        "name": "สนามบาสเกตบอล",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 985968697,
+      "center": {
+        "lat": 13.8696408,
+        "lon": 100.7339776
+      },
+      "tags": {
+        "leisure": "pitch",
+        "name": "สนามบาสเกตบอล",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1020851182,
+      "center": {
+        "lat": 13.7276424,
+        "lon": 100.5508316
+      },
+      "tags": {
+        "leisure": "pitch",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1049502405,
+      "center": {
+        "lat": 13.7995784,
+        "lon": 100.3187858
+      },
+      "tags": {
+        "access": "permit",
+        "leisure": "pitch",
+        "sport": "basketball",
+        "surface": "concrete"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1055254793,
+      "center": {
+        "lat": 13.8687466,
+        "lon": 100.6660968
+      },
+      "tags": {
+        "access": "private",
+        "leisure": "pitch",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1091734087,
+      "center": {
+        "lat": 13.8475353,
+        "lon": 100.5169047
+      },
+      "tags": {
+        "leisure": "pitch",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1101554801,
+      "center": {
+        "lat": 13.7325556,
+        "lon": 100.5426322
+      },
+      "tags": {
+        "description": "Lumphini park basketball court",
+        "leisure": "pitch",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1111795366,
+      "center": {
+        "lat": 13.8913169,
+        "lon": 100.5197826
+      },
+      "tags": {
+        "access": "private",
+        "hoops": "1",
+        "leisure": "pitch",
+        "lit": "no",
+        "sport": "basketball",
+        "surface": "concrete"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1122824028,
+      "center": {
+        "lat": 13.7779839,
+        "lon": 100.666866
+      },
+      "tags": {
+        "leisure": "pitch",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1124895722,
+      "center": {
+        "lat": 13.7755292,
+        "lon": 100.6587634
+      },
+      "tags": {
+        "leisure": "pitch",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1124899574,
+      "center": {
+        "lat": 13.7735125,
+        "lon": 100.6608006
+      },
+      "tags": {
+        "leisure": "pitch",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1125532833,
+      "center": {
+        "lat": 13.8191543,
+        "lon": 100.6652338
+      },
+      "tags": {
+        "leisure": "pitch",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1125624427,
+      "center": {
+        "lat": 13.792707,
+        "lon": 100.666758
+      },
+      "tags": {
+        "leisure": "pitch",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1125754812,
+      "center": {
+        "lat": 13.8173063,
+        "lon": 100.6544058
+      },
+      "tags": {
+        "leisure": "pitch",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1126063773,
+      "center": {
+        "lat": 13.7715293,
+        "lon": 100.6514247
+      },
+      "tags": {
+        "leisure": "pitch",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1139170101,
+      "center": {
+        "lat": 13.740824,
+        "lon": 100.4358143
+      },
+      "tags": {
+        "leisure": "pitch",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1175014347,
+      "center": {
+        "lat": 13.794997,
+        "lon": 100.3192823
+      },
+      "tags": {
+        "leisure": "pitch",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1193791851,
+      "center": {
+        "lat": 13.7230264,
+        "lon": 100.5100938
+      },
+      "tags": {
+        "leisure": "pitch",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1195339623,
+      "center": {
+        "lat": 13.8465774,
+        "lon": 100.5676614
+      },
+      "tags": {
+        "leisure": "pitch",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1200830745,
+      "center": {
+        "lat": 13.71345,
+        "lon": 100.5693017
+      },
+      "tags": {
+        "leisure": "pitch",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1203031299,
+      "center": {
+        "lat": 13.9492153,
+        "lon": 100.4900262
+      },
+      "tags": {
+        "leisure": "pitch",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1204947651,
+      "center": {
+        "lat": 13.6998783,
+        "lon": 100.5259425
+      },
+      "tags": {
+        "leisure": "pitch",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1212191660,
+      "center": {
+        "lat": 13.8795022,
+        "lon": 100.4021735
+      },
+      "tags": {
+        "leisure": "pitch",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1219961447,
+      "center": {
+        "lat": 13.7682406,
+        "lon": 100.6147443
+      },
+      "tags": {
+        "leisure": "pitch",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1219961448,
+      "center": {
+        "lat": 13.7682653,
+        "lon": 100.6148974
+      },
+      "tags": {
+        "leisure": "pitch",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1219961449,
+      "center": {
+        "lat": 13.7682926,
+        "lon": 100.6150497
+      },
+      "tags": {
+        "leisure": "pitch",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1219961450,
+      "center": {
+        "lat": 13.7680163,
+        "lon": 100.6150392
+      },
+      "tags": {
+        "leisure": "pitch",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1222569928,
+      "center": {
+        "lat": 13.7067687,
+        "lon": 100.5458005
+      },
+      "tags": {
+        "leisure": "pitch",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1222569929,
+      "center": {
+        "lat": 13.7067368,
+        "lon": 100.5459608
+      },
+      "tags": {
+        "leisure": "pitch",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1229625911,
+      "center": {
+        "lat": 13.7827689,
+        "lon": 100.3928207
+      },
+      "tags": {
+        "leisure": "pitch",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1285498869,
+      "center": {
+        "lat": 13.7463354,
+        "lon": 100.6934777
+      },
+      "tags": {
+        "leisure": "pitch",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1285499750,
+      "center": {
+        "lat": 13.7427574,
+        "lon": 100.6934356
+      },
+      "tags": {
+        "leisure": "pitch",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1293393703,
+      "center": {
+        "lat": 13.8658909,
+        "lon": 100.6546806
+      },
+      "tags": {
+        "leisure": "pitch",
+        "sport": "basketball",
+        "surface": "concrete"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1318021616,
+      "center": {
+        "lat": 13.6790858,
+        "lon": 100.4464994
+      },
+      "tags": {
+        "leisure": "pitch",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1320667976,
+      "center": {
+        "lat": 13.7224514,
+        "lon": 100.5149062
+      },
+      "tags": {
+        "leisure": "pitch",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1322088663,
+      "center": {
+        "lat": 13.7621974,
+        "lon": 100.5522196
+      },
+      "tags": {
+        "leisure": "pitch",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1322088674,
+      "center": {
+        "lat": 13.7639089,
+        "lon": 100.5500808
+      },
+      "tags": {
+        "leisure": "pitch",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1328095243,
+      "center": {
+        "lat": 13.7288705,
+        "lon": 100.550855
+      },
+      "tags": {
+        "leisure": "pitch",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1332903646,
+      "center": {
+        "lat": 13.7702151,
+        "lon": 100.5787911
+      },
+      "tags": {
+        "access": "private",
+        "layer": "2",
+        "leisure": "pitch",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1332923650,
+      "center": {
+        "lat": 13.6970285,
+        "lon": 100.530872
+      },
+      "tags": {
+        "leisure": "pitch",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1336452529,
+      "center": {
+        "lat": 13.7378752,
+        "lon": 100.6289433
+      },
+      "tags": {
+        "leisure": "pitch",
+        "name": "TNI Basketball Court",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1339874571,
+      "center": {
+        "lat": 13.7591002,
+        "lon": 100.5707889
+      },
+      "tags": {
+        "access": "private",
+        "leisure": "pitch",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1343968613,
+      "center": {
+        "lat": 13.7109111,
+        "lon": 100.5513633
+      },
+      "tags": {
+        "leisure": "pitch",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1352051908,
+      "center": {
+        "lat": 13.675357,
+        "lon": 100.5472133
+      },
+      "tags": {
+        "building": "yes",
+        "club": "sport",
+        "name": "Pixel Sport Club",
+        "phone": "+66836894269",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1356654295,
+      "center": {
+        "lat": 13.7492951,
+        "lon": 100.7307541
+      },
+      "tags": {
+        "leisure": "pitch",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1362542953,
+      "center": {
+        "lat": 13.7745868,
+        "lon": 100.5556824
+      },
+      "tags": {
+        "leisure": "pitch",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1364706622,
+      "center": {
+        "lat": 13.7471738,
+        "lon": 100.5158371
+      },
+      "tags": {
+        "leisure": "pitch",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1368395621,
+      "center": {
+        "lat": 13.7328408,
+        "lon": 100.5946384
+      },
+      "tags": {
+        "leisure": "pitch",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1369119658,
+      "center": {
+        "lat": 13.6382299,
+        "lon": 100.6743728
+      },
+      "tags": {
+        "leisure": "pitch",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1370480470,
+      "center": {
+        "lat": 13.6518856,
+        "lon": 100.3966039
+      },
+      "tags": {
+        "leisure": "pitch",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1370583933,
+      "center": {
+        "lat": 13.7801963,
+        "lon": 100.5469846
+      },
+      "tags": {
+        "leisure": "pitch",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1373388630,
+      "center": {
+        "lat": 13.791137,
+        "lon": 100.5263327
+      },
+      "tags": {
+        "leisure": "pitch",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1374141899,
+      "center": {
+        "lat": 13.794284,
+        "lon": 100.5240285
+      },
+      "tags": {
+        "leisure": "pitch",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1374667401,
+      "center": {
+        "lat": 13.7829579,
+        "lon": 100.5395827
+      },
+      "tags": {
+        "leisure": "pitch",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1374667402,
+      "center": {
+        "lat": 13.7828599,
+        "lon": 100.5397497
+      },
+      "tags": {
+        "leisure": "pitch",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1377147401,
+      "center": {
+        "lat": 13.8122865,
+        "lon": 100.6900694
+      },
+      "tags": {
+        "leisure": "pitch",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1377147403,
+      "center": {
+        "lat": 13.811796,
+        "lon": 100.6923499
+      },
+      "tags": {
+        "leisure": "pitch",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1387734052,
+      "center": {
+        "lat": 13.6954481,
+        "lon": 100.6372521
+      },
+      "tags": {
+        "leisure": "pitch",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1414558576,
+      "center": {
+        "lat": 13.7792922,
+        "lon": 100.5132731
+      },
+      "tags": {
+        "leisure": "pitch",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1431137763,
+      "center": {
+        "lat": 13.7717485,
+        "lon": 100.4858233
+      },
+      "tags": {
+        "leisure": "sports_centre",
+        "name": "B Pro Basketball Pata Pinklao",
+        "name:th": "บี โปร บาสเกตบอล พาต้า ปิ่นเกล้า",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1433798375,
+      "center": {
+        "lat": 13.8295941,
+        "lon": 100.525691
+      },
+      "tags": {
+        "leisure": "pitch",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1435962189,
+      "center": {
+        "lat": 13.669827,
+        "lon": 100.5894684
+      },
+      "tags": {
+        "leisure": "pitch",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1473337176,
+      "center": {
+        "lat": 13.8144578,
+        "lon": 100.6557179
+      },
+      "tags": {
+        "leisure": "pitch",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1473337177,
+      "center": {
+        "lat": 13.814452,
+        "lon": 100.6558691
+      },
+      "tags": {
+        "leisure": "pitch",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1482908587,
+      "center": {
+        "lat": 13.7827506,
+        "lon": 100.3930376
+      },
+      "tags": {
+        "leisure": "pitch",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1482908588,
+      "center": {
+        "lat": 13.7827855,
+        "lon": 100.3926282
+      },
+      "tags": {
+        "leisure": "pitch",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1495146055,
+      "center": {
+        "lat": 13.9003888,
+        "lon": 100.5055172
+      },
+      "tags": {
+        "leisure": "pitch",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1499918461,
+      "center": {
+        "lat": 13.7113357,
+        "lon": 100.5735992
+      },
+      "tags": {
+        "leisure": "pitch",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1505978827,
+      "center": {
+        "lat": 13.9670732,
+        "lon": 100.5864732
+      },
+      "tags": {
+        "hoops": "2",
+        "leisure": "pitch",
+        "lit": "yes",
+        "name": "สนามบาสเก็ตบอล ตึก 12/1",
+        "name:en": "Basketball Court Building 12/1",
+        "name:th": "สนามบาสเก็ตบอล ตึก 12",
+        "sport": "basketball",
+        "surface": "concrete"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1548367110,
+      "center": {
+        "lat": 13.8055556,
+        "lon": 100.5398304
+      },
+      "tags": {
+        "leisure": "pitch",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1550584293,
+      "center": {
+        "lat": 13.7555679,
+        "lon": 100.3516862
+      },
+      "tags": {
+        "leisure": "pitch",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1551531522,
+      "center": {
+        "lat": 13.9661584,
+        "lon": 100.5295599
+      },
+      "tags": {
+        "leisure": "pitch",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1551769210,
+      "center": {
+        "lat": 13.7158422,
+        "lon": 100.6031655
+      },
+      "tags": {
+        "leisure": "pitch",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1553117875,
+      "center": {
+        "lat": 13.6941274,
+        "lon": 100.3337333
+      },
+      "tags": {
+        "leisure": "pitch",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1563337147,
+      "center": {
+        "lat": 13.641593,
+        "lon": 100.733214
+      },
+      "tags": {
+        "leisure": "pitch",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1563337155,
+      "center": {
+        "lat": 13.6340949,
+        "lon": 100.7277237
+      },
+      "tags": {
+        "leisure": "pitch",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1564107225,
+      "center": {
+        "lat": 13.7287418,
+        "lon": 100.7789806
+      },
+      "tags": {
+        "leisure": "pitch",
+        "name": "Looftop basketball court",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1564107226,
+      "center": {
+        "lat": 13.7289581,
+        "lon": 100.7805982
+      },
+      "tags": {
+        "leisure": "pitch",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1564107235,
+      "center": {
+        "lat": 13.7288585,
+        "lon": 100.7712159
+      },
+      "tags": {
+        "leisure": "pitch",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1564862328,
+      "center": {
+        "lat": 13.7609966,
+        "lon": 100.7277861
+      },
+      "tags": {
+        "leisure": "pitch",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1566355069,
+      "center": {
+        "lat": 13.735251,
+        "lon": 100.5331762
+      },
+      "tags": {
+        "leisure": "pitch",
+        "name": "สนามบาสรัฐศาสตร์",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1566355070,
+      "center": {
+        "lat": 13.7353077,
+        "lon": 100.5328594
+      },
+      "tags": {
+        "leisure": "pitch",
+        "name": "สนามบาสโยธา",
+        "sport": "basketball"
+      }
+    },
+    {
+      "type": "relation",
+      "id": 3817117,
+      "center": {
+        "lat": 13.6135125,
+        "lon": 100.8323296
+      },
+      "tags": {
+        "building:levels": "0",
+        "leisure": "pitch",
+        "name": "King's Court",
+        "sport": "basketball",
+        "type": "multipolygon"
+      }
+    }
+  ],
+  "fetchedAt": "2026-11-01T13:19:33.417Z"
+}
