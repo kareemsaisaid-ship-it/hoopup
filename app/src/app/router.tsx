@@ -4,6 +4,7 @@ import { CourtsPage, FeedPage, ProfilePage } from '../features/discovery';
 import { CreateSessionPage, EditSessionPage, MySessionsPage, SessionDetailPage } from '../features/sessions';
 import { AuthGuard } from './AuthGuard';
 import { LoginPage } from './LoginPage';
+import { AuthCallbackPage } from './AuthCallbackPage';
 import { AppShell } from './shell';
 
 export const AppRouter: React.FC = () => {
@@ -12,6 +13,7 @@ export const AppRouter: React.FC = () => {
       <AppShell>
         <Routes>
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/auth/callback" element={<AuthCallbackPage />} />
 
           <Route
             path="/"

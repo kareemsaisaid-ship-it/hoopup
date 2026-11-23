@@ -4,5 +4,6 @@ export * from './mockAdapter';
 export * from './supabaseAdapter';
 export * from './contractMapping';
 export * from './apiAdapter';
+export * from './oidcConfig';
 export * from './context';
 export * from './AppServicesProvider';

@@ -2,7 +2,13 @@ import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { DEMO_USERS } from '../services/mockAdapter';
 import { useAppServices } from '../services';
+import {
+  getEffectiveApiBaseUrl,
+  getEffectiveOidcConfig,
+  getOidcStartUrl,
+} from '../services/oidcConfig';
 import { Button, Card, Input } from '../shared';
+import { tokens } from '../shared/tokens';
 
 function validateEmailFormat(email: string): { valid: boolean; error?: string } {
   const trimmed = email.trim();
@@ -38,9 +44,16 @@ function validatePasswordFormat(password: string): { valid: boolean; error?: str
 export const LoginPage: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { auth, isConfigured, connectedModeType } = useAppServices();
+  const { auth, isConfigured, connectedModeType, isDemo } = useAppServices();
 
-  const isConnectedApi = connectedModeType === 'connected-api';
+  const isConnectedApi = connectedModeType === 'connected-api' && !isDemo;
+
+  const oidcConfig = getEffectiveOidcConfig();
+  const apiBaseUrl =
+    typeof (auth as any).getBaseUrl === 'function'
+      ? (auth as any).getBaseUrl()
+      : getEffectiveApiBaseUrl();
+  const showOidcButtons = isConnectedApi && oidcConfig.providers.length > 0;
 
   // Connected API tab mode: 'signin' | 'signup'
   const [authMode, setAuthMode] = useState<'signin' | 'signup'>('signin');
@@ -264,6 +277,71 @@ export const LoginPage: React.FC = () => {
               {authMode === 'signup' ? 'สมัครสมาชิก' : 'เข้าสู่ระบบ'}
             </Button>
           </form>
+
+          {showOidcButtons && (
+            <div
+              data-testid="oidc-buttons-container"
+              style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}
+            >
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  margin: '4px 0',
+                }}
+              >
+                <div style={{ flex: 1, height: '1px', backgroundColor: tokens.colors.border }} />
+                <span style={{ fontSize: '0.8rem', color: tokens.colors.textMuted }}>
+                  หรือเข้าสู่ระบบด้วย
+                </span>
+                <div style={{ flex: 1, height: '1px', backgroundColor: tokens.colors.border }} />
+              </div>
+
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                {oidcConfig.providers.map((provider) => {
+                  const startUrl = getOidcStartUrl(provider, apiBaseUrl, oidcConfig.returnUrl);
+                  const label =
+                    provider === 'google'
+                      ? 'เข้าสู่ระบบด้วย Google'
+                      : 'เข้าสู่ระบบด้วย LINE';
+                  return (
+                    <a
+                      key={provider}
+                      href={startUrl}
+                      data-testid={`oidc-btn-${provider}`}
+                      role="button"
+                      style={{
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        gap: '8px',
+                        padding: '10px 18px',
+                        fontSize: tokens.typography.fontSize.sm,
+                        fontWeight: tokens.typography.fontWeight.semibold,
+                        fontFamily: tokens.typography.fontFamily,
+                        borderRadius: tokens.radius.md,
+                        backgroundColor: tokens.colors.surfaceAlt,
+                        color: tokens.colors.textPrimary,
+                        border: `1.5px solid ${tokens.colors.border}`,
+                        boxShadow: tokens.shadow.sm,
+                        textDecoration: 'none',
+                        minHeight: '44px',
+                        minWidth: '44px',
+                        boxSizing: 'border-box',
+                        cursor: 'pointer',
+                        width: '100%',
+                        transition: 'all 0.15s ease-in-out',
+                        textAlign: 'center',
+                      }}
+                    >
+                      {label}
+                    </a>
+                  );
+                })}
+              </div>
+            </div>
+          )}
 
           <div style={{ textAlign: 'center', fontSize: '0.8rem', color: '#64748B' }}>
             {authMode === 'signup' ? (

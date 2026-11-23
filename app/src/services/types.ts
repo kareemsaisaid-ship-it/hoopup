@@ -227,6 +227,7 @@ export interface AuthService {
   subscribe(callback: (user: UserProfile | null) => void): () => void;
   signIn(params: { email?: string; password?: string; demoUserId?: UUID }): Promise<{ ok: boolean; error?: string }>;
   signUp?(params: { email: string; password: string; displayName?: string }): Promise<{ ok: boolean; error?: string }>;
+  exchangeOidcCode?(code: string): Promise<{ ok: boolean; error?: string; errorCode?: string }>;
   signOut(): Promise<void>;
   switchDemoUser(userId: UUID): Promise<void>;
   listDemoUsers(): UserProfile[];

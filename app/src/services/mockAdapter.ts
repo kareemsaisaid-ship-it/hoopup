@@ -688,6 +688,18 @@ export class MockAuthService implements AuthService {
     return { ok: true };
   }
 
+  public async exchangeOidcCode(code: string): Promise<{ ok: boolean; error?: string; errorCode?: string }> {
+    if (!code || code === 'invalid') {
+      return {
+        ok: false,
+        error: 'รหัสยืนยันตัวตนไม่ถูกต้องหรือหมดอายุแล้ว กรุณาลองเข้าสู่ระบบใหม่อีกครั้ง',
+        errorCode: 'invalid_code',
+      };
+    }
+    await this.signIn({ demoUserId: DEMO_USERS[0].id });
+    return { ok: true };
+  }
+
   public async signOut(): Promise<void> {
     this.currentUser = null;
     if (typeof window !== 'undefined' && window.sessionStorage) {

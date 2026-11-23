@@ -7,7 +7,7 @@
 4. **Reverse Proxy & HTTPS**: Caddy หรือ Nginx ทำหน้าที่ TLS Termination, บริหารจัดการ Cache และส่งต่อ HTTP Range Requests
 
 > [!NOTE]
-> เอกสารฉบับนี้อ้างอิงข้อมูลและการตรวจสอบข้อเท็จจริงจากซอร์สโค้ดจริงในโปรเจกต์ ณ วันที่ 3 พฤศจิกายน 2569 (ปรับปรุงหลัง SEC2, MAP6d และ MAP7a) โดยทุกพอร์ต พาท คำสั่ง และตัวแปรสภาพแวดล้อมได้รับการตรวจสอบตรงกับโค้ดทุกประการ
+> เอกสารฉบับนี้อ้างอิงข้อมูลและการตรวจสอบข้อเท็จจริงจากซอร์สโค้ดจริงในโปรเจกต์ ณ วันที่ 19 พฤศจิกายน 2569 (ปรับปรุงหลัง BAN1, SEC3, HT1, SRCH2 และ OIDC1) โดยทุกพอร์ต พาท คำสั่ง และตัวแปรสภาพแวดล้อมได้รับการตรวจสอบตรงกับโค้ดทุกประการ
 
 ---
 
@@ -29,12 +29,12 @@
 |  │  (HTML, JS, CSS, Assets พร้อม SPA Fallback ไปที่ index.html)                   |
 |  │                                                                                |
 |  └─ ส่งต่อ API Requests (Reverse Proxy) ──> http://127.0.0.1:3000                 |
-|     ├─ /auth/*        (สมัครสมาชิก, เข้าสู่ระบบ, ข้อมูลผู้ใช้)                    |
+|     ├─ /auth/*        (สมัครสมาชิก, เข้าสู่ระบบ, ข้อมูลผู้ใช้, OIDC Google / LINE) |
 |     ├─ /rpc/*         (15 คำสั่งทางธุรกิจผ่านฟังก์ชัน PostgreSQL)                  |
 |     ├─ /courts, /messages, /session_members, /profiles/* (REST direct reads)      |
 |     ├─ /tiles/*       (สตรีมไฟล์เวกเตอร์แผนที่ PMTiles พร้อม HTTP Range Header)   |
 |     ├─ /places        (ค้นหาร้านค้า/สถานที่ใกล้เคียง Bounding Box)                |
-|     ├─ /places/search (ค้นหาสถานที่ตามชื่อและระยะทางใกล้เคียง)                  |
+|     ├─ /places/search (ค้นหาสถานที่ตามชื่อและระยะทางใกล้เคียง - Bigram Candidate)  |
 |     └─ /health        (ตรวจสอบความพร้อมของ API Gateway)                           |
 +-----------------------------------------------------------------------------------+
                                          │
@@ -49,7 +49,12 @@
 |  │                                                                                |
 |  ├─ โหลดดัชนีสถานที่ Overture เข้าหน่วยความจำ (Lazy In-Memory Spatial & Search):  |
 |  │  `backend/server/data/places-bangkok.ndjson` (~24.50 MB, 156,943 รายการ)      |
-|  │  (โหลดแบบ lazy เมื่อมีคำขอแรกเข้า /places หรือ /places/search)                 |
+|  │  (Spatial Uniform Grid สำหรับ /places และ Bigram Candidate Index สำหรับ /places/search) |
+|  │                                                                                |
+|  ├─ ตัวจัดการสถานะในหน่วยความจำ (In-Memory Security & Auth State):                |
+|  │  ├─ UserStatusCache: แคชสถานะผู้ใช้ (active/banned/deleted) ตรวจสอบทุกคำขอ (BAN1) |
+|  │  ├─ LoginAccountLock: ตัวติดตามการล็อกอินผิดพลาดรายอีเมล ป้องกัน Brute-force (SEC3) |
+|  │  └─ OidcStateStore & OidcExchangeCodeStore: จัดเก็บ State และ Code แบบชั่วคราว (OIDC1) |
 |  │                                                                                |
 |  └─ เชื่อมต่อฐานข้อมูลผ่าน Connection Pool (pg.Pool, max: 20 connections)         |
 +-----------------------------------------------------------------------------------+
@@ -62,9 +67,13 @@
 |  ├─ ฐานข้อมูล: `postgres` (หรือ `hoopup`)                                         |
 |  ├─ บทบาทเชื่อมต่อ (Login Role): `hoopup_api`                                     |
 |  ├─ สกีมาและตารางหลัก:                                                            |
-|  │  ├─ `app_auth.users`: จัดเก็บ id, email, password_hash (bcrypt cost 12)        |
+|  │  ├─ `app_auth.users`: จัดเก็บ id, email, password_hash, email_verified,         |
+|  │  │  banned_at, ban_reason, deleted_at                                          |
+|  │  ├─ `app_auth.identities`: จัดเก็บ provider, subject, user_id (Social Login)    |
+|  │  ├─ `app_auth.moderation_log`: บันทึกประวัติการแบน/ลบบัญชีผู้ใช้ (Admin only)  |
 |  │  ├─ `public.courts`: ข้อมูลสนามบาสเกตบอล 148 แห่งใน กทม.                      |
-|  │  ├─ `public.profiles`, `sessions`, `session_members`, `messages`               |
+|  │  ├─ `public.profiles`: ข้อมูลผู้เล่นและสิทธิ์การแสดงส่วนสูง (height_visible)    |
+|  │  ├─ `public.sessions`, `session_members`, `messages`                           |
 |  │  └─ `hoopup_private.*`: Business logic functions & Row Level Security (RLS)    |
 |  └─ การกำหนดสิทธิ์: ต่อ Transaction สลับเป็น `SET LOCAL ROLE authenticated` / anon |
 +-----------------------------------------------------------------------------------+
@@ -105,10 +114,11 @@
    - **ไม่มีการอ่านไฟล์ 49 MB ทั้งก้อนเข้าหน่วยความจำ** ทำให้การใช้งาน RAM สำหรับ Route นี้ต่ำคงที่ (< 5 MB) แม้จะมีผู้ใช้งานเปิดแผนที่พร้อมกัน
 2. **ดัชนีสถานที่ในหน่วยความจำ (`/places` และ `/places/search`)**:
    - ทั้งสอง Route โหลดข้อมูลจากไฟล์ `backend/server/data/places-bangkok.ndjson` (ขนาดจริงบนดิสก์ 24,503,262 ไบต์ หรือ ~24.50 MB มี 156,943 รายการ)
-   - **กลไกการโหลดข้อมูล (Lazy In-Memory Loading)**: ข้อมูลไม่ได้ถูกโหลดตอนเปิดเซิร์ฟเวอร์ แต่จะโหลดแบบ Lazy เมื่อมี Request แรกเข้ามายัง `/places` ([`src/routes/places.js:251`](file:///C:/D_Drive/terminter01/garage/project_ideas/basketball/backend/server/src/routes/places.js#L251)) หรือ `/places/search` ([`src/routes/placesSearch.js:120`](file:///C:/D_Drive/terminter01/garage/project_ideas/basketball/backend/server/src/routes/placesSearch.js#L120)) โดยใช้ `fs.createReadStream` ร่วมกับ `readline.createInterface` เพื่ออ่านทีละบรรทัดแล้วแปลง JSON เข้าสู่อ็อบเจกต์ดัชนีในหน่วยความจำ
+   - **กลไกการโหลดข้อมูล (Lazy In-Memory Loading)**: ข้อมูลไม่ได้ถูกโหลดตอนเปิดเซิร์ฟเวอร์ แต่จะโหลดแบบ Lazy เมื่อมี Request แรกเข้ามายัง `/places` ([`src/routes/places.js:251`](file:///C:/D_Drive/terminter01/garage/project_ideas/basketball/backend/server/src/routes/places.js#L251)) หรือ `/places/search` ([`src/routes/placesSearch.js:161`](file:///C:/D_Drive/terminter01/garage/project_ideas/basketball/backend/server/src/routes/placesSearch.js#L161)) โดยใช้ `fs.createReadStream` ร่วมกับ `readline.createInterface` เพื่ออ่านทีละบรรทัดแล้วแปลง JSON เข้าสู่อ็อบเจกต์ดัชนีในหน่วยความจำ
    - **ข้อมูลอ้างอิงจากการวัดผลในรายงานการทดสอบ (Reference Test Measurements)**:
      - รายงาน [`mvp_tasks_2026-10-28/reports/MAP6B_REPORT.md:156-163`](file:///C:/D_Drive/terminter01/garage/project_ideas/basketball/mvp_tasks_2026-10-28/reports/MAP6B_REPORT.md#L156-L163) (Node.js v24.19.0): Spatial Uniform Grid Index ของ `/places` ใช้ Heap ~51.93 MB, Process RSS ~173.54 MB
      - รายงาน [`mvp_tasks_2026-10-28/reports/MAP7A_REPORT.md:46-51`](file:///C:/D_Drive/terminter01/garage/project_ideas/basketball/mvp_tasks_2026-10-28/reports/MAP7A_REPORT.md#L46-L51): Tiered Search Index ของ `/places/search` มี Heap เพิ่มขึ้น ~69.3 MB ในการเก็บ Normalized Names สำหรับค้นหา
+     - รายงาน [`mvp_tasks_2026-10-28/reports/SRCH2_REPORT.md:62-85`](file:///C:/D_Drive/terminter01/garage/project_ideas/basketball/mvp_tasks_2026-10-28/reports/SRCH2_REPORT.md#L62-L85): Bigram Candidate Index ของ `/places/search` สร้างดัชนี 12,837 grams / 3,115,047 postings โดยมีขนาด typed array payload รวม 12,460,188 ไบต์ (~11.88 MiB) สร้างเสร็จใน ~871 ms และมี retained heap delta ~3.45 MiB, arrayBuffers delta ~11.79 MiB (วัดแบบ settled GC)
    - **คำเตือนเรื่องการประเมิน RAM (Do not invent RAM numbers — Measure on the host)**:
      ตัวเลข Heap และ RSS ข้างต้นเป็นเพียงตัวเลขสังเกตการณ์จากการรันชุดทดสอบในเครื่องพัฒนาเท่านั้น **ห้ามนำตัวเลขนี้ไปคาดเดาหรือกำหนดขีดจำกัดหน่วยความจำสำหรับ Production ล่วงหน้าโดยเด็ดขาด** การใช้งาน RAM จริงบนเซิร์ฟเวอร์จะแปรผันตาม Garbage Collection, Concurrency, และพฤติกรรม V8 Engine ผู้ดูแลระบบต้องทำการ**ตรวจวัดบนโฮสต์จริง (measure on the host)** ภายใต้ปริมาณงานจริง
 3. **Fastify API Server Baseline**:
@@ -203,7 +213,7 @@ sudo systemctl enable postgresql
 sudo systemctl start postgresql
 ```
 
-#### ลำดับไฟล์ SQL Migrations ที่ต้องรัน
+#### ลำดับไฟล์ SQL Migrations ที่ต้องรัน (001 -> 008)
 เพื่อให้สกีมาและสิทธิ์ของระบบถูกต้องสมบูรณ์ ต้องรันไฟล์ SQL ตามลำดับต่อไปนี้อย่างเคร่งครัด:
 
 1. **`backend/tests/bootstrap_auth.sql`** ([ดูไฟล์](file:///C:/D_Drive/terminter01/garage/project_ideas/basketball/backend/tests/bootstrap_auth.sql#L1-L12)):
@@ -218,19 +228,75 @@ sudo systemctl start postgresql
    - สร้างสกีมา `app_auth`, ตาราง `app_auth.users`, ทริกเกอร์เชื่อมโยง `sync_user_to_auth()` และสร้างบทบาทล็อกอิน `hoopup_api`
 6. **`backend/server/sql/005_seed_osm_courts.sql`** ([ดูไฟล์](file:///C:/D_Drive/terminter01/garage/project_ideas/basketball/backend/server/sql/005_seed_osm_courts.sql#L1-L148)):
    - นำเข้ารายชื่อสนามบาสเกตบอล 148 แห่งในเขตกรุงเทพฯ จาก OpenStreetMap
+7. **`backend/server/sql/006_height_visibility.sql`** ([ดูไฟล์](file:///C:/D_Drive/terminter01/garage/project_ideas/basketball/backend/server/sql/006_height_visibility.sql#L1-L63)) (HT1):
+   - เพิ่มคอลัมน์ `height_visible boolean not null default false` ในตาราง `public.profiles` เพื่อรองรับความเป็นส่วนตัวและการควบคุมการแสดงผลส่วนสูงของผู้เล่น (Opt-in privacy)
+   - ปรับปรุงฟังก์ชัน `hoopup_private.save_profile(p_input jsonb)` และ wrapper `public.hoopup_save_profile` ให้รองรับฟิลด์ `heightVisible` (boolean) พร้อมตรวจสอบความถูกต้องอย่างรัดกุม (ปฏิเสธค่าที่ไม่ใช่ boolean) และให้สิทธิ์ execute แก่บทบาท `authenticated`
+8. **`backend/server/sql/007_user_status.sql`** ([ดูไฟล์](file:///C:/D_Drive/terminter01/garage/project_ideas/basketball/backend/server/sql/007_user_status.sql#L1-L39)) (BAN1):
+   - เพิ่มคอลัมน์สถานะบัญชีผู้ใช้ใน `app_auth.users`: `banned_at timestamptz`, `ban_reason text`, และ `deleted_at timestamptz`
+   - สร้างตารางเก็บบันทึกประวัติการดูแลระบบ `app_auth.moderation_log` (`id`, `user_id`, `action check ('ban','unban','delete')`, `reason`, `actor`, `created_at`)
+   - เพิ่มความปลอดภัย: เพิกถอนสิทธิ์ (`REVOKE ALL`) บน `app_auth.moderation_log` จาก `public`, `anon`, `authenticated` และ `hoopup_api` (บทบาทรันไทม์ไม่มีสิทธิ์อ่านหรือเขียนตารางประวัตินี้)
+   - มอบสิทธิ์ `SELECT (banned_at, ban_reason, deleted_at)` บนตาราง `app_auth.users` ให้แก่บทบาท `hoopup_api` เพื่อให้เซิร์ฟเวอร์ตรวจสอบสถานะบัญชีได้
+9. **`backend/server/sql/008_oidc_identities.sql`** ([ดูไฟล์](file:///C:/D_Drive/terminter01/garage/project_ideas/basketball/backend/server/sql/008_oidc_identities.sql#L1-L41)) (OIDC1):
+   - ปรับปรุง `app_auth.users`: ปลดข้อจำกัด `password_hash` ให้เป็น nullable (`ALTER COLUMN password_hash DROP NOT NULL`) เพื่อรองรับการล็อกอินผ่าน OpenID Connect (Google / LINE) โดยไม่มีรหัสผ่าน และเพิ่มคอลัมน์ `email_verified boolean not null default false`
+   - สร้างตารางจัดเก็บข้อมูลเชื่อมโยงผู้ให้บริการภายนอก `app_auth.identities` (`id`, `user_id references app_auth.users(id) on delete cascade`, `provider`, `subject`, `email`, `created_at`, `last_login_at`, พร้อม `UNIQUE (provider, subject)`) และสร้างดัชนี `idx_identities_user_id`
+   - กำหนดสิทธิ์: มอบสิทธิ์ `SELECT, INSERT, UPDATE` บน `app_auth.identities` และ `USAGE, SELECT` บน sequence แก่บทบาท `hoopup_api` และเพิกถอนสิทธิ์ทั้งหมดจาก `public`, `anon`, `authenticated`
 
-#### คำสั่งรัน SQL Migrations บนเซิร์ฟเวอร์
+#### บทบาทผู้ดูแลระบบที่ต้องใช้ในการรัน Migration (Admin Role Needed)
+การรันไฟล์ Migration ทั้งหมด (ตั้งแต่ 001 ถึง 008) **ต้องดำเนินการด้วยบัญชีผู้ดูแลระบบสูงสุดของ PostgreSQL (PostgreSQL Superuser / Database Admin เช่น ผู้ใช้ `postgres`) เสมอ**
+- **เหตุผล**: บทบาทรันไทม์ของเซิร์ฟเวอร์ (`hoopup_api`) มีสิทธิ์เพียง DML ขั้นพื้นฐาน (`SELECT, INSERT, UPDATE, DELETE`) บนบางตารางเท่านั้น และไม่มีสิทธิ์ DDL เช่น `CREATE TABLE`, `ALTER TABLE`, `CREATE FUNCTION`, หรือ `GRANT/REVOKE` หากพยายามรัน migration ด้วย `hoopup_api` จะล้มเหลวด้วยข้อผิดพลาด `permission denied`
+
+#### วิธีการรันบนเซิร์ฟเวอร์
 สมมุติว่าโค้ดโปรเจกต์ถูกโคลนไว้ที่ `/var/www/hoopup`:
 
+##### กรณีที่ 1: ติดตั้งฐานข้อมูลใหม่ตั้งแต่ต้น (Fresh Installation 001 -> 008)
+รันตามลำดับไฟล์ทั้งหมดตั้งแต่เริ่มต้น:
 ```bash
-# สลับไปใช้ผู้ใช้ postgres เพื่อรัน migrations
 sudo -u postgres psql -d postgres -v ON_ERROR_STOP=1 -f /var/www/hoopup/backend/tests/bootstrap_auth.sql
 sudo -u postgres psql -d postgres -v ON_ERROR_STOP=1 -f /var/www/hoopup/backend/migrations/001_schema.sql
 sudo -u postgres psql -d postgres -v ON_ERROR_STOP=1 -f /var/www/hoopup/backend/migrations/002_commands.sql
 sudo -u postgres psql -d postgres -v ON_ERROR_STOP=1 -f /var/www/hoopup/backend/migrations/003_api_and_permissions.sql
 sudo -u postgres psql -d postgres -v ON_ERROR_STOP=1 -f /var/www/hoopup/backend/server/sql/004_own_auth.sql
 sudo -u postgres psql -d postgres -v ON_ERROR_STOP=1 -f /var/www/hoopup/backend/server/sql/005_seed_osm_courts.sql
+sudo -u postgres psql -d postgres -v ON_ERROR_STOP=1 -f /var/www/hoopup/backend/server/sql/006_height_visibility.sql
+sudo -u postgres psql -d postgres -v ON_ERROR_STOP=1 -f /var/www/hoopup/backend/server/sql/007_user_status.sql
+sudo -u postgres psql -d postgres -v ON_ERROR_STOP=1 -f /var/www/hoopup/backend/server/sql/008_oidc_identities.sql
 ```
+
+##### กรณีที่ 2: อัปเกรดฐานข้อมูลเดิมที่รัน 001–005 ไว้แล้ว (Upgrade Existing Database)
+ไฟล์ migration 006, 007 และ 008 ถูกออกแบบให้ทำงานแบบ Idempotent (`IF NOT EXISTS`, `DROP NOT NULL`, `CREATE OR REPLACE`) จึงสามารถรันต่อยอดได้ทันทีโดยไม่กระทบข้อมูลเดิม:
+```bash
+sudo -u postgres psql -d postgres -v ON_ERROR_STOP=1 -f /var/www/hoopup/backend/server/sql/006_height_visibility.sql
+sudo -u postgres psql -d postgres -v ON_ERROR_STOP=1 -f /var/www/hoopup/backend/server/sql/007_user_status.sql
+sudo -u postgres psql -d postgres -v ON_ERROR_STOP=1 -f /var/www/hoopup/backend/server/sql/008_oidc_identities.sql
+```
+
+#### การใช้งานสคริปต์จัดการและระงับผู้ใช้ (Moderation CLI: `scripts/moderate.mjs`)
+เซิร์ฟเวอร์มีสคริปต์ `scripts/moderate.mjs` สำหรับผู้ดูแลระบบในการตรวจสอบสถานะ แบน ยกเลิกแบน หรือลบบัญชีผู้ใช้ (Soft delete):
+- **ข้อกำหนดเรื่องสิทธิ์การเชื่อมต่อฐานข้อมูล (สำคัญมาก)**:
+  - สคริปต์นี้ **ต้องรันด้วย `DATABASE_URL` ของบทบาทผู้ดูแลระบบ (Admin Role เช่น `postgres`) เท่านั้น**
+  - **ห้ามใช้บทบาท `hoopup_api` ที่อยู่ในไฟล์ `.env` ของเซิร์ฟเวอร์โดยเด็ดขาด** เนื่องจากบทบาท `hoopup_api` ถูกเพิกถอนสิทธิ์ในตาราง `app_auth.moderation_log` และไม่มีสิทธิ์ UPDATE ตาราง `public.profiles` หากรันด้วย `hoopup_api` คำสั่ง `ban`, `unban`, และ `delete` จะล้มเหลวด้วยข้อผิดพลาด `permission denied` (Exit code 1)
+- รูปแบบคำสั่งสำหรับผู้ดูแลระบบ (Command Forms - แสดงโดยไม่ระบุรหัสผ่านจริง):
+  ```bash
+  # ตรวจสอบสถานะบัญชีผู้ใช้
+  DATABASE_URL="postgres://postgres:ADMIN_PASSWORD_HERE@127.0.0.1:5432/postgres" \
+    node /var/www/hoopup/backend/server/scripts/moderate.mjs status user@example.com
+
+  # สั่งแบนบัญชีผู้ใช้ (ระบุเหตุผลและผู้ดำเนินการ)
+  MODERATOR="admin_somchai" \
+  DATABASE_URL="postgres://postgres:ADMIN_PASSWORD_HERE@127.0.0.1:5432/postgres" \
+    node /var/www/hoopup/backend/server/scripts/moderate.mjs ban user@example.com --reason "ละเมิดกฎการใช้งาน"
+
+  # สั่งยกเลิกการแบนบัญชีผู้ใช้
+  MODERATOR="admin_somchai" \
+  DATABASE_URL="postgres://postgres:ADMIN_PASSWORD_HERE@127.0.0.1:5432/postgres" \
+    node /var/www/hoopup/backend/server/scripts/moderate.mjs unban user@example.com
+
+  # สั่งลบบัญชีผู้ใช้ (Soft Delete ล้างข้อมูลโปรไฟล์ แต่คงประวัติข้อความแชทและนัดไว้ - ต้องใส่ --confirm)
+  MODERATOR="admin_somchai" \
+  DATABASE_URL="postgres://postgres:ADMIN_PASSWORD_HERE@127.0.0.1:5432/postgres" \
+    node /var/www/hoopup/backend/server/scripts/moderate.mjs delete user@example.com --confirm
+  ```
+- หมายเหตุเรื่องผลกระทบต่อแคช: เมื่อมีคำสั่งแบน/ลบ ผลจะถูกบังคับใช้กับเซิร์ฟเวอร์ที่กำลังรันอยู่ภายในระยะเวลาที่กำหนดใน `USER_STATUS_CACHE_MS` (ค่าเริ่มต้น 30 วินาที)
 
 ### 3.5 การเปลี่ยนรหัสผ่านของบทบาท `hoopup_api`
 ในไฟล์ [`backend/server/sql/004_own_auth.sql:36`](file:///C:/D_Drive/terminter01/garage/project_ideas/basketball/backend/server/sql/004_own_auth.sql#L36) มีการสร้างบทบาทด้วยรหัสผ่านสำหรับการพัฒนาว่า `'hoopup_api_dev_password'` **ห้ามใช้รหัสผ่านนี้บน Production โดยเด็ดขาด**
@@ -261,32 +327,46 @@ echo "Generated JWT_SECRET: $JWT_SECRET"
 
 ### 3.7 ตารางตัวแปรสภาพแวดล้อมทั้งหมดที่เซิร์ฟเวอร์อ่านจริง (Environment Variables)
 
-จากการตรวจสอบโค้ดจริงใน `backend/server/src/*.js` ทุกไฟล์ เซิร์ฟเวอร์อ่านตัวแปรสภาพแวดล้อมทั้งหมด 22 ตัวแปร ดังนี้:
+จากการตรวจสอบโค้ดจริงใน `backend/server/src/*.js` และ `scripts/moderate.mjs` ทุกไฟล์ เซิร์ฟเวอร์อ่านตัวแปรสภาพแวดล้อมทั้งหมด ดังนี้:
 
 | ชื่อตัวแปร | จำเป็น? | ตัวอย่างค่า Production | ค่าเริ่มต้นหากไม่ตั้ง | พฤติกรรมเมื่อไม่ตั้ง / ว่าง | อ้างอิงในโค้ด (File:Line) |
 |---|---|---|---|---|---|
 | `PORT` | ไม่ | `3000` | `3000` | ใช้งานพอร์ต 3000 | [`backend/server/src/index.js:4`](file:///C:/D_Drive/terminter01/garage/project_ideas/basketball/backend/server/src/index.js#L4) |
 | `HOST` | ไม่ | `127.0.0.1` | `127.0.0.1` | Bind รับการเชื่อมต่อเฉพาะ Loopback IP (เข้าถึงได้เฉพาะภายในโฮสต์หลัง proxy) | [`backend/server/src/index.js:5`](file:///C:/D_Drive/terminter01/garage/project_ideas/basketball/backend/server/src/index.js#L5) |
-| `DATABASE_URL` | **ใช่** | `postgres://hoopup_api:<PASS>@127.0.0.1:5432/postgres` | ไม่มี | **Throw Error และ Process หยุดทำงานทันที**: `"DATABASE_URL is not set in environment or config"` | [`backend/server/src/db.js:12-15`](file:///C:/D_Drive/terminter01/garage/project_ideas/basketball/backend/server/src/db.js#L12-L15) |
-| `NODE_ENV` | แนะนำ | `production` | ไม่มี (undefined) | หากตั้งเป็น `production` ระบบจะเปิดใช้โหมดความปลอดภัยเข้มงวดและปฏิเสธ dev secrets | [`backend/server/src/auth.js:108`](file:///C:/D_Drive/terminter01/garage/project_ideas/basketball/backend/server/src/auth.js#L108) |
-| `JWT_SECRET` | **ใช่** | `สุ่มผ่าน openssl rand -base64 48` | ไม่มี | **Throw Error ตอนบูตเซิร์ฟเวอร์ทันที**: หากความยาว < 32 ตัวอักษร หรือใช้ค่า dev ใน production | [`backend/server/src/app.js:86`](file:///C:/D_Drive/terminter01/garage/project_ideas/basketball/backend/server/src/app.js#L86), [`auth.js:101-119`](file:///C:/D_Drive/terminter01/garage/project_ideas/basketball/backend/server/src/auth.js#L101-L119) |
-| `TRUST_PROXY` | แนะนำเมื่ออยู่หลัง proxy | `127.0.0.1` | `false` (unset) | ค่าเริ่มต้นคือไม่เชื่อ Header ใดๆ (`false`); เมื่ออยู่หลัง Proxy ต้องระบุ IP/CIDR เช่น `127.0.0.1`; ระบบ**ปฏิเสธ `true` และ `*` ทันทีตอนบูต** (ห้ามใช้ hop count เว้นแต่เข้าถึงได้ผ่าน proxy เท่านั้น) | [`backend/server/src/app.js:10-83, 88-92`](file:///C:/D_Drive/terminter01/garage/project_ideas/basketball/backend/server/src/app.js#L10-L83) |
-| `ALLOWED_ORIGINS` | แนะนำ | `https://hoopup.example.com` | `http://localhost:5173,http://localhost:5199` | รายการ Origin ที่อนุญาต CORS (คั่นด้วยจุลภาค) หากไม่ตั้ง เบราว์เซอร์จะบล็อกคำขอข้ามโดเมนใน Production | [`backend/server/src/app.js:94-103`](file:///C:/D_Drive/terminter01/garage/project_ideas/basketball/backend/server/src/app.js#L94-L103) |
-| `LOG_LEVEL` | ไม่ | `info` หรือ `warn` | `info` | บันทึก Log ระดับ info ขึ้นไป (เซิร์ฟเวอร์จะเซนเซอร์ authorization, password, accessToken เสมอ) | [`backend/server/src/app.js:121`](file:///C:/D_Drive/terminter01/garage/project_ideas/basketball/backend/server/src/app.js#L121) |
-| `AUTH_RATE_LIMIT_MAX` | ไม่ | `10` | `10` | จำกัดการ Login/Signup ไม่เกิน 10 ครั้งต่อหน้าต่างเวลา ต่อ IP | [`backend/server/src/app.js:107`](file:///C:/D_Drive/terminter01/garage/project_ideas/basketball/backend/server/src/app.js#L107) |
-| `AUTH_RATE_LIMIT_WINDOW_MS` | ไม่ | `60000` | `60000` (1 นาที) | หน้าต่างเวลา Rate Limit ของ Auth (หน่วย ms) | [`backend/server/src/app.js:110`](file:///C:/D_Drive/terminter01/garage/project_ideas/basketball/backend/server/src/app.js#L110) |
-| `RPC_RATE_LIMIT_MAX` | ไม่ | `120` | `120` | จำกัดการเรียก `/rpc/*` ไม่เกิน 120 ครั้งต่อหน้าต่างเวลา ต่อผู้ใช้ (`sub` ใน JWT) โดย 3 ฟังก์ชันสำคัญ (`send_message`, `create_session`, `report`) ถูกจำกัดแยกที่ 20 ครั้ง/นาที อัตโนมัติ | [`backend/server/src/routes/rpc.js:14`](file:///C:/D_Drive/terminter01/garage/project_ideas/basketball/backend/server/src/routes/rpc.js#L14) |
-| `RPC_RATE_LIMIT_WINDOW_MS` | ไม่ | `60000` | `60000` (1 นาที) | หน้าต่างเวลา Rate Limit ของ RPC (หน่วย ms) | [`backend/server/src/routes/rpc.js:17`](file:///C:/D_Drive/terminter01/garage/project_ideas/basketball/backend/server/src/routes/rpc.js#L17) |
-| `DATA_RATE_LIMIT_MAX` | ไม่ | `300` | `300` | จำกัดการเรียก GET data routes (`/courts`, `/messages*`, `/session_members*`, `/profiles/*`) รวมไม่เกิน 300 ครั้งต่อหน้าต่างเวลา ต่อผู้ใช้ | [`backend/server/src/routes/data.js:9`](file:///C:/D_Drive/terminter01/garage/project_ideas/basketball/backend/server/src/routes/data.js#L9) |
-| `DATA_RATE_LIMIT_WINDOW_MS` | ไม่ | `60000` | `60000` (1 นาที) | หน้าต่างเวลา Rate Limit ของ Data Routes (หน่วย ms) | [`backend/server/src/routes/data.js:12`](file:///C:/D_Drive/terminter01/garage/project_ideas/basketball/backend/server/src/routes/data.js#L12) |
+| `DATABASE_URL` | **ใช่** | `postgres://hoopup_api:<PASS>@127.0.0.1:5432/postgres` | ไม่มี | **Throw Error และ Process หยุดทำงานทันที**: `"DATABASE_URL is not set in environment or config"` (สำหรับสคริปต์ `scripts/moderate.mjs` ต้องเป็น connection string ของ admin) | [`backend/server/src/db.js:12-15`](file:///C:/D_Drive/terminter01/garage/project_ideas/basketball/backend/server/src/db.js#L12-L15), [`scripts/moderate.mjs:71`](file:///C:/D_Drive/terminter01/garage/project_ideas/basketball/backend/server/scripts/moderate.mjs#L71) |
+| `NODE_ENV` | แนะนำ | `production` | ไม่มี (undefined) | หากตั้งเป็น `production` ระบบจะเปิดใช้โหมดความปลอดภัยเข้มงวด ปฏิเสธ dev secrets และบังคับ HTTPS สำหรับ OIDC | [`backend/server/src/auth.js:263`](file:///C:/D_Drive/terminter01/garage/project_ideas/basketball/backend/server/src/auth.js#L263), [`src/oidc.js:59`](file:///C:/D_Drive/terminter01/garage/project_ideas/basketball/backend/server/src/oidc.js#L59), [`src/routes/oidc.js:75`](file:///C:/D_Drive/terminter01/garage/project_ideas/basketball/backend/server/src/routes/oidc.js#L75) |
+| `JWT_SECRET` | **ใช่** | `สุ่มผ่าน openssl rand -base64 48` | ไม่มี | **Throw Error ตอนบูตเซิร์ฟเวอร์ทันที**: หากความยาว < 32 ตัวอักษร หรือใช้ค่า dev ใน production | [`backend/server/src/app.js:88`](file:///C:/D_Drive/terminter01/garage/project_ideas/basketball/backend/server/src/app.js#L88), [`auth.js:101-119, 257-265`](file:///C:/D_Drive/terminter01/garage/project_ideas/basketball/backend/server/src/auth.js#L101-L119) |
+| `TRUST_PROXY` | แนะนำเมื่ออยู่หลัง proxy | `127.0.0.1` | `false` (unset) | ค่าเริ่มต้นคือไม่เชื่อ Header ใดๆ (`false`); เมื่ออยู่หลัง Proxy ต้องระบุ IP/CIDR เช่น `127.0.0.1`; ระบบ**ปฏิเสธ `true` และ `*` ทันทีตอนบูต** (ห้ามใช้ hop count เว้นแต่เข้าถึงได้ผ่าน proxy เท่านั้น) | [`backend/server/src/app.js:10-85, 93`](file:///C:/D_Drive/terminter01/garage/project_ideas/basketball/backend/server/src/app.js#L10-L85) |
+| `ALLOWED_ORIGINS` | แนะนำ | `https://hoopup.example.com` | `http://localhost:5173,http://localhost:5199` | รายการ Origin ที่อนุญาต CORS (คั่นด้วยจุลภาค) หากไม่ตั้ง เบราว์เซอร์จะบล็อกคำขอข้ามโดเมนใน Production | [`backend/server/src/app.js:98-103`](file:///C:/D_Drive/terminter01/garage/project_ideas/basketball/backend/server/src/app.js#L98-L103) |
+| `LOG_LEVEL` | ไม่ | `info` หรือ `warn` | `info` | บันทึก Log ระดับ info ขึ้นไป (เซิร์ฟเวอร์จะเซนเซอร์ authorization, password, accessToken และ credentials เสมอ) | [`backend/server/src/app.js:123`](file:///C:/D_Drive/terminter01/garage/project_ideas/basketball/backend/server/src/app.js#L123) |
+| `AUTH_RATE_LIMIT_MAX` | ไม่ | `10` | `10` | จำกัดการ Login/Signup/OIDC exchange ไม่เกิน 10 ครั้งต่อหน้าต่างเวลา ต่อ IP | [`backend/server/src/app.js:109`](file:///C:/D_Drive/terminter01/garage/project_ideas/basketball/backend/server/src/app.js#L109) |
+| `AUTH_RATE_LIMIT_WINDOW_MS` | ไม่ | `60000` | `60000` (1 นาที) | หน้าต่างเวลา Rate Limit ของ Auth (หน่วย ms) | [`backend/server/src/app.js:112`](file:///C:/D_Drive/terminter01/garage/project_ideas/basketball/backend/server/src/app.js#L112) |
+| `LOGIN_LOCK_MAX` | ไม่ | `5` | `5` | จำนวนครั้งเข้าสู่ระบบล้มเหลวติดต่อกันสูงสุดต่ออีเมล ก่อนล็อกคำขอชั่วคราว (SEC3) | [`backend/server/src/auth.js:380`](file:///C:/D_Drive/terminter01/garage/project_ideas/basketball/backend/server/src/auth.js#L380) |
+| `LOGIN_LOCK_WINDOW_MS` | ไม่ | `900000` | `900000` (15 นาที) | กรอบเวลาสะสมความผิดพลาดของอีเมล (หน่วย ms, SEC3) | [`backend/server/src/auth.js:381`](file:///C:/D_Drive/terminter01/garage/project_ideas/basketball/backend/server/src/auth.js#L381) |
+| `LOGIN_LOCK_SECONDS` | ไม่ | `60` | `60` (1 นาที) | ระยะเวลาการล็อกคำขอของอีเมลเมื่อครบขีดจำกัด ตอบกลับด้วย HTTP 429 พร้อม Header Retry-After (SEC3) | [`backend/server/src/auth.js:382`](file:///C:/D_Drive/terminter01/garage/project_ideas/basketball/backend/server/src/auth.js#L382) |
+| `RPC_RATE_LIMIT_MAX` | ไม่ | `120` | `120` | จำกัดการเรียก `/rpc/*` ไม่เกิน 120 ครั้งต่อหน้าต่างเวลา ต่อผู้ใช้ (`sub` ใน JWT) โดย 3 ฟังก์ชันสำคัญ (`send_message`, `create_session`, `report`) ถูกจำกัดแยกที่ 20 ครั้ง/นาที อัตโนมัติ | [`backend/server/src/routes/rpc.js:17`](file:///C:/D_Drive/terminter01/garage/project_ideas/basketball/backend/server/src/routes/rpc.js#L17) |
+| `RPC_RATE_LIMIT_WINDOW_MS` | ไม่ | `60000` | `60000` (1 นาที) | หน้าต่างเวลา Rate Limit ของ RPC (หน่วย ms) | [`backend/server/src/routes/rpc.js:20`](file:///C:/D_Drive/terminter01/garage/project_ideas/basketball/backend/server/src/routes/rpc.js#L20) |
+| `DATA_RATE_LIMIT_MAX` | ไม่ | `300` | `300` | จำกัดการเรียก GET data routes (`/courts`, `/messages*`, `/session_members*`, `/profiles/*`) รวมไม่เกิน 300 ครั้งต่อหน้าต่างเวลา ต่อผู้ใช้ | [`backend/server/src/routes/data.js:12`](file:///C:/D_Drive/terminter01/garage/project_ideas/basketball/backend/server/src/routes/data.js#L12) |
+| `DATA_RATE_LIMIT_WINDOW_MS` | ไม่ | `60000` | `60000` (1 นาที) | หน้าต่างเวลา Rate Limit ของ Data Routes (หน่วย ms) | [`backend/server/src/routes/data.js:15`](file:///C:/D_Drive/terminter01/garage/project_ideas/basketball/backend/server/src/routes/data.js#L15) |
+| `USER_STATUS_CACHE_MS` | ไม่ | `30000` | `30000` (30 วินาที) | อายุแคชสถานะผู้ใช้ (active/banned/deleted) ในหน่วยความจำ (หน่วย ms) สำหรับ BAN1 ตั้งเป็น `0` เพื่อปิดแคชและค้นหาฐานข้อมูลสดทุกคำขอ | [`backend/server/src/user-status.js:32-34`](file:///C:/D_Drive/terminter01/garage/project_ideas/basketball/backend/server/src/user-status.js#L32-L34), [`scripts/moderate.mjs:30`](file:///C:/D_Drive/terminter01/garage/project_ideas/basketball/backend/server/scripts/moderate.mjs#L30) |
 | `DB_STATEMENT_TIMEOUT_MS` | ไม่ | `10000` | `10000` (10 วินาที) | ขีดจำกัดเวลาสูงสุดในการประมวลผลคำสั่ง SQL ใน Connection Pool ตัดคำสั่งด้วย code 57014 (คืนค่า HTTP 503) | [`backend/server/src/db.js:20`](file:///C:/D_Drive/terminter01/garage/project_ideas/basketball/backend/server/src/db.js#L20) |
 | `DB_IDLE_TX_TIMEOUT_MS` | ไม่ | `15000` | `15000` (15 วินาที) | ขีดจำกัดเวลาสูงสุดของ Transaction ที่ค้างอยู่เฉยๆ ป้องกันการล็อกทรัพยากร | [`backend/server/src/db.js:25`](file:///C:/D_Drive/terminter01/garage/project_ideas/basketball/backend/server/src/db.js#L25) |
 | `TILES_DIR` | ไม่ | `/var/www/hoopup/backend/server/tiles` | `<server_dir>/tiles` | ไดเรกทอรีจัดเก็บไฟล์แผนที่ PMTiles (รองรับ path ปลายทางของ `.pmtiles`) | [`backend/server/src/routes/tiles.js:23`](file:///C:/D_Drive/terminter01/garage/project_ideas/basketball/backend/server/src/routes/tiles.js#L23) |
-| `PLACES_FILE` | ไม่ | `/var/www/hoopup/backend/server/data/places-bangkok.ndjson` | `<server_dir>/data/places-bangkok.ndjson` | ไฟล์ข้อมูลสถานที่ Overture ในรูปแบบ NDJSON (ใช้ร่วมกันทั้ง `/places` และ `/places/search`) | [`backend/server/src/routes/places.js:368`](file:///C:/D_Drive/terminter01/garage/project_ideas/basketball/backend/server/src/routes/places.js#L368), [`placesSearch.js:269`](file:///C:/D_Drive/terminter01/garage/project_ideas/basketball/backend/server/src/routes/placesSearch.js#L269) |
+| `PLACES_FILE` | ไม่ | `/var/www/hoopup/backend/server/data/places-bangkok.ndjson` | `<server_dir>/data/places-bangkok.ndjson` | ไฟล์ข้อมูลสถานที่ Overture ในรูปแบบ NDJSON (ใช้ร่วมกันทั้ง `/places` และ `/places/search`) | [`backend/server/src/routes/places.js:368`](file:///C:/D_Drive/terminter01/garage/project_ideas/basketball/backend/server/src/routes/places.js#L368), [`placesSearch.js:426`](file:///C:/D_Drive/terminter01/garage/project_ideas/basketball/backend/server/src/routes/placesSearch.js#L426) |
 | `PLACES_RATE_LIMIT_MAX` | ไม่ | `240` | `240` | จำกัดการเรียก `/places` ไม่เกิน 240 ครั้งต่อหน้าต่างเวลา ต่อ IP (แยกบัคเก็ตอิสระ) | [`backend/server/src/routes/places.js:377`](file:///C:/D_Drive/terminter01/garage/project_ideas/basketball/backend/server/src/routes/places.js#L377) |
 | `PLACES_RATE_LIMIT_WINDOW_MS` | ไม่ | `60000` | `60000` (1 นาที) | หน้าต่างเวลา Rate Limit ของ `/places` (หน่วย ms) | [`backend/server/src/routes/places.js:380`](file:///C:/D_Drive/terminter01/garage/project_ideas/basketball/backend/server/src/routes/places.js#L380) |
-| `PLACES_SEARCH_RATE_LIMIT_MAX` | ไม่ | `120` | `120` | จำกัดการเรียก `/places/search` ไม่เกิน 120 ครั้งต่อหน้าต่างเวลา ต่อ IP (แยกบัคเก็ตอิสระ) | [`backend/server/src/routes/placesSearch.js:279`](file:///C:/D_Drive/terminter01/garage/project_ideas/basketball/backend/server/src/routes/placesSearch.js#L279) |
-| `PLACES_SEARCH_RATE_LIMIT_WINDOW_MS` | ไม่ | `60000` | `60000` (1 นาที) | หน้าต่างเวลา Rate Limit ของ `/places/search` (หน่วย ms) | [`backend/server/src/routes/placesSearch.js:282`](file:///C:/D_Drive/terminter01/garage/project_ideas/basketball/backend/server/src/routes/placesSearch.js#L282) |
+| `PLACES_SEARCH_RATE_LIMIT_MAX` | ไม่ | `120` | `120` | จำกัดการเรียก `/places/search` ไม่เกิน 120 ครั้งต่อหน้าต่างเวลา ต่อ IP (แยกบัคเก็ตอิสระ) | [`backend/server/src/routes/placesSearch.js:436`](file:///C:/D_Drive/terminter01/garage/project_ideas/basketball/backend/server/src/routes/placesSearch.js#L436) |
+| `PLACES_SEARCH_RATE_LIMIT_WINDOW_MS` | ไม่ | `60000` | `60000` (1 นาที) | หน้าต่างเวลา Rate Limit ของ `/places/search` (หน่วย ms) | [`backend/server/src/routes/placesSearch.js:439`](file:///C:/D_Drive/terminter01/garage/project_ideas/basketball/backend/server/src/routes/placesSearch.js#L439) |
+| `OIDC_PROVIDERS` | ไม่ | `google,line` | `''` (ว่าง / unset) | รายชื่อ Provider สำหรับ OIDC คั่นด้วยจุลภาค หากเว้นว่างจะปิดการใช้งานฟีเจอร์ OIDC (คืนค่า HTTP 404 เมื่อเรียก `/auth/oidc/*`) | [`backend/server/src/oidc.js:183`](file:///C:/D_Drive/terminter01/garage/project_ideas/basketball/backend/server/src/oidc.js#L183) |
+| `OIDC_ALLOWED_RETURN_URLS` | ไม่ | `https://hoopup.example.com/auth/callback` | `''` (ว่าง / unset) | รายชื่อ Return URLs ที่อนุญาตแบบ Exact match คั่นด้วยจุลภาค (ป้องกัน Open Redirect) | [`backend/server/src/oidc.js:192`](file:///C:/D_Drive/terminter01/garage/project_ideas/basketball/backend/server/src/oidc.js#L192) |
+| `OIDC_<NAME>_CLIENT_ID` | มี OIDC | `...apps.googleusercontent.com` | `''` (ว่าง / unset) | Client ID ของ Provider เช่น `OIDC_GOOGLE_CLIENT_ID`, `OIDC_LINE_CLIENT_ID` | [`backend/server/src/oidc.js:206`](file:///C:/D_Drive/terminter01/garage/project_ideas/basketball/backend/server/src/oidc.js#L206) |
+| `OIDC_<NAME>_CLIENT_SECRET` | มี OIDC | `สุ่มจากคอนโซล Provider` | `''` (ว่าง / unset) | Client Secret ของ Provider สำหรับเซิร์ฟเวอร์แลก Token | [`backend/server/src/oidc.js:207`](file:///C:/D_Drive/terminter01/garage/project_ideas/basketball/backend/server/src/oidc.js#L207) |
+| `OIDC_<NAME>_REDIRECT_URI` | มี OIDC | `https://hoopup.example.com/auth/oidc/google/callback` | `''` (ว่าง / unset) | Callback URL ของ Backend ที่ลงทะเบียนไว้กับคอนโซลของ Provider | [`backend/server/src/oidc.js:208`](file:///C:/D_Drive/terminter01/garage/project_ideas/basketball/backend/server/src/oidc.js#L208) |
+| `OIDC_<NAME>_*` (Optional Overrides) | ไม่ | ตามความจำเป็น | ตาม Presets | ตัวเลือก override endpoints และ claims: `_ISSUER`, `_AUTH_URL`, `_TOKEN_URL`, `_JWKS_URL`, `_SCOPE`, `_TRUST_EMAIL`, `_ALLOW_UNVERIFIED_EMAIL` | [`backend/server/src/oidc.js:224-241`](file:///C:/D_Drive/terminter01/garage/project_ideas/basketball/backend/server/src/oidc.js#L224-L241) |
+| `MODERATOR` | ไม่ | `admin_username` | ชื่อผู้ใช้ OS / `system` | ระบุตัวตนผู้ดำเนินการสำหรับบันทึกลง `app_auth.moderation_log` ในสคริปต์ `scripts/moderate.mjs` | [`backend/server/scripts/moderate.mjs:19`](file:///C:/D_Drive/terminter01/garage/project_ideas/basketball/backend/server/scripts/moderate.mjs#L19) |
+
+> [!NOTE]
+> **การตั้งค่าดัชนีสถานที่ SRCH2**: ในงาน SRCH2 ระบบค้นหาสถานที่ `/places/search` ได้รับการยกระดับเป็น Bigram Candidate Index ในหน่วยความจำ ซึ่งระบบจะสร้าง postings ดัชนีขึ้นอัตโนมัติจากไฟล์ที่ระบุใน `PLACES_FILE` ตอนที่มีคำขอแรกเข้ามา **โดยไม่มีตัวแปรสภาพแวดล้อมเฉพาะแยกต่างหากสำหรับ SRCH2** (ใช้ตัวแปร `PLACES_FILE`, `PLACES_SEARCH_RATE_LIMIT_MAX`, และ `PLACES_SEARCH_RATE_LIMIT_WINDOW_MS` ร่วมกัน)
 
 #### ตัวอย่างไฟล์ `/var/www/hoopup/backend/server/.env` สำหรับ Production:
 ```ini
@@ -298,20 +378,51 @@ JWT_SECRET=YOUR_RANDOM_SECRET_GENERATED_BY_OPENSSL_MIN_32_CHARS
 TRUST_PROXY=127.0.0.1
 ALLOWED_ORIGINS=https://hoopup.example.com
 LOG_LEVEL=info
+
+# Rate Limiting: Authentication
 AUTH_RATE_LIMIT_MAX=10
 AUTH_RATE_LIMIT_WINDOW_MS=60000
+
+# Per-Account Login Lock (SEC3)
+LOGIN_LOCK_MAX=5
+LOGIN_LOCK_WINDOW_MS=900000
+LOGIN_LOCK_SECONDS=60
+
+# Rate Limiting: Business RPC & Data Routes
 RPC_RATE_LIMIT_MAX=120
 RPC_RATE_LIMIT_WINDOW_MS=60000
 DATA_RATE_LIMIT_MAX=300
 DATA_RATE_LIMIT_WINDOW_MS=60000
+
+# User Status In-Memory Cache TTL (BAN1)
+USER_STATUS_CACHE_MS=30000
+
+# Database Connection Pool Timeouts
 DB_STATEMENT_TIMEOUT_MS=10000
 DB_IDLE_TX_TIMEOUT_MS=15000
+
+# Vector Map Tiles & Places Dataset
 TILES_DIR=/var/www/hoopup/backend/server/tiles
 PLACES_FILE=/var/www/hoopup/backend/server/data/places-bangkok.ndjson
 PLACES_RATE_LIMIT_MAX=240
 PLACES_RATE_LIMIT_WINDOW_MS=60000
 PLACES_SEARCH_RATE_LIMIT_MAX=120
 PLACES_SEARCH_RATE_LIMIT_WINDOW_MS=60000
+
+# OpenID Connect (OIDC1 - Google & LINE Social Login)
+# หากยังไม่เปิดใช้งาน ให้ปล่อยว่างไว้ (ระบบจะคืนค่า 404 สำหรับ /auth/oidc/*)
+OIDC_PROVIDERS=google,line
+OIDC_ALLOWED_RETURN_URLS=https://hoopup.example.com/auth/callback
+
+# Google Provider Credentials (ได้จาก Google Cloud Console)
+OIDC_GOOGLE_CLIENT_ID=YOUR_GOOGLE_CLIENT_ID_HERE.apps.googleusercontent.com
+OIDC_GOOGLE_CLIENT_SECRET=YOUR_GOOGLE_CLIENT_SECRET_HERE
+OIDC_GOOGLE_REDIRECT_URI=https://hoopup.example.com/auth/oidc/google/callback
+
+# LINE Provider Credentials (ได้จาก LINE Developers Console)
+OIDC_LINE_CLIENT_ID=YOUR_LINE_CHANNEL_ID_HERE
+OIDC_LINE_CLIENT_SECRET=YOUR_LINE_CHANNEL_SECRET_HERE
+OIDC_LINE_REDIRECT_URI=https://hoopup.example.com/auth/oidc/line/callback
 ```
 *(กำหนดสิทธิ์ไฟล์: `chmod 600 /var/www/hoopup/backend/server/.env` เพื่อป้องกันผู้ใช้อื่นอ่าน)*
 
@@ -369,6 +480,28 @@ sudo systemctl status hoopup-api
   ```bash
   journalctl -u hoopup-api -p err -n 50 --no-pager
   ```
+
+### 3.10 ข้อกำหนดและการติดตั้งระบบ OpenID Connect (OIDC - Google & LINE)
+
+ระบบรองรับการยืนยันตัวตนผ่าน Social Login (Google และ LINE) ผ่านมาตรฐาน OpenID Connect (OIDC1) เพื่ออำนวยความสะดวกให้ผู้ใช้งานล็อกอินได้ทันทีโดยไม่ต้องจำรหัสผ่าน:
+
+- **ขั้นตอนการขอ Client ID / Secret สำหรับผู้ดูแลระบบ**:
+  - ดูขั้นตอนการสร้างและตั้งค่าแอปใน Google Cloud Console และ LINE Developers Console โดยละเอียดได้ที่เอกสาร [`OIDC_USER_SETUP_TH.md`](file:///C:/D_Drive/terminter01/garage/project_ideas/basketball/mvp_tasks_2026-10-28/OIDC_USER_SETUP_TH.md)
+- **ข้อกำหนด HTTPS บน Production**:
+  - ในโค้ด [`backend/server/src/oidc.js:59-65`](file:///C:/D_Drive/terminter01/garage/project_ideas/basketball/backend/server/src/oidc.js#L59-L65) ฟังก์ชัน `validateEndpointUrl` มีการบังคับใช้ HTTPS อย่างเข้มงวด โดยในโหมด `NODE_ENV=production` หรือสภาพแวดล้อมที่ไม่ใช่ localhost/127.0.0.1 ระบบจะ**ปฏิเสธการเชื่อมต่อที่เป็น HTTP ทันที** ดังนั้นระบบ Production ต้องมี Reverse Proxy ที่เปิดใช้ HTTPS/TLS ที่สมบูรณ์
+- **รูปแบบของ Callback URL (Redirect URI)**:
+  - URL ปลายทางที่ต้องลงทะเบียนในคอนโซลของผู้ให้บริการ และต้องระบุใน `OIDC_<NAME>_REDIRECT_URI` ให้ตรงกันทุกตัวอักษร มีรูปแบบดังนี้:
+    - Google: `https://<โดเมน>/auth/oidc/google/callback` (เช่น `https://hoopup.example.com/auth/oidc/google/callback`)
+    - LINE: `https://<โดเมน>/auth/oidc/line/callback` (เช่น `https://hoopup.example.com/auth/oidc/line/callback`)
+- **การตรวจสอบ Return URL อย่างเคร่งครัด**:
+  - ไคลเอนต์จะส่ง `return_to` เข้ามาที่ `/auth/oidc/:provider/start?return_to=<url>`
+  - ค่า `return_to` ต้องตรงกับรายการที่อนุญาตใน `OIDC_ALLOWED_RETURN_URLS` **แบบ Exact Match ทุกตัวอักษร** (เช่น `https://hoopup.example.com/auth/callback`) หากมีส่วนต่างแม้แต่ตัวเดียว (รวมถึง trailing slash, query, หรือโปรโตคอล) เซิร์ฟเวอร์จะปฏิเสธด้วย HTTP 400 ทันที เพื่อป้องกันช่องโหว่ Open Redirect
+- **ข้อจำกัดเรื่อง Process เดียว (Single Backend Process Architecture)**:
+  - โค้ดใน [`backend/server/src/oidc.js:70-156`](file:///C:/D_Drive/terminter01/garage/project_ideas/basketball/backend/server/src/oidc.js#L70-L156) จัดเก็บ `state`, `nonce`, PKCE `code_verifier`, และ `exchange_code` ภายใน **In-Memory Store (Map) ของโปรเซสเดียว**
+  - **ข้อกำหนด**: ระบบบนเซิร์ฟเวอร์ต้องรัน Node.js API Gateway เพียง **1 โปรเซสเท่านั้น (Single Process / Node.js instance)**
+  - **สิ่งที่จะพังหากรันหลายโปรเซส (Multi-node / Clustered Failure)**: หากรันเซิร์ฟเวอร์มากกว่า 1 โปรเซส (เช่น รันผ่าน PM2 cluster mode หรือกระจาย VPS หลายเครื่อง) โดยไม่มี Sticky Sessions คำขอ callback หรือคำขอแลกโค้ด (`/auth/oidc/exchange`) อาจวิ่งไปตกคนละโปรเซสกับตอนสร้าง state ส่งผลให้คำขอตรวจสอบ state หรือ code ล้มเหลวทันที (`HTTP 400 Invalid state` หรือ `HTTP 400 invalid_code`) และการรีสตาร์ตโปรเซสจะทำให้เซสชัน OIDC ที่กำลังทำค้างอยู่หลุดทั้งหมด
+- **การเก็บรักษาความลับ (Secrets Never in Git)**:
+  - กุญแจ `OIDC_GOOGLE_CLIENT_SECRET` และ `OIDC_LINE_CLIENT_SECRET` ต้องเก็บไว้ในไฟล์ `/var/www/hoopup/backend/server/.env` บนเซิร์ฟเวอร์เท่านั้น (กำหนดสิทธิ์ `chmod 600`) **ห้ามใส่ในซอร์สโค้ด ฝั่งแอปพลิเคชัน Frontend หรือนำเข้า Git Repository โดยเด็ดขาด**
 
 ---
 
@@ -680,37 +813,45 @@ npm run build
   - ห้ามใช้ `*` และห้ามค้างพอร์ตพัฒนา `http://localhost:5173`
 - [ ] **3. การตรวจสอบ Runtime Config Overrides ของแผนที่**:
   - โค้ด [`app/src/features/discovery/mapConfig.ts:78-126`](file:///C:/D_Drive/terminter01/garage/project_ideas/basketball/app/src/features/discovery/mapConfig.ts#L78-L126) รองรับการ Override ค่าผ่าน `window.__HOOPUP_CONFIG__` และ `localStorage` (เช่น `VITE_MAP_ENGINE`, `VITE_MAP_PMTILES_URL`) ต้องมั่นใจว่าไม่มีการฝังสคริปต์แก้ไขค่าคอนฟิกเหล่านี้ในแท็ก `<head>` ของ `index.html`
-- [ ] **4. กลไกการเพิกถอน Token และการระงับบัญชีผู้ใช้ (Token Revocation / Ban Mechanism - จาก SEC1 ข้อ 4)**:
-  - **ข้อจำกัดปัจจุบัน**: Access Token (JWT) มีอายุ 1 ชั่วโมง (3,600 วินาที) โดยไม่มี Refresh Token หรือบัญชีเพิกถอน (Revocation List / Blacklist) และการออกจากระบบ (Logout) เกิดขึ้นเฉพาะที่ฝั่งไคลเอนต์เท่านั้น
-  - **ความเสี่ยง**: Route ทางธุรกิจส่วนใหญ่ (`/rpc/*`, `/courts`, `/messages*`) ตรวจสอบเฉพาะความถูกต้องของลายเซ็นและเวลาหมดอายุของ JWT โดย**ไม่ได้คิวรีฐานข้อมูลซ้ำว่าบัญชียังมีอยู่จริงหรือถูกแบนหรือไม่** (มีเพียง `/auth/me` เท่านั้นที่คิวรีฐานข้อมูล) หากแอดมินทำการแบนหรือลบผู้ใช้ในตาราง `app_auth.users` บัญชีนั้นจะยังคงเรียกใช้งาน API ได้ต่อไปจนกว่าโทเค็นจะหมดอายุ (ไม่เกิน 60 นาที)
-  - **การดำเนินการ**: เจ้าของโปรเจกต์ต้องตัดสินใจเชิงนโยบาย (Owner Decision) ว่ายอมรับพฤติกรรมนี้ในขั้น MVP หรือต้องการให้เพิ่มกลไกเช็กสถานะการแบนใน hook หรือลดอายุ Token ลงก่อนเปิดบริการสาธารณะ
-- [ ] **5. ระบบยืนยันตัวตนทางอีเมล (Email Verification Needs Provider - จาก SEC1 ข้อ 6, 7)**:
-  - **การตรวจสอบโค้ดจริง**: ตรวจสอบใน [`backend/server/src/routes/auth.js:17-89`](file:///C:/D_Drive/terminter01/garage/project_ideas/basketball/backend/server/src/routes/auth.js#L17-L89) พบว่า **ระบบยังไม่มีการส่งอีเมลยืนยันตัวตน (Email Verification / OTP)** เมื่อผู้ใช้กรอกอีเมลและรหัสผ่าน ระบบจะบันทึกลงฐานข้อมูลและออก Access Token ให้เข้าใช้งานได้ทันที
-  - **สิ่งที่ต้องตระหนัก**: การเปิดระบบยืนยันตัวตนทางอีเมลจำเป็นต้องสมัครและเชื่อมต่อบริการส่งอีเมลภายนอก (Email Service Provider เช่น Resend, SendGrid, Amazon SES) ซึ่งมีภาระค่าใช้จ่ายและการบริหารจัดการบัญชี เจ้าของระบบต้องรับทราบว่าผู้ใช้อาจใช้อีเมลที่ไม่มีอยู่จริงสมัครได้ในระยะ MVP และต้องควบคุมตัวจำกัดอัตรา `AUTH_RATE_LIMIT_MAX` ไว้อย่างเข้มงวด
-- [ ] **6. การมอนิเตอร์ประสิทธิภาพ `/places/search` แบบ Linear Scan บน Thread เดียว**:
-  - **การตรวจสอบโค้ดจริง**: ดัชนี `PlacesSearchIndex` ([`backend/server/src/routes/placesSearch.js`](file:///C:/D_Drive/terminter01/garage/project_ideas/basketball/backend/server/src/routes/placesSearch.js)) ค้นหาสถานที่ด้วยการทำ Linear Scan ตรวจสอบชื่อทั้ง 156,943 แห่งบน Event Loop Thread เดียวของ Node.js ในทุกๆ คำขอ
-  - **สิ่งที่ต้องเฝ้าระวัง**: แม้ผลการวัดผล latency จะทำได้ดีเยี่ยม (p95 ~30–47 ms) แต่หากมีการระดมยิงค้นหาเข้ามาพร้อมกันหนาแน่น (High Concurrent Traffic) อาจทำให้ Thread หลักทำงานหนักจนส่งผลกระทบต่อคำขอ API อื่นๆ
-  - **การดำเนินการ**: ผู้ดูแลระบบต้องติดตั้ง Monitoring สำหรับ Endpoint `/places/search` และทีมงานควรวางแผนทำ n-gram pre-index, In-memory Search Cache หรือย้ายการค้นหาไปประมวลผลบน Worker Thread ก่อนที่จะมีการเปิดตัวสู่สาธารณะในวงกว้าง
-- [ ] **7. การตัดสินใจเชิงนโยบายเรื่องความโปร่งใสของข้อมูลโปรไฟล์ (`height_cm` / PDPA - จาก SEC1 ข้อ 5)**:
-  - **การตรวจสอบโค้ดจริง**: ใน [`backend/server/src/routes/data.js:180-210`](file:///C:/D_Drive/terminter01/garage/project_ideas/basketball/backend/server/src/routes/data.js#L180-L210) Endpoint `/profiles/:userId` คัดเลือก 10 คอลัมน์ที่ชัดเจน ซึ่งรวมถึง `height_cm`, `skill_level`, และตำแหน่งที่ถนัด และอนุญาตให้ผู้ใช้ที่ล็อกอินทุกคนสามารถดูข้อมูลโปรไฟล์ของผู้ใช้อื่นได้ผ่าน UUID
-  - **การดำเนินการ**: เจ้าของโปรเจกต์ต้องตัดสินใจเชิงผลิตภัณฑ์และความเป็นส่วนตัว (PDPA) ว่าข้อมูลส่วนสูง (`height_cm`) ควรเปิดให้ผู้เล่นอื่นเห็นในหน้านัดหรือไม่ หรือควรซ่อน/แสดงเฉพาะเมื่อผู้ใช้ยินยอม
-- [ ] **8. กฎหมายคุ้มครองข้อมูลส่วนบุคคล (PDPA / Privacy Policy)**:
-  - **การตรวจสอบโค้ดจริง**: เอกสารข้อตกลง PDPA มีเฉพาะไฟล์ต้นแบบใน `mvp_tasks_2026-10-28/ui_lab/pdpa_consent.html` และยังไม่ได้ถูกนำเข้าสู่ React Application
-  - **การดำเนินการ**: เจ้าของโปรเจกต์ต้องจัดเตรียมนโยบายความเป็นส่วนตัวและข้อกำหนดการใช้งานที่ผ่านการตรวจสอบโดยนักกฎหมาย เพื่อนำมาติดตั้งก่อนเปิดบริการในประเทศไทยอย่างเป็นทางการ
-- [ ] **9. แผนการหมุนเวียนคีย์ความลับ (Rotate JWT_SECRET Plan)**:
+- [ ] **4. ข้อความและนัดของผู้ใช้ที่ถูกแบนยังคงแสดงอยู่ (Banned User's Sessions and Messages Stay Visible - รายการเปิดที่ต้องตระหนัก / BAN1)**:
+  - ในงาน BAN1 การสั่งระงับหรือลบบัญชีผู้ใช้ (`scripts/moderate.mjs ban` หรือ `delete`) จะทำการบล็อกไม่ให้บัญชีนั้นเรียกใช้ API ที่ยืนยันตัวตนได้อีกต่อไป และทำการ scrub ข้อมูลโปรไฟล์ (`display_name` เปลี่ยนเป็น `'ผู้ใช้ที่ถูกลบ'`, `avatar_path = null`, ซ่อนส่วนสูง)
+  - **สิ่งที่ยังคงอยู่ (Still Open / Left Untouched)**: ข้อความแชทเดิมในห้องแชท (`messages`) และเซสชันนัดเล่นที่เคยสร้างไว้ (`sessions`) ของผู้ใช้ที่ถูกแบน/ลบ จะยังคงปรากฏและแสดงผลให้สมาชิกคนอื่นเห็นได้ตามปกติ เพื่อรักษาความสมบูรณ์ของประวัติการสนทนาและไม่ให้เกิด orphaned records เจ้าของระบบต้องรับทราบและยอมรับพฤติกรรมนี้
+- [ ] **5. สิทธิ์ UPDATE ของบทบาท `hoopup_api` บนตาราง `app_auth.users` (hoopup_api Can Still UPDATE app_auth.users - ข้อจำกัดความปลอดภัยที่ยังเปิดอยู่)**:
+  - ในไฟล์ `backend/server/sql/004_own_auth.sql` บทบาทรันไทม์ `hoopup_api` ได้รับสิทธิ์ระดับตาราง `GRANT SELECT, INSERT, UPDATE ON app_auth.users TO hoopup_api;`
+  - แม้ในงาน BAN1 จะเพิกถอนสิทธิ์ตาราง audit log (`app_auth.moderation_log`) จาก `hoopup_api` แล้ว แต่สิทธิ์ `UPDATE` บนตาราง `app_auth.users` ยังคงอยู่ ซึ่งหมายความว่าหากโปรเซส API ถูกเจาะ ผู้โจมตีอาจพยายามยิงคำสั่ง SQL ทำการ UPDATE คอลัมน์ `banned_at` หรือ `deleted_at` ได้โดยตรง ในอนาคตควรพิจารณาปรับให้สิทธิ์ UPDATE จำกัดเฉพาะคอลัมน์ที่จำเป็น หรือใช้ stored procedure
+- [ ] **6. อายุของโทเค็นผู้โจมตีหลังเกิด OIDC Pre-Hijack (Attacker Token After OIDC Pre-Hijack Lives up to 1 Hour - รายการเปิดที่ต้องตระหนัก / OIDC1)**:
+  - หากผู้โจมตีแอบสมัครบัญชีด้วยอีเมลของเหยื่อ (`email_verified = false`) แล้วต่อมาเจ้าของกล่องจดหมายตัวจริงเข้ามาล็อกอินด้วย Google OIDC ระบบจะเปิดใช้กฎ Pre-Hijack Rule โดยทำการรีเซ็ต `password_hash = NULL` และปรับ `email_verified = true` ทันที ทำให้ผู้โจมตีไม่สามารถล็อกอินด้วยรหัสผ่านได้อีกต่อไป
+  - **ข้อจำกัดที่ยังเปิดอยู่**: หากผู้โจมตียังถือ Access Token (JWT) เดิมที่ออกไปก่อนหน้าการยึดคืน โทเค็นดังกล่าวจะยังคงใช้งานได้ต่อไปจนกว่าจะหมดอายุตามเวลาที่กำหนด (อายุโทเค็นสูงสุดไม่เกิน 1 ชั่วโมง) เนื่องจากระบบ JWT ปัจจุบันเป็นแบบ Stateless โดยไม่มี Token Blacklist / Revocation list
+- [ ] **7. การสะท้อนข้อความผิดพลาดของผู้ให้บริการเข้าสู่ Return URL Query (Provider Error Text Reflected in Return URL Query - รายการเปิดที่ต้องระวัง / OIDC1)**:
+  - ใน Callback Route `/auth/oidc/:provider/callback` หากกระบวนการยืนยันตัวตนล้มเหลวหรือ Provider ส่ง error กลับมา เซิร์ฟเวอร์จะทำการ Redirect ไปยัง `return_to?error=<error_text>` โดยข้อความผิดพลาดจาก Provider จะถูกสะท้อนลงใน URL query string
+  - ทีม Frontend ต้องระมัดระวังในการนำข้อความ error ดังกล่าวไปแสดงผลบนหน้าจอ โดยต้องทำการ sanitize ก่อนแสดงผลเสมอเพื่อป้องกันปัญหา Cross-Site Scripting (XSS)
+- [ ] **8. ระบบยืนยันตัวตนทางอีเมลสำหรับบัญชีรหัสผ่าน (Email Verification Needs Provider - ยังเปิดอยู่)**:
+  - **การตรวจสอบโค้ดจริง**: ใน `backend/server/src/routes/auth.js` ระบบยังไม่มีการส่งอีเมลยืนยันตัวตน (Email Verification / OTP) สำหรับการสมัครด้วยรหัสผ่าน ผู้ใช้ที่สมัครด้วยอีเมล/รหัสผ่านจะได้รับโทเค็นและเข้าใช้งานได้ทันที (`email_verified = false`)
+  - **สิ่งที่ต้องตระหนัก**: การเปิดระบบยืนยันตัวตนทางอีเมลจำเป็นต้องสมัครและเชื่อมต่อบริการส่งอีเมลภายนอก (Email Service Provider เช่น Resend, SendGrid, Amazon SES) ซึ่งมีภาระค่าใช้จ่ายและการบริหารจัดการบัญชี ในระยะปัจจุบัน ผู้ใช้สามารถเลือกล็อกอินผ่าน Google/LINE (OIDC) ที่ยืนยันอีเมลแล้วแทนได้
+- [ ] **9. ประสิทธิภาพการค้นหาสถานที่ `/places/search` และการยกระดับ SRCH2**:
+  - ได้รับการแก้ไขแล้วในงาน SRCH2 โดยยกระดับจาก Linear Scan เดิมเป็น In-Memory Bigram Candidate Index พร้อม Typed Arrays (`Map<string, Uint32Array>`) คัดกรองสถานที่ก่อนคำนวณระยะทาง
+  - ข้อจำกัดที่คงอยู่: คำค้นหาที่มีความยาว 1 ตัวอักษรยังคง fallback ไปใช้ Linear Scan ตามเดิม และการโหลดข้อมูลครั้งแรก (Cold Build) ใช้เวลาประมาณ ~871 ms
+- [ ] **10. การควบคุมการแสดงผลส่วนสูงของผู้เล่น (Height Visibility - ได้รับการแก้ไขใน HT1)**:
+  - ตาราง `public.profiles` ได้รับการเพิ่มคอลัมน์ `height_visible boolean not null default false` (ซ่อนส่วนสูงเป็นค่าเริ่มต้น / Opt-in) และ Endpoint `/profiles/:userId` ใช้ Parameterized SQL Projection โดยผู้ใช้อื่นจะเห็น `height_cm` เมื่อเจ้าของตั้งค่า `height_visible = true` เท่านั้น
+- [ ] **11. กฎหมายคุ้มครองข้อมูลส่วนบุคคล (PDPA / Privacy Policy)**:
+  - เอกสารข้อตกลง PDPA มีเฉพาะไฟล์ต้นแบบใน `mvp_tasks_2026-10-28/ui_lab/pdpa_consent.html` เจ้าของโปรเจกต์ต้องจัดเตรียมนโยบายความเป็นส่วนตัวและข้อกำหนดการใช้งานจริง เพื่อนำมาติดตั้งก่อนเปิดบริการ และใช้สำหรับยื่นขอสิทธิ์ใน Google Cloud Console และ LINE Developers Console
+- [ ] **12. แผนการหมุนเวียนคีย์ความลับ (Rotate JWT_SECRET Plan - รายการเปิดที่ต้องวางแผน)**:
   - **สิ่งที่ต้องตระหนัก**: เนื่องจาก JWT ใช้การลงนามแบบ Symmetric (HS256) การเปลี่ยนค่า `JWT_SECRET` ในไฟล์ `.env` จะส่งผลให้ Access Token ของผู้ใช้งานทุกคนที่ยังไม่หมดอายุกลายเป็นโมฆะทันที (Invalid Signature) และผู้ใช้ทุกคนจะถูกบังคับให้ออกจากระบบและต้องล็อกอินใหม่
   - **การดำเนินการ**: ผู้ดูแลระบบต้องวางแผนการหมุนเวียนคีย์ความลับ โดยกำหนดให้ดำเนินการในช่วงเวลาบำรุงรักษาระบบ (Maintenance Window) และแจ้งเตือนผู้ใช้งานล่วงหน้า
-- [ ] **10. สคริปต์สำรองข้อมูลอัตโนมัติ (Automated Backups & WAL Retention)**:
+- [ ] **13. สคริปต์สำรองข้อมูลอัตโนมัติ (Automated Backups & WAL Retention - รายการเปิดที่ต้องดำเนินการ)**:
   - ตั้งค่า Cronjob สำรองฐานข้อมูล PostgreSQL ทุกคืนทั้งสกีมา `public` และ `app_auth` และส่งออกไปจัดเก็บนอกเครื่อง (Offsite Backup เช่น S3, Cloudflare R2 หรือ SFTP):
     ```bash
-    # ตัวอย่างคำสั่ง Backup รายวัน
+    # ตัวอย่างคำสั่ง Backup รายวัน (not executed on a real server by the author)
     0 3 * * * pg_dump -U hoopup_api -h 127.0.0.1 -d postgres | gzip > /var/backups/hoopup_$(date +\%F).sql.gz
     ```
-- [ ] **11. การตรวจวัดสถานะระบบ (Monitoring & Health Check)**:
+- [ ] **14. การตรวจวัดสถานะระบบ (Monitoring & Health Check)**:
   - ตั้ง Uptime Monitor (เช่น UptimeRobot หรือ BetterStack) ยิงตรวจสอบ Endpoint `GET https://hoopup.example.com/health` ทุกๆ 1 หรือ 5 นาที
-- [ ] **12. การตรวจช่องโหว่ความปลอดภัยแพ็กเกจ (`npm audit` ก่อนทุก Release)**:
+- [ ] **15. การตรวจช่องโหว่ความปลอดภัยแพ็กเกจก่อนทุก Release (`npm audit` - ขั้นตอนบังคับ)**:
   - ต้องรันคำสั่ง `npm audit` ทั้งในโฟลเดอร์ `backend/server` และโฟลเดอร์ `app` ก่อน Deploy ทุก Release เพื่อตรวจสอบว่าไม่มีช่องโหว่ความปลอดภัยระดับ High หรือ Critical ใน dependencies
-- [ ] **13. การจัดการข้อมูลทดสอบ (Remove Demo Data)**:
+- [ ] **16. หมายเหตุการรันชุดทดสอบ Backend ใน Release Checklist (`npm test` Concurrency Note)**:
+  - ใน `backend/server/package.json` คำสั่งทดสอบถูกกำหนดเป็น `node --test --test-concurrency=2 test/**/*.test.js`
+  - **เหตุผล**: ชุดทดสอบประสิทธิภาพของ `/places` และ `/places/search` มีความอ่อนไหวต่อภาระงาน (load-sensitive assertion) การกำหนด concurrency ไว้ที่ 2 ช่วยป้องกันไม่ให้การรันเทสต์พร้อมกันหลาย suite แย่งชิงทรัพยากร CPU จนทำให้ timing assertion คลาดเคลื่อน
+- [ ] **17. การจัดการข้อมูลทดสอบ (Remove Demo Data)**:
   - ตรวจสอบว่าไม่มีบัญชีผู้เล่นทดสอบที่มีรหัสผ่านง่ายๆ หลงเหลืออยู่ในตาราง `app_auth.users`
 
 ---
@@ -810,4 +951,24 @@ curl -i -X POST https://hoopup.example.com/rpc/hoopup_list_sessions \
 **ผลลัพธ์ที่คาดหวัง**:
 - HTTP Status: `200 OK`
 - Body: `{"ok":true,"result":[ ... ]}`
+
+### 7.9 ทดสอบการเริ่มกระบวนการ OIDC Social Login (/auth/oidc/:provider/start)
+ทดสอบเริ่มกระบวนการล็อกอินผ่าน Google OIDC:
+```bash
+curl -i "https://hoopup.example.com/auth/oidc/google/start?return_to=https://hoopup.example.com/auth/callback"
+```
+**ผลลัพธ์ที่คาดหวัง**:
+- HTTP Status: `302 Found`
+- Header: `Location: https://accounts.google.com/o/oauth2/v2/auth?...`
+- Header: `Set-Cookie: hoopup_oidc=...; Path=/auth/oidc; HttpOnly; SameSite=Lax; Max-Age=600` (และมี Secure flag บน Production HTTPS)
+
+### 7.10 ทดสอบการตรวจสอบสถานะผู้ใช้ผ่าน Moderation CLI (scripts/moderate.mjs)
+ทดสอบรันคำสั่งตรวจสอบสถานะบัญชีด้วยสิทธิ์ผู้ดูแลระบบ (Admin Role):
+```bash
+DATABASE_URL="postgres://postgres:ADMIN_PASSWORD_HERE@127.0.0.1:5432/postgres" \
+  node /var/www/hoopup/backend/server/scripts/moderate.mjs status smoketest_user@example.com
+```
+**ผลลัพธ์ที่คาดหวัง**:
+- Exit code: `0`
+- Console output: แสดง `User ID`, `Email`, `Status: active`, และ `Created At`
 

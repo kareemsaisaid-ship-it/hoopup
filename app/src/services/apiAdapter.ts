@@ -1,4 +1,5 @@
 import { getErrorMessage } from './errors';
+import { mapOidcErrorMessage } from './oidcConfig';
 import {
   mapBackendCommandResult,
   mapCourtRowToCourt,
@@ -75,10 +76,22 @@ export class ApiAuthService implements AuthService {
   public isConfigured: boolean;
 
   constructor(customBaseUrl?: string) {
+    let runtimeBaseUrl: string | undefined;
+    if (typeof window !== 'undefined') {
+      const win = window as unknown as { __HOOPUP_CONFIG__?: Record<string, string | undefined> };
+      runtimeBaseUrl = win.__HOOPUP_CONFIG__?.VITE_API_BASE_URL;
+      if (!runtimeBaseUrl && window.localStorage) {
+        try {
+          runtimeBaseUrl = window.localStorage.getItem('VITE_API_BASE_URL') ?? undefined;
+        } catch {
+          // Ignore localStorage errors
+        }
+      }
+    }
     const envUrl = typeof import.meta !== 'undefined' && import.meta.env
       ? import.meta.env.VITE_API_BASE_URL
       : undefined;
-    this.baseUrl = (customBaseUrl || envUrl || '').replace(/\/+$/, '');
+    this.baseUrl = (customBaseUrl || runtimeBaseUrl || envUrl || '').replace(/\/+$/, '');
     this.isConfigured = Boolean(this.baseUrl && this.baseUrl.startsWith('http'));
 
     if (this.isConfigured) {
@@ -236,6 +249,86 @@ export class ApiAuthService implements AuthService {
       return { ok: true };
     } catch {
       return { ok: false, error: 'เกิดข้อผิดพลาดในการเชื่อมต่อ กรุณาลองใหม่อีกครั้ง' };
+    }
+  }
+
+  public async exchangeOidcCode(
+    code: string
+  ): Promise<{ ok: boolean; error?: string; errorCode?: string }> {
+    if (!this.isConfigured) {
+      return {
+        ok: false,
+        error: 'ระบบยังไม่ได้ตั้งค่า VITE_API_BASE_URL',
+        errorCode: 'not_configured',
+      };
+    }
+
+    if (!code || typeof code !== 'string') {
+      return {
+        ok: false,
+        error: mapOidcErrorMessage('missing_code'),
+        errorCode: 'missing_code',
+      };
+    }
+
+    try {
+      const res = await fetch(`${this.baseUrl}/auth/oidc/exchange`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+        body: JSON.stringify({ code }),
+      });
+
+      if (!res.ok) {
+        let errCode = 'exchange_failed';
+        try {
+          const errData = await res.json();
+          if (errData && errData.error) {
+            errCode = errData.error;
+          }
+        } catch {
+          // ignore json parse error
+        }
+        return {
+          ok: false,
+          error: mapOidcErrorMessage(errCode),
+          errorCode: errCode,
+        };
+      }
+
+      const data = await res.json();
+      if (!data.accessToken) {
+        return {
+          ok: false,
+          error: 'ไม่พบ Access Token จากเซิร์ฟเวอร์',
+          errorCode: 'invalid_response',
+        };
+      }
+
+      this.token = data.accessToken;
+      safeSetSessionToken(this.token);
+
+      if (data.user) {
+        this.currentUser = createFallbackProfile(data.user.id, data.user.email);
+        this.notifySubscribers();
+      }
+
+      // Load full user profile via /auth/me
+      try {
+        await this.initAuth();
+      } catch {
+        // Fallback profile is already active
+      }
+
+      return { ok: true };
+    } catch {
+      return {
+        ok: false,
+        error: 'เกิดข้อผิดพลาดในการเชื่อมต่อ กรุณาลองใหม่อีกครั้ง',
+        errorCode: 'network_error',
+      };
     }
   }
 
