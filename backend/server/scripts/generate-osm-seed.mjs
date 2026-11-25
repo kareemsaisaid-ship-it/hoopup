@@ -58,7 +58,14 @@ function formatSqlValue(val) {
   return escapeSqlString(val);
 }
 
-export function generateSeedSql(rawCourts) {
+// Reviewed court names (same file the app uses), keyed "<osmType>:<osmId>".
+const NAME_OVERRIDES_PATH = path.join(path.dirname(INPUT_JSON_PATH), 'courtNameOverrides.json');
+
+export function loadNameOverrides(filePath = NAME_OVERRIDES_PATH) {
+  return fs.existsSync(filePath) ? JSON.parse(fs.readFileSync(filePath, 'utf8')) : {};
+}
+
+export function generateSeedSql(rawCourts, nameOverrides = loadNameOverrides()) {
   const counts = {
     total: rawCourts.length,
     excluded: 0,
@@ -81,8 +88,9 @@ export function generateSeedSql(rawCourts) {
 
     const id = generateUuidV5(`osm:${c.osmType}:${c.osmId}`);
 
-    const name = c.name && c.name.trim().length > 0
-      ? c.name.trim()
+    const sourceName = nameOverrides[`${c.osmType}:${c.osmId}`] ?? c.name;
+    const name = sourceName && sourceName.trim().length > 0
+      ? sourceName.trim()
       : `สนามบาสเกตบอล (OSM ${c.osmType} ${c.osmId})`;
 
     const address = c.address && c.address.trim().length > 0

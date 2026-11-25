@@ -1,5 +1,6 @@
 import type { Court } from './types';
 import osmCourtsRaw from '../data/osmCourtsBangkok.json';
+import courtNameOverrides from '../data/courtNameOverrides.json';
 
 export interface OsmCourtRecord {
   osmType: string;
@@ -53,8 +54,12 @@ export function osmToCourtId(osmType: string, osmId: string | number): string {
 export function loadOsmCourts(): Court[] {
   const rawList = osmCourtsRaw as OsmCourtRecord[];
 
-  // Courts with osmQuality === 'excluded' are NOT loaded (they stay in the JSON)
-  const nonExcluded = rawList.filter((item) => item.osmQuality !== 'excluded');
+  // Courts with osmQuality === 'excluded' are NOT loaded (they stay in the JSON).
+  // Reviewed names (courtNameOverrides.json) replace the OSM name; the JSON data file is generated, so it is not edited.
+  const overrides = courtNameOverrides as Record<string, string>;
+  const nonExcluded = rawList
+    .filter((item) => item.osmQuality !== 'excluded')
+    .map((item) => ({ ...item, name: overrides[`${item.osmType}:${item.osmId}`] ?? item.name }));
 
   // Sort by whether they have a name (named first), then by osmId ascending
   const sorted = [...nonExcluded].sort((a, b) => {

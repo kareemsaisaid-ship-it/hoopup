@@ -177,7 +177,9 @@ test('MAP6 bounds lock and min zoom; accessible real source pin opens OSM proven
   expect(center.lat).toBeGreaterThanOrEqual(13.45); expect(center.lat).toBeLessThanOrEqual(14.15);
   expect(center.lng).toBeGreaterThanOrEqual(100.25); expect(center.lng).toBeLessThanOrEqual(101);
   expect(await page.evaluate(() => window.__HOOPUP_MAP__!.getZoom())).toBeGreaterThanOrEqual(9);
-  const courts = JSON.parse(readFileSync('src/data/osmCourtsBangkok.json', 'utf8'));
+  const overrides: Record<string, string> = JSON.parse(readFileSync('src/data/courtNameOverrides.json', 'utf8'));
+  const courts = JSON.parse(readFileSync('src/data/osmCourtsBangkok.json', 'utf8'))
+    .map((c: { osmType: string; osmId: number; name: string | null }) => ({ ...c, name: overrides[`${c.osmType}:${c.osmId}`] ?? c.name }));
   const court = courts.find((c: { osmQuality: string; latitude: number; longitude: number }) => c.osmQuality === 'unverified' && c.latitude > 13.7 && c.latitude < 13.8 && c.longitude > 100.5 && c.longitude < 100.6);
   await setView(page, court.latitude, court.longitude, 18);
   const pin = page.getByRole('button', { name: court.name || `สนามบาสเกตบอล (OSM ${court.osmType} ${court.osmId})`, exact: true });
