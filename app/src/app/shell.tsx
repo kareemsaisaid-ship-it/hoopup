@@ -58,10 +58,12 @@ export const AppShell: React.FC<AppShellProps> = ({ children }) => {
               <span style={{ fontSize: '1.5rem', lineHeight: 1 }}>🏀</span>
               <span
                 style={{
-                  fontSize: '1.25rem',
+                  fontFamily: tokens.typography.displayFontFamily,
+                  fontSize: '1.5rem',
                   fontWeight: 800,
-                  color: tokens.colors.primary,
-                  letterSpacing: '-0.5px',
+                  lineHeight: 1,
+                  color: tokens.colors.textPrimary,
+                  letterSpacing: '0.01em',
                 }}
               >
                 HoopUp

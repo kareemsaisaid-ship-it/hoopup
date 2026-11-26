@@ -41,8 +41,8 @@ export const DemoSwitcher: React.FC = () => {
   return (
     <div
       style={{
-        backgroundColor: isDemo ? '#FFF8F3' : '#F1F5F9',
-        borderBottom: `1px solid ${isDemo ? '#FFE0CC' : '#E2E8F0'}`,
+        backgroundColor: tokens.colors.surfaceAlt,
+        borderBottom: `1px solid ${tokens.colors.borderSubtle}`,
         padding: '6px 12px',
         display: 'flex',
         alignItems: 'center',
@@ -55,7 +55,7 @@ export const DemoSwitcher: React.FC = () => {
       <div style={{ display: 'flex', alignItems: 'center', gap: '6px', flex: 1, overflow: 'hidden' }}>
         <span
           style={{
-            backgroundColor: isDemo ? '#FF6B00' : '#3B82F6',
+            backgroundColor: isDemo ? '#FF5B1F' : '#3B82F6',
             color: '#FFFFFF',
             padding: '2px 6px',
             borderRadius: '4px',
@@ -76,9 +76,9 @@ export const DemoSwitcher: React.FC = () => {
               fontSize: '0.75rem',
               padding: '6px 8px',
               borderRadius: '6px',
-              border: '1px solid #CBD5E1',
-              backgroundColor: '#FFFFFF',
-              color: '#0F172A',
+              border: '1px solid #3A342C',
+              backgroundColor: '#1F1C18',
+              color: '#F4EFE6',
               fontWeight: 500,
               maxWidth: '160px',
               minHeight: '44px',
@@ -118,12 +118,12 @@ export const DemoSwitcher: React.FC = () => {
             aria-label="รีเซ็ตข้อมูลทดสอบทั้งหมด"
             style={{
               background: 'none',
-              border: '1px solid #CBD5E1',
+              border: '1px solid #3A342C',
               borderRadius: '6px',
               padding: '6px 10px',
               fontSize: '0.75rem',
               cursor: 'pointer',
-              color: '#64748B',
+              color: '#B3AA9B',
               minHeight: '44px',
               minWidth: '44px',
               display: 'inline-flex',

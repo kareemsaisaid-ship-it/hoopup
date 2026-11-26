@@ -137,7 +137,7 @@ export const CreateSessionPage: React.FC = () => {
         >
           ‹ ย้อนกลับ
         </button>
-        <h2 className="sessions-title">สร้างห้องหาคน (Create Session)</h2>
+        <h2 className="sessions-title">สร้างห้องหาคน</h2>
         <div style={{ width: '40px' }} />
       </div>
 

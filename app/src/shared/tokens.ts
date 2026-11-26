@@ -1,32 +1,32 @@
 export const tokens = {
   colors: {
     // Brand Primary (Mapped to CSS variables)
-    primary: 'var(--color-primary, #FF6B00)',
-    primaryHover: 'var(--color-primary-hover, #E05E00)',
-    primaryLight: 'var(--color-primary-light, rgba(255, 107, 0, 0.15))',
-    primaryGlow: 'var(--color-primary-glow, rgba(255, 107, 0, 0.35))',
-    primaryDark: 'var(--color-primary-hover, #C75100)',
+    primary: 'var(--color-primary, #FF5B1F)',
+    primaryHover: 'var(--color-primary-hover, #E84A10)',
+    primaryLight: 'var(--color-primary-light, rgba(255, 91, 31, 0.15))',
+    primaryGlow: 'var(--color-primary-glow, rgba(255, 91, 31, 0.3))',
+    primaryDark: 'var(--color-primary-hover, #C23D0C)',
 
-    // Dark Theme Surfaces
-    bg: '#0B0F19',
-    background: '#0B0F19',
-    surface: '#151D2A',
-    surfaceHover: '#1C2738',
-    surfaceAlt: '#0F1622',
-    headerBg: '#0F172A',
+    // Court-night surfaces (warm ink, not slate)
+    bg: '#14120F',
+    background: '#14120F',
+    surface: '#1F1C18',
+    surfaceHover: '#28241F',
+    surfaceAlt: '#191612',
+    headerBg: '#0F0D0B',
 
     // Borders
-    border: '#233044',
-    borderSubtle: '#192333',
-    borderFocus: 'var(--color-border-focus, #FF6B00)',
+    border: '#3A342C',
+    borderSubtle: '#2A251F',
+    borderFocus: 'var(--color-border-focus, #FF5B1F)',
 
-    // Typography & Contrast
-    textPrimary: '#F8FAFC',
-    textSecondary: '#94A3B8',
-    textMuted: '#64748B',
-    textDim: '#475569',
-    textInverted: '#0F172A',
-    textOnAccent: 'var(--color-text-on-accent, #0F172A)',
+    // Typography & Contrast (chalk on ink)
+    textPrimary: '#F4EFE6',
+    textSecondary: '#B3AA9B',
+    textMuted: '#8C8477',
+    textDim: '#6B645A',
+    textInverted: '#14120F',
+    textOnAccent: 'var(--color-text-on-accent, #14120F)',
 
     // Secondary / Accent
     secondary: 'var(--color-secondary, #1E293B)',
@@ -53,7 +53,9 @@ export const tokens = {
   },
   typography: {
     fontFamily:
-      '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans Thai", Helvetica, Arial, sans-serif',
+      '"Noto Sans Thai", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
+    displayFontFamily:
+      '"Barlow Condensed", "Noto Sans Thai", -apple-system, BlinkMacSystemFont, sans-serif',
     fontSize: {
       xs: '0.75rem', // 12px
       sm: '0.875rem', // 14px

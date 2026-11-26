@@ -98,7 +98,6 @@ export const Button: React.FC<ButtonProps> = ({
     width: fullWidth ? '100%' : 'auto',
     minHeight: '44px',
     minWidth: '44px',
-    outline: 'none',
     boxSizing: 'border-box',
     userSelect: 'none',
     ...getVariantStyles(),

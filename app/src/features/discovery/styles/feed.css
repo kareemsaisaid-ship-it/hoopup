@@ -1,0 +1,328 @@
+/* ==========================================================================
+   Feed — "scoreboard" direction
+   Court-side scorecard: condensed numerals for time and seats, chalk-white
+   slots for players, rim orange only where something is still needed.
+   ========================================================================== */
+
+.feed {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding-bottom: 24px;
+  min-width: 0;
+}
+
+/* ---- Header ---------------------------------------------------------- */
+
+.feed-head {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.feed-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 2.5rem;
+  line-height: 0.95;
+  letter-spacing: -0.005em;
+  color: var(--color-text-primary);
+}
+
+.feed-create {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  min-height: 52px;
+  border: 0;
+  border-radius: 4px;
+  background: var(--color-primary);
+  color: var(--color-text-on-accent);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.3rem;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+}
+
+.feed-create:hover {
+  background: var(--color-primary-hover);
+}
+
+/* ---- Filters --------------------------------------------------------- */
+
+.feed-more summary {
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  color: var(--color-text-secondary);
+  font-weight: 600;
+  font-size: var(--font-sm);
+  cursor: pointer;
+  list-style: none;
+}
+
+.feed-more summary::-webkit-details-marker {
+  display: none;
+}
+
+.feed-more[open] .feed-filters {
+  margin-top: 8px;
+}
+
+
+.feed-chips {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding-bottom: 2px;
+}
+
+.feed-chips::-webkit-scrollbar {
+  display: none;
+}
+
+.feed-chip {
+  flex: 0 0 auto;
+  min-height: 44px;
+  padding: 0 14px;
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  background: transparent;
+  color: var(--color-text-secondary);
+  font-weight: 600;
+  font-size: var(--font-sm);
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.feed-chip[aria-pressed="true"] {
+  background: var(--color-text-primary);
+  border-color: var(--color-text-primary);
+  color: var(--color-text-inverted);
+}
+
+.feed-filters {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.feed-filters-wide {
+  grid-column: 1 / -1;
+}
+
+/* ---- Results --------------------------------------------------------- */
+
+.feed-count {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--color-border-subtle);
+}
+
+.feed-count-num {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.75rem;
+  line-height: 1;
+  color: var(--color-text-primary);
+  font-variant-numeric: tabular-nums;
+}
+
+.feed-count-label {
+  font-size: var(--font-sm);
+  color: var(--color-text-secondary);
+}
+
+.feed-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* ---- Session card (scorecard) ---------------------------------------- */
+
+.sc {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  padding: 16px;
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  background: var(--color-surface);
+  color: var(--color-text-primary);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.sc:hover {
+  border-color: var(--color-text-dim);
+  background: var(--color-surface-hover);
+}
+
+.sc:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 3px;
+}
+
+.sc-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.sc-time {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.2rem;
+  line-height: 1;
+  color: var(--color-text-primary);
+  font-variant-numeric: tabular-nums;
+}
+
+.sc-time.is-now {
+  color: var(--color-primary);
+}
+
+.sc-format {
+  padding: 2px 8px;
+  border: 1px solid var(--color-border);
+  border-radius: 2px;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.95rem;
+  letter-spacing: 0.04em;
+  color: var(--color-text-secondary);
+}
+
+.sc-title {
+  margin: 0;
+  font-size: 1.0625rem;
+  font-weight: 700;
+  line-height: 1.35;
+  color: var(--color-text-primary);
+}
+
+.sc-court {
+  margin: 0;
+  font-size: var(--font-sm);
+  color: var(--color-text-secondary);
+}
+
+.sc-body {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.sc-missing {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.sc-missing-num {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 3.5rem;
+  line-height: 0.85;
+  color: var(--color-primary);
+  font-variant-numeric: tabular-nums;
+}
+
+.sc-missing-num.is-full {
+  color: var(--color-text-muted);
+}
+
+.sc-missing-label {
+  font-size: var(--font-sm);
+  color: var(--color-text-secondary);
+}
+
+.sc-slots {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.sc-slot {
+  width: 20px;
+  height: 20px;
+  border: 1.5px dashed var(--color-text-dim);
+  border-radius: 2px;
+}
+
+.sc-slot.is-taken {
+  border: 1.5px solid var(--color-text-primary);
+  background: var(--color-text-primary);
+}
+
+.sc-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--color-border-subtle);
+  font-size: var(--font-sm);
+  color: var(--color-text-secondary);
+}
+
+.sc-foot-meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px 14px;
+  min-width: 0;
+}
+
+.sc-skill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.sc-skill-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.sc-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.sc-status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* ---- Reduced motion -------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .sc,
+  .feed-create {
+    transition: none;
+  }
+}

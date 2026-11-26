@@ -19,7 +19,6 @@ export const SELECTORS = {
   feed: {
     searchInput: '[data-testid="feed-search-input"]',
     courtFilter: '[data-testid="feed-court-filter"]',
-    teamSizeFilter: '[data-testid="feed-teamsize-filter"]',
     levelFilter: '[data-testid="feed-level-filter"]',
     sessionCard: (sessionId: string) => `[data-testid="session-card-${sessionId}"]`,
     anySessionCard: '[data-testid^="session-card-"]',

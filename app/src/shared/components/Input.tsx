@@ -5,6 +5,8 @@ export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> 
   label?: string;
   error?: string;
   helperText?: string;
+  /** Element rendered inside the right edge of the field (e.g. show/hide password). */
+  endAdornment?: React.ReactNode;
   'data-testid'?: string;
 }
 
@@ -12,6 +14,7 @@ export const Input: React.FC<InputProps> = ({
   label,
   error,
   helperText,
+  endAdornment,
   id,
   style,
   'data-testid': testId,
@@ -19,6 +22,8 @@ export const Input: React.FC<InputProps> = ({
 }) => {
   const generatedId = React.useId();
   const inputId = id || props.name || generatedId;
+  const messageId = `${inputId}-message`;
+  const hasMessage = Boolean(error || helperText);
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', width: '100%' }}>
@@ -34,33 +39,51 @@ export const Input: React.FC<InputProps> = ({
           {label}
         </label>
       )}
-      <input
-        id={inputId}
-        data-testid={testId}
-        style={{
-          width: '100%',
-          padding: '10px 14px',
-          fontSize: tokens.typography.fontSize.sm,
-          fontFamily: tokens.typography.fontFamily,
-          borderRadius: tokens.radius.md,
-          border: `1.5px solid ${error ? tokens.colors.status.cancelled : tokens.colors.border}`,
-          backgroundColor: tokens.colors.surface,
-          color: tokens.colors.textPrimary,
-          outline: 'none',
-          minHeight: '44px',
-          boxSizing: 'border-box',
-          transition: 'border-color 0.15s ease',
-          ...style,
-        }}
-        {...props}
-      />
+      <div style={{ position: 'relative', width: '100%' }}>
+        <input
+          id={inputId}
+          data-testid={testId}
+          aria-invalid={error ? true : undefined}
+          aria-describedby={hasMessage ? messageId : undefined}
+          style={{
+            width: '100%',
+            padding: '10px 14px',
+            paddingRight: endAdornment ? '52px' : '14px',
+            fontSize: tokens.typography.fontSize.sm,
+            fontFamily: tokens.typography.fontFamily,
+            borderRadius: tokens.radius.md,
+            border: `1.5px solid ${error ? tokens.colors.status.cancelled : tokens.colors.border}`,
+            backgroundColor: tokens.colors.surface,
+            color: tokens.colors.textPrimary,
+            minHeight: '44px',
+            boxSizing: 'border-box',
+            transition: 'border-color 0.15s ease',
+            ...style,
+          }}
+          {...props}
+        />
+        {endAdornment && (
+          <div
+            style={{
+              position: 'absolute',
+              top: 0,
+              right: 0,
+              bottom: 0,
+              display: 'flex',
+              alignItems: 'center',
+            }}
+          >
+            {endAdornment}
+          </div>
+        )}
+      </div>
       {error && (
-        <span style={{ fontSize: tokens.typography.fontSize.xs, color: tokens.colors.status.cancelled }}>
+        <span id={messageId} style={{ fontSize: tokens.typography.fontSize.xs, color: tokens.colors.status.cancelled }}>
           {error}
         </span>
       )}
       {!error && helperText && (
-        <span style={{ fontSize: tokens.typography.fontSize.xs, color: tokens.colors.textSecondary }}>
+        <span id={messageId} style={{ fontSize: tokens.typography.fontSize.xs, color: tokens.colors.textSecondary }}>
           {helperText}
         </span>
       )}
@@ -114,7 +137,6 @@ export const Select: React.FC<SelectProps> = ({
           border: `1.5px solid ${error ? tokens.colors.status.cancelled : tokens.colors.border}`,
           backgroundColor: tokens.colors.surface,
           color: tokens.colors.textPrimary,
-          outline: 'none',
           minHeight: '44px',
           boxSizing: 'border-box',
           cursor: 'pointer',
@@ -182,7 +204,6 @@ export const Textarea: React.FC<TextareaProps> = ({
           border: `1.5px solid ${error ? tokens.colors.status.cancelled : tokens.colors.border}`,
           backgroundColor: tokens.colors.surface,
           color: tokens.colors.textPrimary,
-          outline: 'none',
           boxSizing: 'border-box',
           minHeight: '80px',
           resize: 'vertical',

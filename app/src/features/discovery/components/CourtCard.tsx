@@ -1,6 +1,7 @@
 import React from 'react';
 import type { Court } from '../../../services';
 import { Badge, Button } from '../../../shared';
+import { tokens } from '../../../shared/tokens';
 
 export interface CourtCardProps {
   court: Court;
@@ -59,12 +60,12 @@ export const CourtCard: React.FC<CourtCardProps> = ({
       data-testid="court-card"
       onClick={onSelect}
       style={{
-        backgroundColor: isSelected ? '#FFF8F3' : '#FFFFFF',
+        backgroundColor: isSelected ? tokens.colors.surfaceAlt : tokens.colors.surface,
         borderRadius: '16px',
         padding: '16px',
-        border: `1.5px solid ${isSelected ? '#FF6B00' : '#E2E8F0'}`,
+        border: `1.5px solid ${isSelected ? tokens.colors.primary : tokens.colors.borderSubtle}`,
         boxShadow: isSelected
-          ? '0 4px 12px rgba(255, 107, 0, 0.12)'
+          ? `0 4px 12px ${tokens.colors.primaryLight}`
           : '0 2px 6px rgba(0, 0, 0, 0.04)',
         display: 'flex',
         flexDirection: 'column',
@@ -88,7 +89,7 @@ export const CourtCard: React.FC<CourtCardProps> = ({
                 margin: 0,
                 fontSize: '1.05rem',
                 fontWeight: 700,
-                color: '#0F172A',
+                color: tokens.colors.textPrimary,
               }}
             >
               {court.name}
@@ -105,7 +106,7 @@ export const CourtCard: React.FC<CourtCardProps> = ({
             )}
           </div>
           {court.address ? (
-            <div style={{ fontSize: '0.85rem', color: '#64748B' }}>
+            <div style={{ fontSize: '0.85rem', color: tokens.colors.textSecondary }}>
               📍 {court.address}
             </div>
           ) : (
@@ -209,11 +210,11 @@ export const CourtCard: React.FC<CourtCardProps> = ({
         <div
           style={{
             fontSize: '0.8rem',
-            color: '#64748B',
+            color: tokens.colors.textSecondary,
             display: 'flex',
             alignItems: 'center',
             gap: '4px',
-            backgroundColor: '#F8FAFC',
+            backgroundColor: tokens.colors.surfaceAlt,
             padding: '6px 10px',
             borderRadius: '8px',
           }}

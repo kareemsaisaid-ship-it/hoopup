@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { DEMO_USERS } from '../services/mockAdapter';
 import { useAppServices } from '../services';
 import { Button, Card, Input } from '../shared';
+import { tokens } from '../shared/tokens';
 
 function validateEmailFormat(email: string): { valid: boolean; error?: string } {
   const trimmed = email.trim();
@@ -35,6 +36,51 @@ function validatePasswordFormat(password: string): { valid: boolean; error?: str
   return { valid: true };
 }
 
+type AuthMode = 'signin' | 'signup';
+type FieldErrors = { displayName?: string; email?: string; password?: string };
+
+const FIELD_IDS = {
+  displayName: 'login-display-name',
+  email: 'login-email',
+  password: 'login-password',
+} as const;
+
+const SKILL_LABELS: Record<string, string> = {
+  casual: 'ชิลๆ',
+  regular: 'เล่นประจำ',
+  competitive: 'จริงจัง',
+};
+
+// 16px stops iOS Safari from zooming into the field on focus.
+const fieldStyle: React.CSSProperties = { fontSize: '1rem' };
+
+const EyeIcon: React.FC<{ off?: boolean }> = ({ off }) => (
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z" />
+    <circle cx="12" cy="12" r="3" />
+    {off && <path d="M3 3l18 18" />}
+  </svg>
+);
+
+const AlertIcon: React.FC = () => (
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" style={{ flexShrink: 0, marginTop: '1px' }}>
+    <circle cx="12" cy="12" r="10" />
+    <path d="M12 8v4M12 16h.01" />
+  </svg>
+);
+
+const linkButtonStyle: React.CSSProperties = {
+  background: 'none',
+  border: 'none',
+  color: tokens.colors.primary,
+  cursor: 'pointer',
+  fontWeight: 600,
+  fontSize: 'inherit',
+  fontFamily: 'inherit',
+  minHeight: '44px',
+  padding: '0 8px',
+};
+
 export const LoginPage: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -42,15 +88,38 @@ export const LoginPage: React.FC = () => {
 
   const isConnectedApi = connectedModeType === 'connected-api';
 
-  // Connected API tab mode: 'signin' | 'signup'
-  const [authMode, setAuthMode] = useState<'signin' | 'signup'>('signin');
+  const [authMode, setAuthMode] = useState<AuthMode>('signin');
   const [displayName, setDisplayName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
 
   const destination = (location.state as any)?.from?.pathname || '/';
+
+  const switchMode = (mode: AuthMode) => {
+    setAuthMode(mode);
+    setError(null);
+    setFieldErrors({});
+  };
+
+  const clearFieldError = (field: keyof FieldErrors) => {
+    if (fieldErrors[field]) setFieldErrors((prev) => ({ ...prev, [field]: undefined }));
+  };
+
+  const validateFields = (): FieldErrors => {
+    const next: FieldErrors = {};
+    const emailCheck = validateEmailFormat(email);
+    if (!emailCheck.valid) next.email = emailCheck.error || 'กรุณากรอกอีเมลให้ถูกต้อง';
+    const pwCheck = validatePasswordFormat(password);
+    if (!pwCheck.valid) next.password = pwCheck.error || 'รหัสผ่านไม่ถูกต้องตามเงื่อนไข';
+    if (authMode === 'signup' && displayName.trim().length > 60) {
+      next.displayName = 'ชื่อที่ใช้แสดงต้องไม่เกิน 60 ตัวอักษร';
+    }
+    return next;
+  };
 
   const handleDemoLogin = async (demoUserId: string) => {
     setLoading(true);
@@ -68,21 +137,12 @@ export const LoginPage: React.FC = () => {
     e.preventDefault();
     setError(null);
 
-    // Client-side validations matching backend constraints
-    const emailCheck = validateEmailFormat(email);
-    if (!emailCheck.valid) {
-      setError(emailCheck.error || 'กรุณากรอกอีเมลให้ถูกต้อง');
-      return;
-    }
-
-    const pwCheck = validatePasswordFormat(password);
-    if (!pwCheck.valid) {
-      setError(pwCheck.error || 'รหัสผ่านไม่ถูกต้องตามเงื่อนไข');
-      return;
-    }
-
-    if (authMode === 'signup' && displayName.trim().length > 60) {
-      setError('ชื่อที่ใช้แสดงต้องไม่เกิน 60 ตัวอักษร');
+    // Client-side validations matching backend constraints, shown next to each field
+    const errors = validateFields();
+    setFieldErrors(errors);
+    const firstInvalid = (['displayName', 'email', 'password'] as const).find((f) => errors[f]);
+    if (firstInvalid) {
+      document.getElementById(FIELD_IDS[firstInvalid])?.focus();
       return;
     }
 
@@ -136,14 +196,68 @@ export const LoginPage: React.FC = () => {
     }
   };
 
+  const passwordToggle = (
+    <button
+      type="button"
+      onClick={() => setShowPassword((v) => !v)}
+      aria-label={showPassword ? 'ซ่อนรหัสผ่าน' : 'แสดงรหัสผ่าน'}
+      aria-pressed={showPassword}
+      aria-controls={FIELD_IDS.password}
+      style={{
+        width: '44px',
+        height: '44px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        background: 'none',
+        border: 'none',
+        borderRadius: tokens.radius.md,
+        color: tokens.colors.textSecondary,
+        cursor: 'pointer',
+      }}
+    >
+      <EyeIcon off={showPassword} />
+    </button>
+  );
+
+  const heading = !isConnectedApi
+    ? 'เข้าสู่ HoopUp'
+    : authMode === 'signup'
+      ? 'สร้างบัญชีใหม่'
+      : 'ยินดีต้อนรับกลับมา';
+
+  const tabStyle = (active: boolean): React.CSSProperties => ({
+    flex: 1,
+    minHeight: '44px',
+    background: active ? tokens.colors.surfaceHover : 'transparent',
+    border: 'none',
+    borderRadius: tokens.radius.sm,
+    color: active ? tokens.colors.textPrimary : tokens.colors.textSecondary,
+    fontWeight: active ? 700 : 500,
+    fontSize: '0.95rem',
+    fontFamily: 'inherit',
+    cursor: 'pointer',
+    boxShadow: active ? `inset 0 -2px 0 ${tokens.colors.primary}` : 'none',
+    transition: 'background-color 0.15s ease, color 0.15s ease',
+  });
+
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', padding: '16px 0' }}>
-      <div style={{ textAlign: 'center' }}>
-        <h1 style={{ margin: '0 0 8px 0', fontSize: '1.75rem', fontWeight: 800, color: '#FF6B00' }}>
-          HoopUp 🏀
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', padding: '24px 0 8px' }}>
+      <div>
+        <h1
+          style={{
+            margin: '0 0 6px 0',
+            fontFamily: tokens.typography.displayFontFamily,
+            fontSize: '2rem',
+            fontWeight: 800,
+            lineHeight: 1.15,
+            color: tokens.colors.textPrimary,
+          }}
+        >
+          {heading}
         </h1>
-        <p style={{ margin: 0, fontSize: '0.9rem', color: '#64748B' }}>
-          แพลตฟอร์มรวมพลคนรักบาสเกตบอล ชวนเล่น นัดแข่ง ทันใจ
+        <p style={{ margin: 0, fontSize: '1rem', lineHeight: 1.5, color: tokens.colors.textSecondary }}>
+          หาคนเติมทีม นัดเล่นบาสที่สนามใกล้คุณ
         </p>
       </div>
 
@@ -152,190 +266,189 @@ export const LoginPage: React.FC = () => {
           data-testid="auth-error-banner"
           role="alert"
           style={{
-            padding: '12px 16px',
-            backgroundColor: '#FEF2F2',
-            color: '#B91C1C',
-            borderRadius: '10px',
-            fontSize: '0.85rem',
-            border: '1px solid #FECACA',
+            display: 'flex',
+            gap: '10px',
+            alignItems: 'flex-start',
+            padding: '12px 14px',
+            backgroundColor: tokens.colors.status.errorBg,
+            color: '#FCA5A5',
+            borderRadius: tokens.radius.md,
+            fontSize: '0.875rem',
+            lineHeight: 1.5,
+            border: '1px solid rgba(239, 68, 68, 0.4)',
           }}
         >
-          {error}
+          <AlertIcon />
+          <span>{error}</span>
         </div>
       )}
 
-      {/* Connected API Mode: Primary Real Email/Password Form */}
       {isConnectedApi ? (
-        <Card style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-          {/* Toggle Sign In / Sign Up */}
+        <Card style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
           <div
+            role="tablist"
+            aria-label="เลือกการเข้าใช้งาน"
             style={{
               display: 'flex',
-              borderBottom: '1px solid #E2E8F0',
-              paddingBottom: '8px',
-              gap: '12px',
+              gap: '4px',
+              padding: '4px',
+              backgroundColor: tokens.colors.surfaceAlt,
+              borderRadius: tokens.radius.md,
+              border: `1px solid ${tokens.colors.borderSubtle}`,
             }}
           >
             <button
               type="button"
+              role="tab"
+              id="auth-tab-signin"
+              aria-selected={authMode === 'signin'}
+              aria-controls="auth-panel"
               data-testid="auth-tab-signin"
-              onClick={() => {
-                setAuthMode('signin');
-                setError(null);
-              }}
-              style={{
-                background: 'none',
-                border: 'none',
-                borderBottom: authMode === 'signin' ? '2.5px solid #FF6B00' : 'none',
-                color: authMode === 'signin' ? '#FF6B00' : '#64748B',
-                fontWeight: authMode === 'signin' ? 700 : 500,
-                fontSize: '0.95rem',
-                padding: '6px 12px',
-                cursor: 'pointer',
-              }}
+              onClick={() => switchMode('signin')}
+              style={tabStyle(authMode === 'signin')}
             >
               เข้าสู่ระบบ
             </button>
             <button
               type="button"
+              role="tab"
+              id="auth-tab-signup"
+              aria-selected={authMode === 'signup'}
+              aria-controls="auth-panel"
               data-testid="auth-tab-signup"
-              onClick={() => {
-                setAuthMode('signup');
-                setError(null);
-              }}
-              style={{
-                background: 'none',
-                border: 'none',
-                borderBottom: authMode === 'signup' ? '2.5px solid #FF6B00' : 'none',
-                color: authMode === 'signup' ? '#FF6B00' : '#64748B',
-                fontWeight: authMode === 'signup' ? 700 : 500,
-                fontSize: '0.95rem',
-                padding: '6px 12px',
-                cursor: 'pointer',
-              }}
+              onClick={() => switchMode('signup')}
+              style={tabStyle(authMode === 'signup')}
             >
               สมัครสมาชิก
             </button>
           </div>
 
           <form
+            id="auth-panel"
+            role="tabpanel"
+            aria-labelledby={authMode === 'signup' ? 'auth-tab-signup' : 'auth-tab-signin'}
             onSubmit={handleConnectedApiSubmit}
-            style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}
+            noValidate
+            style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}
           >
             {authMode === 'signup' && (
               <Input
-                label="ชื่อที่ใช้แสดง"
+                id={FIELD_IDS.displayName}
+                label="ชื่อที่ใช้แสดง (ไม่บังคับ)"
                 type="text"
                 placeholder="เช่น ก้อง มือชู้ต"
+                autoComplete="nickname"
                 value={displayName}
-                onChange={(e) => setDisplayName(e.target.value)}
+                onChange={(e) => {
+                  setDisplayName(e.target.value);
+                  clearFieldError('displayName');
+                }}
                 maxLength={60}
+                error={fieldErrors.displayName}
+                helperText="ชื่อนี้จะแสดงให้เพื่อนร่วมทีมเห็น"
+                style={fieldStyle}
                 data-testid="auth-name-input"
               />
             )}
 
             <Input
+              id={FIELD_IDS.email}
               label="อีเมล"
               type="email"
+              inputMode="email"
+              autoComplete="email"
+              autoCapitalize="none"
+              spellCheck={false}
               placeholder="name@example.com"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(e) => {
+                setEmail(e.target.value);
+                clearFieldError('email');
+              }}
+              onBlur={() => {
+                if (!email) return;
+                const check = validateEmailFormat(email);
+                setFieldErrors((prev) => ({ ...prev, email: check.valid ? undefined : check.error }));
+              }}
               required
+              error={fieldErrors.email}
+              style={fieldStyle}
               data-testid="auth-email-input"
             />
 
             <Input
+              id={FIELD_IDS.password}
               label="รหัสผ่าน"
-              type="password"
-              placeholder="รหัสผ่านอย่างน้อย 10 ตัวอักษร"
+              type={showPassword ? 'text' : 'password'}
+              autoComplete={authMode === 'signup' ? 'new-password' : 'current-password'}
+              autoCapitalize="none"
+              spellCheck={false}
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={(e) => {
+                setPassword(e.target.value);
+                clearFieldError('password');
+              }}
+              onBlur={() => {
+                if (!password || authMode !== 'signup') return;
+                const check = validatePasswordFormat(password);
+                setFieldErrors((prev) => ({ ...prev, password: check.valid ? undefined : check.error }));
+              }}
               required
+              error={fieldErrors.password}
+              helperText={authMode === 'signup' ? 'อย่างน้อย 10 ตัวอักษร' : undefined}
+              endAdornment={passwordToggle}
+              style={fieldStyle}
               data-testid="auth-password-input"
             />
 
             <Button
               type="submit"
               fullWidth
+              size="lg"
               isLoading={loading}
               data-testid="auth-submit-btn"
-              style={{ marginTop: '8px' }}
+              style={{ marginTop: '4px', fontSize: '1rem' }}
             >
-              {authMode === 'signup' ? 'สมัครสมาชิก' : 'เข้าสู่ระบบ'}
+              {authMode === 'signup' ? 'สร้างบัญชี' : 'เข้าสู่ระบบ'}
             </Button>
           </form>
 
-          <div style={{ textAlign: 'center', fontSize: '0.8rem', color: '#64748B' }}>
-            {authMode === 'signup' ? (
-              <span>
-                มีบัญชีแล้วใช่ไหม?{' '}
-                <button
-                  type="button"
-                  data-testid="auth-toggle-mode-btn"
-                  onClick={() => {
-                    setAuthMode('signin');
-                    setError(null);
-                  }}
-                  style={{
-                    background: 'none',
-                    border: 'none',
-                    color: '#FF6B00',
-                    cursor: 'pointer',
-                    fontWeight: 600,
-                  }}
-                >
-                  เข้าสู่ระบบ
-                </button>
-              </span>
-            ) : (
-              <span>
-                ยังไม่มีบัญชี?{' '}
-                <button
-                  type="button"
-                  data-testid="auth-toggle-mode-btn"
-                  onClick={() => {
-                    setAuthMode('signup');
-                    setError(null);
-                  }}
-                  style={{
-                    background: 'none',
-                    border: 'none',
-                    color: '#FF6B00',
-                    cursor: 'pointer',
-                    fontWeight: 600,
-                  }}
-                >
-                  สมัครสมาชิกใหม่
-                </button>
-              </span>
-            )}
+          <div style={{ textAlign: 'center', fontSize: '0.875rem', color: tokens.colors.textSecondary }}>
+            {authMode === 'signup' ? 'มีบัญชีแล้ว?' : 'ยังไม่มีบัญชี?'}
+            <button
+              type="button"
+              data-testid="auth-toggle-mode-btn"
+              onClick={() => switchMode(authMode === 'signup' ? 'signin' : 'signup')}
+              style={linkButtonStyle}
+            >
+              {authMode === 'signup' ? 'เข้าสู่ระบบ' : 'สมัครสมาชิกใหม่'}
+            </button>
           </div>
         </Card>
       ) : (
-        /* Demo Mode (default, looks exactly as before) */
+        /* Demo Mode (default) */
         <>
-          {/* Demo Users Card */}
-          <Card style={{ display: 'flex', flexDirection: 'column', gap: '14px', border: '1.5px solid #FF6B00' }}>
+          <Card style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
             <div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <h2 style={{ margin: 0, fontSize: '1.05rem', fontWeight: 700, color: tokens.colors.textPrimary }}>
+                  ทดลองใช้ด้วยบัญชีตัวอย่าง
+                </h2>
                 <span
                   style={{
-                    backgroundColor: '#FF6B00',
-                    color: '#FFFFFF',
-                    fontSize: '0.7rem',
+                    backgroundColor: tokens.colors.primaryLight,
+                    color: tokens.colors.primary,
+                    fontSize: '0.75rem',
                     fontWeight: 700,
-                    padding: '2px 6px',
-                    borderRadius: '4px',
+                    padding: '2px 8px',
+                    borderRadius: tokens.radius.full,
                   }}
                 >
-                  แนะนำ
+                  Demo
                 </span>
-                <h3 style={{ margin: 0, fontSize: '1.05rem', fontWeight: 700 }}>
-                  เข้าสู่ระบบด้วยบัญชีทดสอบ (Demo Mode)
-                </h3>
               </div>
-              <p style={{ margin: '4px 0 0 0', fontSize: '0.8rem', color: '#64748B' }}>
-                คลิกเลือกผู้เล่นจำลองเพื่อทดลองใช้งานหรือทำ E2E testing ได้ทันที:
+              <p style={{ margin: '4px 0 0 0', fontSize: '0.875rem', lineHeight: 1.5, color: tokens.colors.textSecondary }}>
+                เลือกผู้เล่นเพื่อเข้าใช้งานได้ทันที ไม่ต้องสมัคร
               </p>
             </div>
 
@@ -343,73 +456,89 @@ export const LoginPage: React.FC = () => {
               {DEMO_USERS.map((user) => (
                 <Button
                   key={user.id}
-                  variant="outline"
+                  variant="ghost"
                   onClick={() => handleDemoLogin(user.id)}
                   disabled={loading}
-                  style={{ justifyContent: 'space-between', padding: '12px 16px' }}
+                  style={{
+                    justifyContent: 'flex-start',
+                    gap: '12px',
+                    padding: '10px 12px',
+                    minHeight: '56px',
+                    textAlign: 'left',
+                    backgroundColor: tokens.colors.surfaceAlt,
+                    border: `1px solid ${tokens.colors.border}`,
+                  }}
                 >
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    <span style={{ fontSize: '1.2rem' }}>🏀</span>
-                    <span style={{ fontWeight: 600 }}>{user.displayName}</span>
-                  </div>
-                  <span style={{ fontSize: '0.75rem', color: '#64748B' }}>
-                    {user.primaryPosition || 'Any'} · {user.skillLevel}
+                  <span
+                    aria-hidden="true"
+                    style={{
+                      width: '36px',
+                      height: '36px',
+                      borderRadius: tokens.radius.full,
+                      backgroundColor: tokens.colors.primaryLight,
+                      color: tokens.colors.primary,
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      fontWeight: 700,
+                      fontSize: '1rem',
+                      flexShrink: 0,
+                    }}
+                  >
+                    {user.displayName.charAt(0)}
+                  </span>
+                  <span style={{ display: 'flex', flexDirection: 'column', minWidth: 0 }}>
+                    <span style={{ fontWeight: 600, fontSize: '0.95rem', color: tokens.colors.textPrimary }}>
+                      {user.displayName}
+                    </span>
+                    <span style={{ fontSize: '0.8rem', fontWeight: 400, color: tokens.colors.textSecondary }}>
+                      {user.primaryPosition || 'ทุกตำแหน่ง'} · {SKILL_LABELS[user.skillLevel] || user.skillLevel}
+                    </span>
                   </span>
                 </Button>
               ))}
             </div>
           </Card>
 
-          {/* Live / Connected Supabase Login */}
-          <Card style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
-            <div>
-              <h3 style={{ margin: 0, fontSize: '1.05rem', fontWeight: 600 }}>
-                เข้าสู่ระบบด้วย Supabase จริง (Connected Mode)
-              </h3>
-              <p style={{ margin: '4px 0 0 0', fontSize: '0.8rem', color: '#64748B' }}>
-                {isConfigured
-                  ? 'เชื่อมต่อกับฐานข้อมูล Supabase แล้ว'
-                  : 'ยังไม่ได้ตั้งค่า VITE_SUPABASE_URL ใน .env (Not Configured)'}
-              </p>
-            </div>
-
-            {!isConfigured ? (
-              <div
-                style={{
-                  padding: '12px',
-                  backgroundColor: '#F8FAFC',
-                  borderRadius: '8px',
-                  fontSize: '0.8rem',
-                  color: '#64748B',
-                  lineHeight: 1.5,
-                }}
-              >
-                ⚠️ โหมด Connected ต้องระบุ URL และ Anon Key ใน <code>.env</code> ก่อนใช้งาน หากยังไม่มี environment ให้ใช้ <strong>Demo Mode</strong> ด้านบน
-              </div>
-            ) : (
-              <form onSubmit={handleConnectedSupabaseLogin} style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+          {isConfigured ? (
+            <Card style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+              <h2 style={{ margin: 0, fontSize: '1.05rem', fontWeight: 600, color: tokens.colors.textPrimary }}>
+                เข้าสู่ระบบด้วยบัญชีจริง
+              </h2>
+              <form onSubmit={handleConnectedSupabaseLogin} style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
                 <Input
                   label="อีเมล"
                   type="email"
+                  inputMode="email"
+                  autoComplete="email"
+                  autoCapitalize="none"
                   placeholder="name@example.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
+                  style={fieldStyle}
                 />
                 <Input
+                  id={FIELD_IDS.password}
                   label="รหัสผ่าน"
-                  type="password"
-                  placeholder="••••••••"
+                  type={showPassword ? 'text' : 'password'}
+                  autoComplete="current-password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
+                  endAdornment={passwordToggle}
+                  style={fieldStyle}
                 />
-                <Button type="submit" fullWidth isLoading={loading} style={{ marginTop: '6px' }}>
-                  เข้าสู่ระบบ Supabase
+                <Button type="submit" fullWidth isLoading={loading} style={{ marginTop: '4px', fontSize: '1rem' }}>
+                  เข้าสู่ระบบ
                 </Button>
               </form>
-            )}
-          </Card>
+            </Card>
+          ) : (
+            <p style={{ margin: 0, fontSize: '0.8rem', lineHeight: 1.5, color: tokens.colors.textMuted, textAlign: 'center' }}>
+              การเข้าสู่ระบบด้วยบัญชีจริงยังไม่เปิดใช้ (ยังไม่ได้ตั้งค่า Supabase ใน <code>.env</code>)
+            </p>
+          )}
         </>
       )}
     </div>

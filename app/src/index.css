@@ -1,30 +1,31 @@
 :root {
   /* --- Colors: Brand & Accent --- */
-  --color-primary: #FF6B00;          /* HoopUp Basketball Orange */
-  --color-primary-hover: #E05E00;
-  --color-primary-light: rgba(255, 107, 0, 0.15);
-  --color-primary-glow: rgba(255, 107, 0, 0.35);
+  /* --- Colors: Brand & Accent (rim orange: used for "still needed" and primary action) --- */
+  --color-primary: #FF5B1F;
+  --color-primary-hover: #E84A10;
+  --color-primary-light: rgba(255, 91, 31, 0.15);
+  --color-primary-glow: rgba(255, 91, 31, 0.3);
 
-  /* --- Colors: Dark Theme Backgrounds & Surfaces --- */
-  --color-bg: #0B0F19;               /* Deep slate dark body */
-  --color-surface: #151D2A;          /* Card & elevated surface */
-  --color-surface-hover: #1C2738;
-  --color-surface-alt: #0F1622;      /* Deep inner surface */
-  --color-surface-tint: rgba(255, 107, 0, 0.05);
-  --color-header-bg: #0F172A;        /* Dark top header bar matching hoopup-v1.png */
+  /* --- Colors: Court-night backgrounds & surfaces (warm ink, not slate) --- */
+  --color-bg: #14120F;
+  --color-surface: #1F1C18;          /* Card & elevated surface */
+  --color-surface-hover: #28241F;
+  --color-surface-alt: #191612;      /* Deep inner surface */
+  --color-surface-tint: rgba(255, 91, 31, 0.05);
+  --color-header-bg: #0F0D0B;
 
   /* --- Colors: Borders --- */
-  --color-border: #233044;
-  --color-border-subtle: #192333;
-  --color-border-focus: #FF6B00;
+  --color-border: #3A342C;
+  --color-border-subtle: #2A251F;
+  --color-border-focus: #FF5B1F;
 
-  /* --- Colors: Typography --- */
-  --color-text-primary: #F8FAFC;     /* Bright high contrast */
-  --color-text-secondary: #94A3B8;   /* Muted labels & hints */
-  --color-text-muted: #64748B;       /* Secondary hints */
-  --color-text-dim: #475569;
-  --color-text-inverted: #0F172A;
-  --color-text-on-accent: #0F172A;
+  /* --- Colors: Typography (chalk on ink) --- */
+  --color-text-primary: #F4EFE6;     /* Chalk white */
+  --color-text-secondary: #B3AA9B;   /* Muted labels & hints */
+  --color-text-muted: #8C8477;       /* Tertiary hints */
+  --color-text-dim: #6B645A;
+  --color-text-inverted: #14120F;
+  --color-text-on-accent: #14120F;
 
   /* --- Colors: Secondary --- */
   --color-secondary: #233044;
@@ -43,7 +44,8 @@
   --color-status-full-bg: rgba(100, 116, 139, 0.15);
 
   /* --- Typography Scale --- */
-  --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans Thai", Helvetica, Arial, sans-serif;
+  --font-family: "Noto Sans Thai", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-display: "Barlow Condensed", "Noto Sans Thai", -apple-system, BlinkMacSystemFont, sans-serif;
   --font-xs: 0.75rem;     /* 12px */
   --font-sm: 0.875rem;    /* 14px */
   --font-base: 1rem;      /* 16px */
@@ -104,9 +106,14 @@ body {
   padding: 0;
   min-width: 320px;
   min-height: 100vh;
-  background-color: #05070B;
+  background-color: #0A0907;
   color: var(--color-text-primary);
   font-family: var(--font-family);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
 }
 
 a {
@@ -322,6 +329,7 @@ input, select, textarea {
   padding: 4px 6px;
 }
 .counter-btn {
+  flex: 0 0 44px;
   width: 44px;
   height: 44px;
   min-width: 44px;
@@ -344,6 +352,7 @@ input, select, textarea {
   border-color: var(--color-primary);
 }
 .counter-value {
+  flex: 0 0 44px;
   font-size: var(--font-base);
   font-weight: var(--font-weight-bold);
   color: var(--color-text-primary);
